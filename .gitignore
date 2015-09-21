@@ -1,3 +1,6 @@
 node_modules
+cordova/*
+!cordova/config.xml
 *.bat
 *.css
+*.lnk
