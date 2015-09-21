@@ -4,7 +4,7 @@
 			<character-panel character="model.team[id]"></character-panel>
 		</div>
 	</div>
-	<div class="map-wrapper" id="map-wrapper">
+	<div class="map-wrapper" id="map-wrapper" hm-swipe="swipe($event)">
 		<game-map map="model.map" ng-style="{top: getMapTopOffset(), left: getMapLeftOffset()}">
 		</game-map>
 		<div class="action-panel">

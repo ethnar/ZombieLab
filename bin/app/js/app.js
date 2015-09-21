@@ -1,8 +1,8 @@
 'use strict';
 
-angular.module('ZombieLabApp', ['ngRoute'])
+angular.module('ZombieLabApp', ['ngRoute', 'angular-gestures'])
 
-.config(function($routeProvider, $locationProvider) {
+.config(function($routeProvider, $locationProvider, hammerDefaultOptsProvider) {
 	$routeProvider
 		.when('/main-menu', {
 			templateUrl: 'partials/main-menu.html',
@@ -20,4 +20,7 @@ angular.module('ZombieLabApp', ['ngRoute'])
 			templateUrl: 'partials/start.html',
 			controller: 'startController'
 		});
+    hammerDefaultOptsProvider.set({
+        recognizers: [[Hammer.Swipe, {}]]
+    });
 });

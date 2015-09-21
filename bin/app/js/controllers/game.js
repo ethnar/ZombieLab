@@ -59,32 +59,54 @@ angular.module('ZombieLabApp')
 			};
 			switch (event.keyCode) {
 				case 37:
-					direction = 'W';
+					$scope.inputDirection('W');
 					break;
 				case 38:
-					direction = 'N';
+					$scope.inputDirection('N');
 					break;
 				case 39:
-					direction = 'E';
+					$scope.inputDirection('E');
 					break;
 				case 40:
-					direction = 'S';
+					$scope.inputDirection('S');
 					break;
+				$scope.$apply();
 			}
-			if (direction) {
-				var path = mapService.getDirectionPathForTeam(direction);
-				switch (true) {
-					case !path: 
-						return;
-					case path.door && path.closed: 
-						$scope.startAction(actions.openDoor, path);
-						return;
-					default:
-						$scope.startAction(actions.walk, mapService.getNextAreaForTeam(direction));
-				}
-			}
-			$scope.$apply();
 		});
+		$document.bind('swipe', function (event) {
+			console.log(event);
+		});
+	};
+
+	$scope.swipe = function ($event) {
+		var swipeTolerance = 30;
+		switch (true) {
+			case Math.abs($event.angle) <= swipeTolerance:
+				$scope.inputDirection('E');
+				break;
+			case Math.abs($event.angle + 180) <= swipeTolerance:
+				$scope.inputDirection('W');
+				break;
+			case Math.abs($event.angle + 90) <= swipeTolerance:
+				$scope.inputDirection('N');
+				break;
+			case Math.abs($event.angle - 90) <= swipeTolerance:
+				$scope.inputDirection('S');
+				break;
+		}
+	};
+
+	$scope.inputDirection = function (direction) {
+		var path = mapService.getDirectionPathForTeam(direction);
+		switch (true) {
+			case !path: 
+				return;
+			case path.door && path.closed: 
+				$scope.startAction(actions.openDoor, path);
+				return;
+			default:
+				$scope.startAction(actions.walk, mapService.getNextAreaForTeam(direction));
+		}
 	};
 
 	$scope.startAction = function (action, target) {
