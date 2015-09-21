@@ -5,7 +5,7 @@ angular.module('ZombieLabApp')
 .service('characterService', function (equipmentService) {
 	var service = this;
 
-	service.names = ['Alan', 'Arthur', 'Jake', 'Jane', 'Hilda', 'Arya']
+	service.names = ['Alan', 'Arthur', 'Jake', 'Jane', 'Hilda', 'Thomas', 'Natalie', 'John', 'Martha', 'Ashley']
 	service.roster = [];
 	service.team = [];
 
