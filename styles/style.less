@@ -1,0 +1,213 @@
+@import (reference) "misc.less";
+
+@character-panel-width: 90px;
+@map-tile-size: 140px;
+
+.team-setup {
+	.character-panel {
+		float: left;
+	}
+	.selected {
+		.character-panel {
+			background: #CCFFCC;
+		}
+	}
+}
+
+.character-panel {
+	.clearfix();
+
+	width: @character-panel-width;
+
+	.image {
+		height: 90px;
+		clear: both;
+		border: 1px solid black;
+	}
+}
+
+.item-slot {
+	height: 35px;
+	width: 100%;
+	border: 1px solid black;
+	float: left;
+
+	&.large {
+		width: 60%;
+	}
+	&.small {
+		width: 40%;
+	}
+}
+
+.game {
+	.team-panel {
+		width: @character-panel-width * 2;
+		float: left;
+
+		.character-panel {
+			float: left;
+		}
+	}
+
+	.map-wrapper {
+		height: 480px;
+		position: relative;
+		overflow: hidden;
+
+		.map {
+			position: absolute;
+			width: @map-tile-size * 50;
+			transition: 1.5s top, 1.5s left;
+
+		}
+	}
+
+	.action-panel {
+		position: absolute;
+		right: 10px;
+		bottom: 10px;
+		z-index: 500;
+
+		.action {
+			border: 3px solid green;
+			background: lime;
+			padding: 20px;
+		}
+	}
+}
+
+.map {
+
+	.column {
+		float: left;
+
+		.tile {
+			position: relative;
+			width: @map-tile-size;
+			height: @map-tile-size;
+			opacity: 0;
+			padding: 10px;
+
+			&.start::before {
+				content: 'START!';
+			}
+
+			&.finish::before {
+				content: 'FINISH!';
+			}
+
+			&.revealed {
+				opacity: 1;
+			}
+
+			&.visible {
+				opacity: 1;
+
+				.enemy {
+					visibility: inherit;
+				}
+			}
+
+			&.area {
+				background: #EEE;
+
+				.wall {
+					@wall-color: black;
+					@corridor-width: 40px;
+					@wall-top-width: 8px;
+					@doorway-width: 20px;
+					@door-width: 30px;
+
+					@door-color: #999;
+
+					z-index: 50;
+					background: @wall-color;
+					border: (@map-tile-size - @doorway-width) / 2 solid @wall-color;
+					border-top: none;
+					border-bottom: none;
+					width: @map-tile-size + @wall-top-width;
+					height: @wall-top-width;
+					
+					position: absolute;
+					top: 50%;
+					left: -@wall-top-width / 2;
+					margin-top: -@wall-top-width / 2;
+
+					&.has-door {
+						background: none;
+					}
+
+					&.N {
+						transform: translateY(-@map-tile-size / 2);
+					}
+					&.S {
+						transform: translateY(@map-tile-size / 2);
+					}
+					&.W {
+						transform: translateX(-@map-tile-size / 2) rotate(90deg);
+					}
+					&.E {
+						transform: translateX(@map-tile-size / 2) rotate(90deg);
+					}
+
+					.door {
+						width: @door-width + 1;
+						height: @wall-top-width + 4;
+						top: -2px;
+						border: (@door-width / 2) solid @door-color;
+						border-top: none;
+						border-bottom: none;
+						outline: 1px solid #EEE;
+						position: absolute;
+						left: 50%;
+						margin-left: -@door-width / 2;
+						transition: all 0.5s;
+
+						&.opened {
+							width: @doorway-width + @door-width;
+							margin-left: (-@doorway-width - @door-width) / 2;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	.enemies-panel {
+		position: absolute;
+		top: 3px;
+		right: 3px;
+	    text-align: right;
+
+		.enemy {
+			visibility: hidden;
+			z-index: 15;
+
+			.enemyCount {
+				vertical-align: top;
+				display: inline-block;
+				padding: 2px 5px;
+			}
+
+			.enemyIcon {
+				display: inline-block;
+				width: 20px;
+				height: 20px;
+
+				&.crawler {
+					background-color: cyan;
+				}
+				&.walker {
+					background-color: green;
+				}
+				&.runner {
+					background-color: red;
+				}
+				&.hulk {
+					background-color: black;
+				}
+			}
+		}
+	}
+}

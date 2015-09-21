@@ -1,0 +1,14 @@
+<div ng-init="init();" class="game">
+	<div class="team-panel">
+		<div ng-repeat="id in [0,1,2,3,4,5]">
+			<character-panel character="model.team[id]"></character-panel>
+		</div>
+	</div>
+	<div class="map-wrapper" id="map-wrapper">
+		<game-map map="model.map" ng-style="{top: getMapTopOffset(), left: getMapLeftOffset()}">
+		</game-map>
+		<div class="action-panel">
+			<div class="action cancel" data-ng-show="model.currentAction.actionObject" data-ng-click="cancelAction();">X</div>
+		</div>
+	</div>
+</div>

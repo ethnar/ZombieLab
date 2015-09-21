@@ -1,0 +1,35 @@
+<!DOCTYPE html5>
+<html>
+	<head>
+		<meta name="viewport" content="height=480, width=device-width">
+
+		<link rel="stylesheet" type="text/css" href="styles/style.css">
+		<link rel="stylesheet" type="text/css" href="styles/reset.css">
+		<link rel="stylesheet" type="text/css" href="styles/misc.css">
+
+		<script type="text/javascript" src="libs/js/lodash.min.js"></script>
+		<script type="text/javascript" src="libs/js/jquery-1.11.3.min.js"></script>
+		<script type="text/javascript" src="libs/js/angular/angular.min.js"></script>
+		<script type="text/javascript" src="libs/js/angular/angular-route.js"></script>
+		
+		<script type="text/javascript" src="app/js/app.js"></script> 
+		<script type="text/javascript" src="app/js/controllers/start.js"></script> 
+		<script type="text/javascript" src="app/js/controllers/main-menu.js"></script> 
+		<script type="text/javascript" src="app/js/controllers/team-setup.js"></script> 
+		<script type="text/javascript" src="app/js/controllers/game.js"></script> 
+		<script type="text/javascript" src="app/js/services/game.js"></script> 
+		<script type="text/javascript" src="app/js/services/character.js"></script> 
+		<script type="text/javascript" src="app/js/services/equipment.js"></script> 
+		<script type="text/javascript" src="app/js/services/map.js"></script> 
+		<script type="text/javascript" src="app/js/services/map-generator.js"></script> 
+		<script type="text/javascript" src="app/js/services/enemies.js"></script> 
+		<script type="text/javascript" src="app/js/directives/character-panel.js"></script> 
+		<script type="text/javascript" src="app/js/directives/item-slot.js"></script> 
+		<script type="text/javascript" src="app/js/directives/game-map.js"></script> 
+
+	</head>
+	<body ng-app="ZombieLabApp">
+		<div ng-view id="main-view">
+		</div>
+	</body>
+</html>

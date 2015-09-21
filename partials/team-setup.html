@@ -1,0 +1,9 @@
+<div class="team-setup">
+	<div ng-repeat="character in model.roster" ng-click="selectCharacter(character);" ng-class="{'selected': character.selected}">
+		<character-panel character="character"></character-panel>
+	</div>
+	<div>Team members selected: {{model.charactersSelectedCount}} / {{model.targetTeamSize}}
+	<button ng-click="startGame();" ng-disabled="model.charactersSelectedCount != model.targetTeamSize">
+		Go!
+	</button>
+</div>

@@ -1,0 +1,17 @@
+<div class="map">
+	<div ng-repeat="column in map" class="column">
+		<div ng-repeat="tile in column" data-ng-class="getTileClass(tile);" class="tile">
+			<game-map-wall tile="tile" direction="N"></game-map-wall>
+			<game-map-wall tile="tile" direction="E"></game-map-wall>
+			<game-map-wall tile="tile" direction="W"></game-map-wall>
+			<game-map-wall tile="tile" direction="S"></game-map-wall>
+			<div class="team" data-ng-show="tile.teamPresent">YOU ARE HERE!</div>
+			<div class="teamWalkingDirection" data-ng-show="tile.teamWalkingTo">MOVING HERE!</div>
+			<div class="enemies-panel">
+				<div ng-repeat="(enemyType, enemyCount) in getGroupedEnemies(tile.enemies)" class="enemy {{enemyType}}">
+					<span class="enemyCount">{{enemyCount}}</span><span class="enemyIcon {{enemyType}}"></span>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
