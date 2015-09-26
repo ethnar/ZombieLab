@@ -4,7 +4,7 @@ angular.module('ZombieLabApp')
 
 .controller('mainMenuController', function ($scope, $location, characterService, mapService, mapGeneratorService, gameService) {
 	$scope.startNewGame = function () {
-		gameService.resetDifficulty();
+		gameService.resetGame();
 		characterService.buildNewRoster(6);
 		mapGeneratorService.createNewMap();
 		$location.path('team-setup');

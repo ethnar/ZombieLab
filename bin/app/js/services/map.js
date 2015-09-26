@@ -49,6 +49,17 @@ angular.module('ZombieLabApp')
 		return result;
 	};
 
+	service.getAccessibleAreas = function (x, y, onlyOpen) {
+		var result = {};
+		var tile = service.map[x][y];
+		_.each(directionOffsets, function (offset, direction) {
+			if (tile[direction] && (!onlyOpen || !tile[direction].door || !tile[direction].closed)) {
+				result[direction] = service.map[x + offset[0]][y + offset[1]];
+			}
+		});
+		return result;
+	};
+
 	service.moveTeam = function (tile) {
 		if (service.teamLocation) {
 			service.teamLocation.teamPresent = false;
@@ -58,6 +69,13 @@ angular.module('ZombieLabApp')
 		service.teamSteps++;
 		service.teamLocation.teamHeat = service.teamSteps;
 		service.teamLocation.teamPresent = true;
+		service.checkVisibility();
+		service.calculateEnemyPaths();
+	};
+
+	service.moveEnemy = function (enemy, tileFrom, tileTo) {
+		tileFrom.enemies = _.without(tileFrom.enemies, _.findWhere(tileFrom.enemies, enemy));
+		tileTo.enemies.push(enemy);
 		service.checkVisibility();
 	};
 
@@ -109,8 +127,28 @@ angular.module('ZombieLabApp')
 		});
 	};
 
+	service.calculateEnemyPaths = function () {
+		_.each(service.areas, function (currentTile) {
+			var neighbouring = service.getAccessibleAreas(currentTile.x, currentTile.y, true);
+			var bestHeat = currentTile.teamHeat;
+			var bestHeatDirection = '';
+			_.each(neighbouring, function (tile, direction) {
+				if (bestHeat < tile.teamHeat) {
+					bestHeat = tile.teamHeat;
+					bestHeatDirection = direction;
+				}
+			});
+			currentTile.enemyDirection = bestHeat !== 0 ? bestHeatDirection : '-';
+		});
+	}
+
 	service.getDirectionPathForTeam = function (direction) {
 		return service.teamLocation[direction];
+	};
+
+	service.getTileInDirection = function (tile, direction) {
+		var offset = directionOffsets[direction];
+		return service.map[tile.x + offset[0]][tile.y + offset[1]];
 	};
 
 	service.getNextAreaForTeam = function (direction) {
@@ -120,6 +158,7 @@ angular.module('ZombieLabApp')
 	service.openDoor = function (path) {
 		path.closed = false;
 		service.checkVisibility();
+		service.calculateEnemyPaths();
 	};
 
 	service.getValidTargets = function () {

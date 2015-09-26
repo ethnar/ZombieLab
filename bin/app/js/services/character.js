@@ -2,7 +2,7 @@
 
 angular.module('ZombieLabApp')
 
-.service('characterService', function (equipmentService) {
+.service('characterService', function (equipmentService, gameService) {
 	var service = this;
 
 	service.names = ['Alan', 'Arthur', 'Jake', 'Jane', 'Hilda', 'Thomas', 'Natalie', 'John', 'Martha', 'Ashley']
@@ -32,6 +32,10 @@ angular.module('ZombieLabApp')
 		}
 	};
 
+	service.wipeTeam = function () {
+		service.team = [];
+	};
+
 	service.addToTeam = function (character) {
 		service.team.push(character);
 	};
@@ -45,9 +49,16 @@ angular.module('ZombieLabApp')
 	service.doDamage = function (character, damage) {
 		character.health -= damage;
 		if (character.health <= 0) {
-			character.alive = character.conscious = false;
-			character.health = 0;
-			// TODO: drop stuff on the ground
+			service.kill(character);
+		}
+	};
+
+	service.kill = function (character) {
+		character.alive = character.conscious = false;
+		character.health = 0;
+		// TODO: drop stuff on the ground
+		if (service.getAliveMembers().length === 0) {
+			gameService.gameOver();
 		}
 	};
 

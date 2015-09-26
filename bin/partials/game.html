@@ -8,7 +8,15 @@
 		<game-map map="model.map" ng-style="{top: getMapTopOffset(), left: getMapLeftOffset()}">
 		</game-map>
 		<div class="action-panel">
-			<div class="action cancel" data-ng-show="model.currentAction.actionObject" data-ng-click="cancelAction();">X</div>
+			<div class="action cancel" ng-show="model.currentAction.actionObject" data-ng-click="cancelAction();">X</div>
+			<div class="action next-level" ng-show="canFinishLevel();" ng-click="finishLevel();">></div>
+		</div>
+	</div>
+	<div class="game-over" data-ng-show="isGameOver();">
+		<div class="exit-button-wrapper">
+			<div class="exit-button" ng-click="backToMenu();">
+				Back to Menu
+			</div>
 		</div>
 	</div>
 </div>

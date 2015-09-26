@@ -197,34 +197,53 @@ angular.module('ZombieLabApp')
 
 	controller.doTheWalking = function (delta) {
 		_.each(mapService.areas, function (tile) {
-			// if (tile.enemies && tile.enemies.length) {
-				
-			// }
-			// var neighbouring = mapService.getNeighbouringAreas(tile.x, tile.y);
-			// if (neighbouring.length) {
-				
-			// }
+			_.each(tile.enemies, function (enemy) {
+				if (tile.enemyDirection == '') {
+					enemy.walking = 0;
+					if (enemy.attackTimer <= 0) {
+						controller.doTheBiting(enemy);
+					}
+				} else {
+					if (tile.enemyDirection !== '-') {
+						enemy.walking += delta;
+						if (enemy.walking > enemy.type.speed) {
+							enemy.walking -= enemy.type.speed;
+							var targetTile = mapService.getTileInDirection(tile, tile.enemyDirection);
+							mapService.moveEnemy(enemy, tile, targetTile);
+						}
+					}
+				}
+				if (enemy.attackTimer > 0) {
+					enemy.attackTimer -= delta;
+				}
+			});
 		});
 		var validTargets = mapService.getValidTargets();
 
 		_.each(validTargets, function (target) {
-			if (target.distance == 0) {
-				target.enemy.walking = 0;
-				if (target.enemy.attackTimer <= 0) {
-					controller.doTheBiting(target.enemy);
-				}
-			} else {
-				
-			}
-			if (target.enemy.attackTimer > 0) {
-				target.enemy.attackTimer -= delta;
-			}
 		});
+	};
+
+	$scope.backToMenu = function () {
+		$location.path('main-menu');
+	};
+
+	$scope.canFinishLevel = function () {
+		return mapService.teamLocation.finish;
+	};
+
+	$scope.finishLevel = function () {
+		gameService.increaseDifficulty();
+		mapGeneratorService.createNewMap();
+	};
+
+	$scope.isGameOver = function () {
+		return gameService.isGameOver;
 	};
 
 	$scope.init = function () {
 		/* START: quick setup */
-		gameService.resetDifficulty();
+		gameService.resetGame();
 
 		if (characterService.team.length === 0) {
 			for (var i = 0; i < 4; i++) {

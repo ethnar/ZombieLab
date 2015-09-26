@@ -4,15 +4,20 @@ angular.module('ZombieLabApp')
 
 .service('gameService', function () {
 	var service = this;
-
 	var difficulty;
+	service.isGameOver = false;
 	
-	service.getDifficulty = function () {
-		return difficulty;
+	service.resetGame = function () {
+		difficulty = 500; // 100 by default
+		service.isGameOver = false;
 	};
 
-	service.resetDifficulty = function () {
-		difficulty = 500; // 100 by default
+	service.gameOver = function () {
+		service.isGameOver = true;
+	};
+
+	service.getDifficulty = function () {
+		return difficulty;
 	};
 
 	service.increaseDifficulty = function () {

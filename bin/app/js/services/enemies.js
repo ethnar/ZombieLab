@@ -7,28 +7,28 @@ angular.module('ZombieLabApp')
 
 	service.enemyTypes = [{
 		name: 'crawler',
-		speed: 50,
+		speed: 2100,
 		health: 7,
 		damage: 3,
 		difficulty: 20,
 		filler: true
 	}, {
 		name: 'walker',
-		speed: 80,
+		speed: 1800,
 		health: 10,
 		damage: 4,
 		difficulty: 30,
 		filler: true
 	}, {
 		name: 'hulk',
-		speed: 60,
+		speed: 2000,
 		health: 50,
 		damage: 30,
 		difficulty: 150,
 		minDifficulty: 180 // minimum overall difficulty to have the monster spawned in a room
 	}, {
 		name: 'runner',
-		speed: 210,
+		speed: 1500,
 		health: 9,
 		damage: 8,
 		difficulty: 60,
