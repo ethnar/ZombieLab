@@ -1,7 +1,8 @@
 @import (reference) "misc.less";
 
+@screen-height: 320px;
 @character-panel-width: 90px;
-@map-tile-size: 140px;
+@map-tile-size: 90px;
 
 .team-setup {
 	.character-panel {
@@ -51,7 +52,7 @@
 	}
 
 	.map-wrapper {
-		height: 480px;
+		height: @screen-height;
 		position: relative;
 		overflow: hidden;
 
