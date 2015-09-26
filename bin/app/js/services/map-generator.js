@@ -161,9 +161,9 @@ angular.module('ZombieLabApp')
 				var tile = mapService.map[x][y];
 				if (tile.area && !tile.start) {
 					if (tile.room) {
-						tile.enemies = enemyService.createGroupForRoom();
+						tile.enemies = enemyService.createGroupForRoom(tile);
 					} else {
-						tile.enemies = enemyService.createGroupForCorridor();
+						tile.enemies = enemyService.createGroupForCorridor(tile);
 					}
 				}
 			}

@@ -178,12 +178,17 @@ angular.module('ZombieLabApp')
 		target.enemy.health -= _.random(character.weapon.model.dmgMin, character.weapon.model.dmgMax);
 		console.log(_.sample(['BAM!', 'POW!', 'KABLAM!']));
 		if (target.enemy.health <= 0) {
-			mapService.killTarget(target);
+			controller.killTarget(target);
 		}
 		character.weapon.ammo -= 1;
 		if (character.weapon.ammo === 0) {
 			characterService.startReloading(character);
 		}
+	};
+
+	controller.killTarget = function (target) {
+		target.enemy.tile.enemies = _.without(target.enemy.tile.enemies, _.findWhere(target.enemy.tile.enemies, target.enemy)); 
+		mapService.checkVisibility();
 	};
 
 	controller.doTheBiting = function (enemy) {
@@ -209,7 +214,7 @@ angular.module('ZombieLabApp')
 						if (enemy.walking > enemy.type.speed) {
 							enemy.walking -= enemy.type.speed;
 							var targetTile = mapService.getTileInDirection(tile, tile.enemyDirection);
-							mapService.moveEnemy(enemy, tile, targetTile);
+							mapService.moveEnemy(enemy, targetTile);
 						}
 					}
 				}

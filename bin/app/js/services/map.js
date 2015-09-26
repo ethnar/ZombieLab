@@ -73,9 +73,10 @@ angular.module('ZombieLabApp')
 		service.calculateEnemyPaths();
 	};
 
-	service.moveEnemy = function (enemy, tileFrom, tileTo) {
-		tileFrom.enemies = _.without(tileFrom.enemies, _.findWhere(tileFrom.enemies, enemy));
+	service.moveEnemy = function (enemy, tileTo) {
+		enemy.tile.enemies = _.without(enemy.tile.enemies, _.findWhere(enemy.tile.enemies, enemy));
 		tileTo.enemies.push(enemy);
+		enemy.tile = tileTo;
 		service.checkVisibility();
 	};
 
@@ -89,10 +90,6 @@ angular.module('ZombieLabApp')
 				});
 			}
 		});
-	};
-
-	service.killTarget = function (target) {
-		service.checkVisibility();
 	};
 
 	service.checkVisibility = function () {

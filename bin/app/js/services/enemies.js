@@ -35,16 +35,17 @@ angular.module('ZombieLabApp')
 		minDifficulty: 300
 	}];
 
-	service.newEnemy = function (type) {
+	service.newEnemy = function (type, tile) {
 		return {
 			type: type,
 			health: type.health,
 			walking: 0,
-			attackTimer: 0
+			attackTimer: 0,
+			tile: tile
 		}
 	};
 
-	service.createGroup = function (roomDifficulty, chanceToHaveZombies, specialGroupsBudget) {
+	service.createGroup = function (tile, roomDifficulty, chanceToHaveZombies, specialGroupsBudget) {
 		var hasZobmies = (_.random(0, 100) < chanceToHaveZombies);
 		var enemiesGroup = [];
 		if (hasZobmies) {
@@ -57,7 +58,7 @@ angular.module('ZombieLabApp')
 				});
 				var type = _.sample(specialTypes);
 				if (type) {
-					enemiesGroup.push(service.newEnemy(type));
+					enemiesGroup.push(service.newEnemy(type, tile));
 					remainingRoomDifficulty -= type.difficulty;
 				}
 			}
@@ -66,25 +67,25 @@ angular.module('ZombieLabApp')
 			});
 			while (remainingRoomDifficulty >= 0) {
 				var type = _.sample(fillerTypes);
-				enemiesGroup.push(service.newEnemy(type));
+				enemiesGroup.push(service.newEnemy(type, tile));
 				remainingRoomDifficulty -= type.difficulty;
 			}
 		}
 		return enemiesGroup;
 	};
 	
-	service.createGroupForRoom = function () {
+	service.createGroupForRoom = function (tile) {
 		var roomDifficulty = gameService.getDifficulty();
 		var chanceToHaveZombies = -1 / (gameService.getDifficulty() / 4000) + 95;
 		var specialGroupsBudget = _.random(0, gameService.getDifficulty() / 2);
-		return service.createGroup(roomDifficulty, chanceToHaveZombies, specialGroupsBudget);
+		return service.createGroup(tile, roomDifficulty, chanceToHaveZombies, specialGroupsBudget);
 	};
 
-	service.createGroupForCorridor = function () {
+	service.createGroupForCorridor = function (tile) {
 		var roomDifficulty = gameService.getDifficulty() / 3;
 		var chanceToHaveZombies = -1 / (gameService.getDifficulty() / 2000) + 95;
 		var specialGroupsBudget = 0;
-		return service.createGroup(roomDifficulty, chanceToHaveZombies, specialGroupsBudget);
+		return service.createGroup(tile, roomDifficulty, chanceToHaveZombies, specialGroupsBudget);
 	};
 
 });
