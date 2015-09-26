@@ -43,11 +43,11 @@ angular.module('ZombieLabApp')
 		};
 
 	$scope.getMapTopOffset = function () {
-		return $('#map-wrapper').height() / 2 - mapService.tileSize / 2 - mapService.teamLocation.y * mapService.tileSize;
+		return $('#map-wrapper').height() / 2 - mapService.getTileSize() / 2 - mapService.teamLocation.y * mapService.tileSize;
 	};
 
 	$scope.getMapLeftOffset = function () {
-		return $('#map-wrapper').width() / 2 - mapService.tileSize / 2 - mapService.teamLocation.x * mapService.tileSize;
+		return $('#map-wrapper').width() / 2 - mapService.getTileSize() / 2 - mapService.teamLocation.x * mapService.tileSize;
 	};
 
 	$scope.bindKeys = function () {

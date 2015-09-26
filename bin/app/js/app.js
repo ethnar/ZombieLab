@@ -21,6 +21,9 @@ angular.module('ZombieLabApp', ['ngRoute', 'angular-gestures'])
 			controller: 'startController'
 		});
     hammerDefaultOptsProvider.set({
-        recognizers: [[Hammer.Swipe, {}]]
+        recognizers: [[Hammer.Swipe, {
+        	threshold: 1,
+        	velocity: 0.01
+        }]]
     });
 });

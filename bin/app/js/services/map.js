@@ -12,7 +12,7 @@ angular.module('ZombieLabApp')
 	}
 
 	var service = this;
-	service.tileSize = 140; // Needed for the camera
+	service.tileSize; // Needed for the camera
 	service.map = [];
 	service.areas = [];
 	service.mapSizeX = 14;
@@ -25,6 +25,13 @@ angular.module('ZombieLabApp')
 	service.teamLocation = null;
 	service.validTargets = [];
 	service.teamSteps = 0;
+
+	service.getTileSize = function () {
+		if (!service.tileSize) {
+			service.tileSize = $('.tile').outerHeight();
+		}
+		return service.tileSize;
+	};
 
 	service.getAllAreas = function () {
 		return service.areas;
