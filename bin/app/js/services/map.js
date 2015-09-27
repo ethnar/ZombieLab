@@ -120,6 +120,9 @@ angular.module('ZombieLabApp')
 				distance++;
 				currentTile.teamHeat = service.teamSteps - distance;
 				service.registerValidTargets(currentTile, distance);
+				if (currentTile.room) {
+					break;
+				}
 			} while (true);
 		});
 	};
