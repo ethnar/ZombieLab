@@ -15,4 +15,5 @@
 		return random() * (max - min) + min;
 	};
 
+	window.zombieLab = {};
 })();

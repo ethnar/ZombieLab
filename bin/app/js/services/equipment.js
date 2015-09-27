@@ -11,6 +11,7 @@ angular.module('ZombieLabApp')
 	service.registerItem = function (item) {
 		item.price = item.price || 0;
 		item.size = item.size || 'small';
+		item.isLarge = item.isLarge || false;
 		service.items.push(item);
 	};
 
@@ -33,6 +34,7 @@ angular.module('ZombieLabApp')
 		service.registerWeapons([{
 			name: 'M4',
 			weaponClass: 'rifle',
+			isLarge: true,
 			dmgMin: 3,
 			dmgMax: 5,
 			clipSize: 30,

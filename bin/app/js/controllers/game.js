@@ -69,9 +69,6 @@ angular.module('ZombieLabApp')
 				$scope.$apply();
 			}
 		});
-		$document.bind('swipe', function (event) {
-			console.log(event);
-		});
 	};
 
 	$scope.swipe = function ($event) {
