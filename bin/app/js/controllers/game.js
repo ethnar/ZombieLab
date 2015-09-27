@@ -15,11 +15,10 @@ angular.module('ZombieLabApp')
 		}
 	};
 	var interval = 100,
-		gameSpeed = 2,
 		actions = {
 			openDoor: {
 				progress: function (delta) {
-					$scope.model.currentAction.progress += gameSpeed * delta / 1;
+					$scope.model.currentAction.progress += delta / 0.8;
 				},
 				complete: function () {
 					mapService.openDoor($scope.model.currentAction.target);
@@ -30,7 +29,7 @@ angular.module('ZombieLabApp')
 					$scope.model.currentAction.target.teamWalkingTo = true;
 				},
 				progress: function (delta) {
-					$scope.model.currentAction.progress += gameSpeed * delta / 2;
+					$scope.model.currentAction.progress += delta / 1.5;
 				},
 				complete: function () {
 					$scope.model.currentAction.target.teamWalkingTo = false;
@@ -53,10 +52,6 @@ angular.module('ZombieLabApp')
 	$scope.bindKeys = function () {
 		$document.bind('keydown', function (event) {
 			var direction = null;
-			if ($scope.model.currentAction.actionObject) {
-				// ignore keypress if there's an action going
-				return;
-			};
 			switch (event.keyCode) {
 				case 37:
 					$scope.inputDirection('W');
@@ -97,6 +92,10 @@ angular.module('ZombieLabApp')
 	};
 
 	$scope.inputDirection = function (direction) {
+		if ($scope.model.currentAction.actionObject || gameService.isGameOver) {
+			// ignore keypress if there's an action going or if the game's over
+			return;
+		};
 		var path = mapService.getDirectionPathForTeam(direction);
 		switch (true) {
 			case !path: 
@@ -130,6 +129,9 @@ angular.module('ZombieLabApp')
 	$scope.mainLoop = function () {
 		var lastTime = new Date();
 		$interval(function () {
+			if (gameService.isGameOver) {
+				return;
+			}
 			var currentTime = new Date(),
 				delta = currentTime - lastTime;
 			if ($scope.model.currentAction.actionObject) {
@@ -211,8 +213,8 @@ angular.module('ZombieLabApp')
 				} else {
 					if (tile.enemyDirection !== '-') {
 						enemy.walking += delta;
-						if (enemy.walking > enemy.type.speed) {
-							enemy.walking -= enemy.type.speed;
+						if (enemy.walking > enemy.speed) {
+							enemy.walking -= enemy.speed;
 							var targetTile = mapService.getTileInDirection(tile, tile.enemyDirection);
 							mapService.moveEnemy(enemy, targetTile);
 						}

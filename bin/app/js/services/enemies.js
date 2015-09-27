@@ -7,21 +7,21 @@ angular.module('ZombieLabApp')
 
 	service.enemyTypes = [{
 		name: 'crawler',
-		speed: 2100,
+		speed: 4100,
 		health: 7,
 		damage: 3,
 		difficulty: 20,
 		filler: true
 	}, {
 		name: 'walker',
-		speed: 1800,
+		speed: 3800,
 		health: 10,
 		damage: 4,
 		difficulty: 30,
 		filler: true
 	}, {
 		name: 'hulk',
-		speed: 2000,
+		speed: 6000,
 		health: 50,
 		damage: 30,
 		difficulty: 150,
@@ -41,7 +41,8 @@ angular.module('ZombieLabApp')
 			health: type.health,
 			walking: 0,
 			attackTimer: 0,
-			tile: tile
+			tile: tile,
+			speed: _.random(Math.round(type.speed *0.9), Math.round(type.speed *1.1))
 		}
 	};
 

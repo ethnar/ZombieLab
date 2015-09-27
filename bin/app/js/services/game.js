@@ -8,7 +8,7 @@ angular.module('ZombieLabApp')
 	service.isGameOver = false;
 	
 	service.resetGame = function () {
-		difficulty = 100;
+		difficulty = 300;
 		service.isGameOver = false;
 	};
 

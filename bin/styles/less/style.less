@@ -1,37 +1,92 @@
 @import (reference) "misc.less";
 
+@img-path: '../../img/';
+
 @screen-height: 320px;
 @character-panel-width: 90px;
 @map-tile-size: 90px;
 
+@wall-color: black;
+@corridor-width: 40px;
+@wall-thickness: 6px;
+@doorway-width: 20px;
+@door-width: 30px;
+@door-color: #999;
+
+@action-button-size: 60px;
+
 .team-setup {
-	.character-panel {
-		float: left;
-	}
-	.selected {
+	.characters {
+		.clearfix();
+		margin: 26px;
+
 		.character-panel {
-			background: #CCFFCC;
+			float: left;
+			margin: 0 4px;
+		}
+		.selected {
+			.character-panel {
+				box-shadow: 0px 0px 1px 4px green;
+			}
 		}
 	}
 }
 
 .character-panel {
 	.clearfix();
-
+	position: relative;
+	background: url('@{img-path}character-panel.png');
 	width: @character-panel-width;
 
 	.image {
+		position: relative;
 		height: 90px;
+		background-image: url('@{img-path}character.png');
 		clear: both;
-		border: 1px solid black;
+	}
+
+	.name {
+		position: absolute;
+		bottom: 0;
+		width: 100%;
+		text-align: center;
+	}
+
+	.health {
+		color: transparent;
+		width: 100%;
+		background: rgba(255, 0, 0, 0.4);
+		position: absolute;
+		bottom: 0;
+	}
+
+	&.dead {
+		.image {
+			background-image: url('@{img-path}character-dead.png');
+		}
 	}
 }
 
 .item-slot {
+	position: relative;
 	height: 35px;
 	width: 100%;
-	border: 1px solid black;
 	float: left;
+
+	.item {
+		position: relative;
+		.item-image {
+			margin: 0 auto;
+			display: block;
+		}
+
+		.ammo {
+			position: absolute;
+			right: 4px;
+			bottom: 4px;
+			z-index: 50;
+		}
+	}
 
 	&.large {
 		width: 60%;
@@ -71,9 +126,31 @@
 		z-index: 500;
 
 		.action {
+			line-height: @action-button-size;
+			width: @action-button-size;
+			text-align: center;
+			margin-top: 10px;
+
 			border: 3px solid green;
+			border-radius: 5px;
 			background: lime;
-			padding: 20px;
+		}
+
+		.action-progress {
+			position: absolute;
+			bottom: 0px;
+			right: @action-button-size + 10;
+			width: 100px;
+			height: 20px;
+
+			border: 2px solid green;
+			border-radius: 2px;
+			background: black;
+
+			.progress-bar {
+				background: lime;
+				height: 100%;
+			}
 		}
 	}
 
@@ -125,7 +202,7 @@
 			}
 
 			&.revealed {
-				opacity: 1;
+				opacity: 0.4;
 			}
 
 			&.visible {
@@ -140,26 +217,18 @@
 				background: #EEE;
 
 				.wall {
-					@wall-color: black;
-					@corridor-width: 40px;
-					@wall-top-width: 8px;
-					@doorway-width: 20px;
-					@door-width: 30px;
-
-					@door-color: #999;
-
 					z-index: 50;
 					background: @wall-color;
 					border: (@map-tile-size - @doorway-width) / 2 solid @wall-color;
 					border-top: none;
 					border-bottom: none;
-					width: @map-tile-size + @wall-top-width;
-					height: @wall-top-width;
+					width: @map-tile-size + @wall-thickness;
+					height: @wall-thickness;
 					
 					position: absolute;
 					top: 50%;
-					left: -@wall-top-width / 2;
-					margin-top: -@wall-top-width / 2;
+					left: -@wall-thickness / 2;
+					margin-top: -@wall-thickness / 2;
 
 					&.has-door {
 						background: none;
@@ -180,7 +249,7 @@
 
 					.door {
 						width: @door-width + 1;
-						height: @wall-top-width + 4;
+						height: @wall-thickness + 4;
 						top: -2px;
 						border: (@door-width / 2) solid @door-color;
 						border-top: none;

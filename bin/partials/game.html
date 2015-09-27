@@ -8,6 +8,9 @@
 		<game-map map="model.map" ng-style="{top: getMapTopOffset(), left: getMapLeftOffset()}">
 		</game-map>
 		<div class="action-panel">
+			<div class="action-progress" ng-show="model.currentAction.actionObject">
+				<div class="progress-bar" ng-style="{width: model.currentAction.progress / 10 + '%'}"></div>
+			</div>
 			<div class="action cancel" ng-show="model.currentAction.actionObject" data-ng-click="cancelAction();">X</div>
 			<div class="action next-level" ng-show="canFinishLevel();" ng-click="finishLevel();">></div>
 		</div>
