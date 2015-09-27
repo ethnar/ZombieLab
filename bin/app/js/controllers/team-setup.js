@@ -25,4 +25,10 @@ angular.module('ZombieLabApp')
 		});
 		$location.path('game');
 	};
+
+	$scope.init = function () {
+		if (characterService.roster.length === 0) {
+			$location.path('main-menu');
+		}
+	};
 });

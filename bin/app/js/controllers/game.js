@@ -7,6 +7,7 @@ angular.module('ZombieLabApp')
 
 	$scope.model = {
 		team: characterService.team,
+		teamTired: 0, // indicates taking part in shootout
 		map: mapService.map,
 		currentAction: {
 			actionObject: null,
@@ -29,7 +30,7 @@ angular.module('ZombieLabApp')
 					$scope.model.currentAction.target.teamWalkingTo = true;
 				},
 				progress: function (delta) {
-					$scope.model.currentAction.progress += delta / 1.5;
+					$scope.model.currentAction.progress += delta / ($scope.model.teamTired > 0 ? 2 : 0.7);
 				},
 				complete: function () {
 					$scope.model.currentAction.target.teamWalkingTo = false;
@@ -134,17 +135,28 @@ angular.module('ZombieLabApp')
 			}
 			var currentTime = new Date(),
 				delta = currentTime - lastTime;
-			if ($scope.model.currentAction.actionObject) {
-				$scope.model.currentAction.actionObject.progress(delta);
-				if ($scope.model.currentAction.progress >= 1000) {
-					$scope.model.currentAction.actionObject.complete();
-					$scope.model.currentAction.actionObject = null;
-				}
-			}
+			controller.updateTeamSpeed(delta);
+			controller.progressAction(delta);
 			controller.doTheShooting(delta);
 			controller.doTheWalking(delta);
 			lastTime = currentTime;
 		}, interval);
+	};
+
+	controller.updateTeamSpeed = function (delta) {
+		if ($scope.model.teamTired > 0) {
+			$scope.model.teamTired -= delta;
+		}
+	};
+
+	controller.progressAction = function (delta) {
+		if ($scope.model.currentAction.actionObject) {
+			$scope.model.currentAction.actionObject.progress(delta);
+			if ($scope.model.currentAction.progress >= 1000) {
+				$scope.model.currentAction.actionObject.complete();
+				$scope.model.currentAction.actionObject = null;
+			}
+		}
 	};
 
 	controller.doTheShooting = function (delta) {
@@ -174,6 +186,7 @@ angular.module('ZombieLabApp')
 	};
 
 	controller.shootAt = function (target, character) {
+		$scope.model.teamTired = 2000;
 		// TODO: they need to miss too
 		// TODO: and aiming time?
 		character.rofTimer += character.weapon.model.rof;

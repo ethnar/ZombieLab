@@ -1,6 +1,6 @@
 <div class="item-slot {{size}}">
 	<div class="item">
-		<img ng-show="item" class="item-image" src="img/items/{{item.model.name}}.png" />
+		<img ng-show="item" class="item-image" ng-src="img/items/{{item.model.name}}.png" />
 		<div class="ammo" data-ng-show="item.model.category == 'weapon'">{{item.ammo}}</div>
 	</div>
 </div>

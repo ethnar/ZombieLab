@@ -1,4 +1,4 @@
-<div class="team-setup">
+<div class="team-setup" ng-init="init();">
 	<div class="characters">
 		<div ng-repeat="character in model.roster" ng-click="selectCharacter(character);" ng-class="{'selected': character.selected}">
 			<character-panel character="character"></character-panel>

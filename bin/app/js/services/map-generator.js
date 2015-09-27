@@ -84,12 +84,13 @@ angular.module('ZombieLabApp')
 	};
 	
 	service.generatePath = function () {
+		lastArea = null;	
 		var currentX = _.random(0, mapService.mapMargins);
 		var currentY = _.random(0, mapService.mapSizeY - 1);
 		var finishX = _.random(mapService.mapSizeX - mapService.mapMargins - 1, mapService.mapSizeX - 1);
 		mapService.startTile = mapService.map[currentX][currentY];
 		mapService.startTile.start = true;
-		while (currentX < finishX) {
+		while (currentX <= finishX) {
 			service.generatePathCreateArea(currentX, currentY);
 			var sideSteps = _.random(0, 4);
 			var sideStepDirection = (_.random(0, mapService.mapSizeY - 2) - currentY) < 0 ? -1 : 1;
@@ -100,7 +101,7 @@ angular.module('ZombieLabApp')
 			}
 			currentX++;
 		}
-		mapService.finishTile = mapService.map[currentX][currentY];
+		mapService.finishTile = mapService.map[finishX][currentY];
 		mapService.finishTile.finish = true;
 	};
 
