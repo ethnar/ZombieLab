@@ -22,7 +22,7 @@ angular.module('ZombieLabApp')
 	}, {
 		name: 'hulk',
 		speed: 6000,
-		health: 50,
+		health: 180,
 		damage: 30,
 		difficulty: 150,
 		minDifficulty: 180 // minimum overall difficulty to have the monster spawned in a room
