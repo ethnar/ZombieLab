@@ -5,6 +5,10 @@
 		</div>
 	</div>
 	<div class="map-wrapper" id="map-wrapper" hm-swipe="swipe($event)">
+		<div class="action-direction N" ng-click="inputDirection('N');"></div>
+		<div class="action-direction E" ng-click="inputDirection('E');"></div>
+		<div class="action-direction W" ng-click="inputDirection('W');"></div>
+		<div class="action-direction S" ng-click="inputDirection('S');"></div>
 		<game-map map="model.map" ng-style="{top: getMapTopOffset(), left: getMapLeftOffset()}">
 		</game-map>
 		<div class="team-running" data-ng-show="model.teamTired <= 0">

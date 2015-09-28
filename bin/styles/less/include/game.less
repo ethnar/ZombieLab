@@ -115,7 +115,33 @@
 			position: absolute;
 			width: @map-tile-size * 50;
 			transition: 1.5s top, 1.5s left;
+		}
 
+		.action-direction {
+		    position: absolute;
+		    top: 50%;
+		    left: 50%;
+		    width: @map-tile-size;
+		    height: @map-tile-size;
+		    z-index: 300;
+		    // background: rgba(255,0,0,0.2);
+
+		    &.W {
+		    	margin-left: @map-tile-size * -1.5;
+		    	margin-top: @map-tile-size * -0.5;
+		    }
+		    &.N {
+		    	margin-left: @map-tile-size * -0.5;
+		    	margin-top: @map-tile-size * -1.5;
+		    }
+		    &.E {
+		    	margin-left: @map-tile-size * 0.5;
+		    	margin-top: @map-tile-size * -0.5;
+		    }
+		    &.S {
+		    	margin-left: @map-tile-size * -0.5;
+		    	margin-top: @map-tile-size * 0.5;
+		    }
 		}
 	}
 
