@@ -2,7 +2,7 @@
 
 angular.module('ZombieLabApp')
 
-.directive('itemSlot', function ($timeout, gameService) {
+.directive('itemSlot', function ($timeout, gameService, characterService) {
 	return {
 		restrict: 'E',
 		replace: true,
@@ -10,6 +10,7 @@ angular.module('ZombieLabApp')
 		scope: {
 			item: '=',
 			size: '@',
+			character: '=',
 			allowedLarge: '@'
 		},
 		controller: function ($scope, $element) {
@@ -44,7 +45,14 @@ angular.module('ZombieLabApp')
 
 			$scope.click = function () {
 				if (gameService.selectedItemSlot) {
-					$scope.swapItems();
+					if (gameService.selectedItemSlot === $scope) {
+						if ($scope.character) {
+							characterService.useItem($scope.character, $scope.item, $scope.size);
+							$scope.deselectItem();
+						}
+					} else {
+						$scope.swapItems();
+					}
 					return;
 				}
 				if ($scope.item) {

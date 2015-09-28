@@ -9,8 +9,16 @@ angular.module('ZombieLabApp')
 	service.roster = [];
 	service.team = [];
 
+	function Character(obj) {
+		angular.extend(this, obj);
+	};
+
+	Character.prototype.isReloading = function () {
+		return this.reloadingTimer > 0 && this.alive;
+	};
+
 	service.createNewCharacter = function () {
-		return {
+		return new Character({
 			name: _.sample(service.names),
 			weapon: equipmentService.newWeapon(_.sample(equipmentService.weapons)),
 			itemSmall: null,
@@ -21,7 +29,7 @@ angular.module('ZombieLabApp')
 			conscious: true,
 			alive: true,
 			active: true
-		}
+		});
 	};
 
 	service.buildNewRoster = function (rosterSize) {
@@ -62,8 +70,16 @@ angular.module('ZombieLabApp')
 		}
 	};
 
+	service.useItem = function (character, item, size) {
+		if (item.model.category === 'weapon' && size === 'weapon') {
+			service.startReloading(character);
+		}
+	};
+
 	service.startReloading = function (character) {
-		character.reloadingTimer = 4000;
+		if (character.weapon.model.clipSize > character.weapon.ammo) {
+			character.reloadingTimer = 4000;
+		}
 	};
 
 	service.reloading = function (character, delta) {

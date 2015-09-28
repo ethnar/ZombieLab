@@ -90,6 +90,19 @@
 			bottom: 4px;
 			z-index: 50;
 		}
+
+		.reloading {
+			position: absolute;
+		    top: 6px;
+		    left: 15px;
+		    transform: rotate(8deg);
+		    color: #F66;
+		    font-weight: 800;
+		    font-size: 18px;
+		    z-index: 60;
+		    -webkit-text-stroke: 1px red;
+		    box-shadow: 0 0 65px white inset;
+		}
 	}
 
 	&.large {
@@ -296,6 +309,33 @@
 					}
 				}
 			}
+
+			.team {
+				@dot-size: 10px;
+				position: absolute;
+			    top: 50%;
+			    left: 50%;
+
+			    width: @dot-size;
+			    height: @dot-size;
+
+			    margin-top: -@dot-size / 2;
+			    margin-left: -@dot-size / 2;
+
+			    background-color: red;
+			    border-radius: 10px;
+
+				.pulse {
+					position: absolute;
+				    border-radius: 90px;
+				    top: @dot-size / 2;
+				    left: @dot-size / 2;
+
+				    -webkit-animation: pulse 2s linear;
+				    -webkit-animation-iteration-count: infinite;
+				}
+			}
+
 		}
 	}
 

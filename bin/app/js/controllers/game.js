@@ -30,7 +30,7 @@ angular.module('ZombieLabApp')
 					$scope.model.currentAction.target.teamWalkingTo = true;
 				},
 				progress: function (delta) {
-					$scope.model.currentAction.progress += delta / ($scope.model.teamTired > 0 ? 2 : 0.7);
+					$scope.model.currentAction.progress += delta / ($scope.model.teamTired > 0 ? 1.2 : 0.4);
 				},
 				complete: function () {
 					$scope.model.currentAction.target.teamWalkingTo = false;
@@ -159,7 +159,7 @@ angular.module('ZombieLabApp')
 	controller.doTheShooting = function (delta) {
 		_.each(_.shuffle(characterService.team), function (character) {
 			if (character.weapon && character.conscious && character.active && character.alive) {
-				if (character.weapon.ammo > 0) {
+				if (character.weapon.ammo > 0 && character.reloadingTimer <= 0) {
 					if (character.rofTimer <= 0) {
 						var validTargets = _.groupBy(mapService.getValidTargets(), 'distance');
 						var target = null;
