@@ -73,6 +73,10 @@
 	width: 100%;
 	float: left;
 
+	&.selected {
+		background-color: rgba(0, 255, 0, 0.3);
+	}
+
 	.item {
 		position: relative;
 		.item-image {
@@ -114,7 +118,7 @@
 		.map {
 			position: absolute;
 			width: @map-tile-size * 50;
-			transition: 1.5s top, 1.5s left;
+			transition: 1s top, 1s left;
 		}
 
 		.action-direction {
@@ -124,7 +128,6 @@
 		    width: @map-tile-size;
 		    height: @map-tile-size;
 		    z-index: 300;
-		    // background: rgba(255,0,0,0.2);
 
 		    &.W {
 		    	margin-left: @map-tile-size * -1.5;

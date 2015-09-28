@@ -6,6 +6,7 @@ angular.module('ZombieLabApp')
 	var service = this;
 	var difficulty;
 	service.isGameOver = false;
+	service.selectedItemSlot = null;
 	
 	service.resetGame = function () {
 		difficulty = 100;
