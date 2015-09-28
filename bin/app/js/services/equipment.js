@@ -45,7 +45,7 @@ angular.module('ZombieLabApp')
 			dmgMin: 2,
 			dmgMax: 4,
 			clipSize: 7,
-			rof: 2000
+			rof: 1100
 		}]);
 	}
 	

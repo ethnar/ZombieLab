@@ -2,6 +2,6 @@
 	<div class="item" ng-show="item">
 		<img class="item-image" ng-src="img/items/{{item.model.name}}.png" />
 		<div class="ammo" data-ng-show="item.model.category == 'weapon'">{{item.ammo}}</div>
-		<div class="reloading" ng-show="character.isReloading();">RELOAD</div>
+		<div class="reloading" ng-show="size === 'weapon' &amp;&amp; character.isReloading();">RELOAD</div>
 	</div>
 </div>
