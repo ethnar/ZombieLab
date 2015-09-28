@@ -15,7 +15,7 @@ angular.module('ZombieLabApp')
 			progress: 0
 		}
 	};
-	var interval = 100,
+	var interval = 10,
 		actions = {
 			openDoor: {
 				progress: function (delta) {
