@@ -54,6 +54,9 @@ angular.module('ZombieLabApp')
 		$document.bind('keydown', function (event) {
 			var direction = null;
 			switch (event.keyCode) {
+				case 32:
+					$scope.inputDirection('');
+					break;
 				case 37:
 					$scope.inputDirection('W');
 					break;
@@ -71,29 +74,18 @@ angular.module('ZombieLabApp')
 		});
 	};
 
-	$scope.swipe = function ($event) {
-		var swipeTolerance = 30;
-		switch (true) {
-			case Math.abs($event.angle) <= swipeTolerance:
-				$scope.inputDirection('E');
-				break;
-			case Math.abs($event.angle + 180) <= swipeTolerance:
-				$scope.inputDirection('W');
-				break;
-			case Math.abs($event.angle + 90) <= swipeTolerance:
-				$scope.inputDirection('N');
-				break;
-			case Math.abs($event.angle - 90) <= swipeTolerance:
-				$scope.inputDirection('S');
-				break;
-		}
-	};
-
 	$scope.inputDirection = function (direction) {
-		if ($scope.model.currentAction.actionObject || gameService.isGameOver) {
-			// ignore keypress if there's an action going or if the game's over
+		if (gameService.isGameOver) {
+			// ignore action if the game's over
 			return;
 		};
+		if ($scope.model.currentAction.actionObject) {
+			if ($scope.isTeamMoving() && (!direction || $scope.model.currentAction.target !== mapService.getNextAreaForTeam(direction))) {
+				// user tapped another direction
+				$scope.cancelAction();
+			}
+			return;
+		}
 		var path = mapService.getDirectionPathForTeam(direction);
 		switch (true) {
 			case !path: 
@@ -104,6 +96,10 @@ angular.module('ZombieLabApp')
 			default:
 				$scope.startAction(actions.walk, mapService.getNextAreaForTeam(direction));
 		}
+	};
+
+	$scope.isTeamMoving = function () {
+		return $scope.model.currentAction.actionObject === actions.walk;
 	};
 
 	$scope.startAction = function (action, target) {

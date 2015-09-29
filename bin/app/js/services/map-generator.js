@@ -2,7 +2,7 @@
 
 angular.module('ZombieLabApp')
 
-.service('mapGeneratorService', function ($timeout, enemyService, mapService) {
+.service('mapGeneratorService', function ($timeout, enemyService, mapService, equipmentService) {
 	var directions = ['N', 'E', 'S', 'W'];
 	var directionOffsets = {
 		'N': [0, -1],
@@ -25,6 +25,7 @@ angular.module('ZombieLabApp')
 					room: false,
 					visible: false,
 					enemies: [],
+					items: [],
 					teamHeat: 0,
 					x: x,
 					y: y
@@ -156,23 +157,22 @@ angular.module('ZombieLabApp')
 		}
 	};
 
-	service.fillRoomsWithZombies = function () {
+	service.fillRooms = function () {
 		for (var x = 0; x < mapService.mapSizeX; x++) {
 			for (var y = 0; y < mapService.mapSizeY; y++) {
 				var tile = mapService.map[x][y];
 				if (tile.area && !tile.start) {
 					if (tile.room) {
 						tile.enemies = enemyService.createGroupForRoom(tile);
+						while (_.random(0, 5) > tile.items.length) {
+							tile.items.push(equipmentService.newWeapon(_.sample(equipmentService.weapons)));
+						}
 					} else {
 						tile.enemies = enemyService.createGroupForCorridor(tile);
 					}
 				}
 			}
 		}
-	};
-
-	service.fillRooms = function () {
-		service.fillRoomsWithZombies();
 	};
 
 	service.createNewMap = function () {
