@@ -15,7 +15,7 @@ angular.module('ZombieLabApp')
 				return _.keys(_.pick(tile, function (property) {
 					return property;
 				})).join(' ');
-			}
+			};
 
 			$scope.getGroupedEnemies = function (enemies) {
 				var aliveEnemies = _.pick(enemies, function (enemy) {
@@ -24,7 +24,11 @@ angular.module('ZombieLabApp')
 				return _.countBy(aliveEnemies, function (enemy) {
 					return enemy.type.name;
 				});
-			}
+			};
+
+			$scope.hasItems = function (tile) {
+				return mapService.hasItems(tile);
+			};
 		}
 	};
 })

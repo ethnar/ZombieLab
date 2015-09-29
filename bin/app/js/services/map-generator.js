@@ -36,9 +36,13 @@ angular.module('ZombieLabApp')
 
 	service.placeArea = function (x, y) {
 		if (!mapService.map[x][y].area) {
-			mapService.map[x][y].area = true;
+			var tile = mapService.map[x][y];
+			tile.area = true;
 			mapService.areaCount++;
-			mapService.areas.push(mapService.map[x][y]);
+			mapService.areas.push(tile);
+			while (tile.items.length < 8) {
+				tile.items.push(null);
+			}
 			return true;
 		}
 		return false;
@@ -164,11 +168,9 @@ angular.module('ZombieLabApp')
 				if (tile.area && !tile.start) {
 					if (tile.room) {
 						tile.enemies = enemyService.createGroupForRoom(tile);
-						while (_.random(0, 5) > tile.items.length) {
-							tile.items.push(equipmentService.newWeapon(_.sample(equipmentService.weapons)));
-						}
-						while (tile.items.length < 8) {
-							tile.items.push(null);
+						var idx = 0;
+						while (_.random(0, 5) > idx) {
+							tile.items[idx++] = equipmentService.newWeapon(_.sample(equipmentService.weapons));
 						}
 					} else {
 						tile.enemies = enemyService.createGroupForCorridor(tile);

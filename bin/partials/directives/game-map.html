@@ -5,7 +5,7 @@
 			<game-map-wall tile="tile" direction="E"></game-map-wall>
 			<game-map-wall tile="tile" direction="W"></game-map-wall>
 			<game-map-wall tile="tile" direction="S"></game-map-wall>
-			<div class="items" ng-show="tile.items.length">ITEMS!</div>
+			<div class="items" ng-show="hasItems(tile)">ITEMS!</div>
 			<div class="teamWalkingDirection" data-ng-show="tile.teamWalkingTo">MOVING HERE!</div>
 			<div class="enemies-panel">
 				<div ng-repeat="(enemyType, enemyCount) in getGroupedEnemies(tile.enemies)" class="enemy {{enemyType}}">

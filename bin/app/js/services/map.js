@@ -140,7 +140,11 @@ angular.module('ZombieLabApp')
 			});
 			currentTile.enemyDirection = bestHeat !== 0 ? bestHeatDirection : '-';
 		});
-	}
+	};
+
+	service.hasItems = function (tile) {
+		return _.without(tile.items, null).length;
+	};
 
 	service.getDirectionPathForTeam = function (direction) {
 		return service.teamLocation[direction];

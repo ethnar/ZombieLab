@@ -108,8 +108,13 @@ angular.module('ZombieLabApp')
 	};
 
 	$scope.dropSelectedItem = function () {
-		mapService.teamLocation.items.push(gameService.selectedItemSlot.item);
-		gameService.selectedItemSlot.item = null;
+		var key = _.findIndex(mapService.teamLocation.items, function (item) {
+			return !item;
+		});
+		if (key > -1) {
+			mapService.teamLocation.items[key] = gameService.selectedItemSlot.item;
+			gameService.selectedItemSlot.item = null;
+		}
 	};
 
 	$scope.isTeamMoving = function () {
@@ -264,7 +269,7 @@ angular.module('ZombieLabApp')
 	};
 
 	$scope.canSearchRoom = function () {
-		return mapService.teamLocation.items.length;
+		return mapService.hasItems(mapService.teamLocation);
 	};
 
 	$scope.searchRoom = function () {
