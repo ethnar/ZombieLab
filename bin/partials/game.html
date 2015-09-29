@@ -4,14 +4,15 @@
 			<character-panel character="model.team[id]"></character-panel>
 		</div>
 	</div>
-	<div class="map-wrapper" id="map-wrapper">
-		<div data-ng-repeat="direction in ['N', 'E', 'W', 'S', '']" class="action-direction" ng-class="direction" ng-click="inputDirection(direction);">
-		</div>
+	<div class="game-area" id="game-area">
+		<div data-ng-repeat="direction in ['N', 'E', 'W', 'S', '']" class="action-direction" ng-class="direction" ng-click="inputDirection(direction);"></div>
 		<div class="team">
 			<div class="pulse"></div>
 		</div>
-		<game-map map="model.map" ng-style="{top: getMapTopOffset(), left: getMapLeftOffset()}">
-		</game-map>
+		<div class="loot-window" ng-show="model.lootingRoom">
+			<item-slot ng-repeat="item in getTeamLocation().items track by $index" slot="loot" item="getTeamLocation().items[$index]" allowed-large="true"></item-slot>
+		</div>
+		<game-map map="model.map" ng-style="{top: getMapTopOffset(), left: getMapLeftOffset()}"></game-map>
 		<div class="team-running" data-ng-show="model.teamTired <= 0">
 			RUNNING!
 		</div>
@@ -19,8 +20,9 @@
 			<div class="action-progress" ng-show="model.currentAction.actionObject">
 				<div class="progress-bar" ng-style="{width: model.currentAction.progress / 10 + '%'}"></div>
 			</div>
-			<div class="action cancel" ng-show="model.currentAction.actionObject" data-ng-click="cancelAction();">X</div>
 			<div class="action next-level" ng-show="canFinishLevel();" ng-click="finishLevel();">></div>
+			<div class="action search" ng-show="canSearchRoom();" ng-click="searchRoom();">Search</div>
+			<div class="action cancel" ng-show="model.currentAction.actionObject" data-ng-click="cancelAction();">X</div>
 		</div>
 	</div>
 	<div class="game-over" data-ng-show="isGameOver();">

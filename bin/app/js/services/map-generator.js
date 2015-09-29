@@ -167,6 +167,9 @@ angular.module('ZombieLabApp')
 						while (_.random(0, 5) > tile.items.length) {
 							tile.items.push(equipmentService.newWeapon(_.sample(equipmentService.weapons)));
 						}
+						while (tile.items.length < 8) {
+							tile.items.push(null);
+						}
 					} else {
 						tile.enemies = enemyService.createGroupForCorridor(tile);
 					}

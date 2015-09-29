@@ -9,7 +9,7 @@ angular.module('ZombieLabApp')
 		templateUrl: 'partials/directives/item-slot.html',
 		scope: {
 			item: '=',
-			size: '@',
+			slot: '@',
 			character: '=',
 			allowedLarge: '@'
 		},
@@ -32,23 +32,19 @@ angular.module('ZombieLabApp')
 					$scope.item = $scopeSource.item;
 					$scopeSource.item = temp;
 				}
-				$scope.deselectItem();
+				gameService.deselectItem();
 			};
 
 			$scope.selectItem = function () {
 				gameService.selectedItemSlot = $scope; // that's pretty bad, but workarounds would be worse
 			};
 
-			$scope.deselectItem = function () {
-				gameService.selectedItemSlot = null;
-			};
-
 			$scope.click = function () {
 				if (gameService.selectedItemSlot) {
 					if (gameService.selectedItemSlot === $scope) {
 						if ($scope.character) {
-							characterService.useItem($scope.character, $scope.item, $scope.size);
-							$scope.deselectItem();
+							characterService.useItem($scope.character, $scope.item, $scope.slot);
+							gameService.deselectItem();
 						}
 					} else {
 						$scope.swapItems();

@@ -9,6 +9,7 @@ angular.module('ZombieLabApp')
 		team: characterService.team,
 		teamTired: 0, // indicates taking part in shootout
 		map: mapService.map,
+		lootingRoom: false,
 		currentAction: {
 			actionObject: null,
 			target: null,
@@ -43,11 +44,11 @@ angular.module('ZombieLabApp')
 		};
 
 	$scope.getMapTopOffset = function () {
-		return $('#map-wrapper').height() / 2 - mapService.getTileSize() / 2 - mapService.teamLocation.y * mapService.tileSize;
+		return $('#game-area').height() / 2 - mapService.getTileSize() / 2 - mapService.teamLocation.y * mapService.tileSize;
 	};
 
 	$scope.getMapLeftOffset = function () {
-		return $('#map-wrapper').width() / 2 - mapService.getTileSize() / 2 - mapService.teamLocation.x * mapService.tileSize;
+		return $('#game-area').width() / 2 - mapService.getTileSize() / 2 - mapService.teamLocation.x * mapService.tileSize;
 	};
 
 	$scope.bindKeys = function () {
@@ -79,11 +80,19 @@ angular.module('ZombieLabApp')
 			// ignore action if the game's over
 			return;
 		};
+		$scope.finishSearching();
 		if ($scope.model.currentAction.actionObject) {
 			if ($scope.isTeamMoving() && (!direction || $scope.model.currentAction.target !== mapService.getNextAreaForTeam(direction))) {
 				// user tapped another direction
 				$scope.cancelAction();
 			}
+			return;
+		}
+		if (gameService.isItemSelected()) {
+			if (!direction) {
+				$scope.dropSelectedItem();
+			}
+			gameService.deselectItem();
 			return;
 		}
 		var path = mapService.getDirectionPathForTeam(direction);
@@ -96,6 +105,11 @@ angular.module('ZombieLabApp')
 			default:
 				$scope.startAction(actions.walk, mapService.getNextAreaForTeam(direction));
 		}
+	};
+
+	$scope.dropSelectedItem = function () {
+		mapService.teamLocation.items.push(gameService.selectedItemSlot.item);
+		gameService.selectedItemSlot.item = null;
 	};
 
 	$scope.isTeamMoving = function () {
@@ -241,8 +255,24 @@ angular.module('ZombieLabApp')
 		$location.path('main-menu');
 	};
 
+	$scope.getTeamLocation = function () {
+		return mapService.teamLocation;
+	};
+
 	$scope.canFinishLevel = function () {
 		return mapService.teamLocation.finish;
+	};
+
+	$scope.canSearchRoom = function () {
+		return mapService.teamLocation.items.length;
+	};
+
+	$scope.searchRoom = function () {
+		$scope.model.lootingRoom = true;
+	};
+
+	$scope.finishSearching = function () {
+		$scope.model.lootingRoom = false;
 	};
 
 	$scope.finishLevel = function () {
