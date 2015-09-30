@@ -28,7 +28,12 @@ angular.module('ZombieLabApp')
 
 	$scope.init = function () {
 		if (characterService.roster.length === 0) {
-			$location.path('main-menu');
+			// $location.path('main-menu');
+
+			// * quick start *
+			gameService.resetGame();
+			characterService.buildNewRoster();
+			$scope.model.roster = characterService.roster;
 		}
 	};
 });

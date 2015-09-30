@@ -23,10 +23,17 @@ angular.module('ZombieLabApp')
 		});
 	};
 
-	service.newWeapon = function (weapon) {
-		return {
-			model: weapon,
-			ammo: weapon.clipSize
+	service.newItemByName = function (itemName) {
+		return service.newItem(service.items[itemName]);
+	};
+
+	service.newItem = function (item) {
+		var newItem = {
+			model: item
 		};
+		if (item.category === 'weapon') {
+			newItem.ammo = item.clipSize;
+		}
+		return newItem;
 	};
 });

@@ -5,8 +5,10 @@ angular.module('ZombieLabApp')
 .service('characterService', function (equipmentService, gameService) {
 	var service = this;
 
+	service.rosterSize = 6;
 	service.roster = [];
 	service.team = [];
+	service.maxSkill = 5;
 
 	function Character(obj) {
 		angular.extend(this, obj);
@@ -16,10 +18,56 @@ angular.module('ZombieLabApp')
 		return this.reloadingTimer > 0 && this.alive;
 	};
 
-	service.createNewCharacter = function () {
+	service.createNewCharacter = function (archetype) {
+		var budget = _.random(80, 100);
+		var disposition = {
+			weapon: 10,
+			gear: 10,
+			skills: 10
+		};
+		var skills = {
+			weapons: 0,
+			hacking: 0,
+			explosives: 0,
+			mechanic: 0,
+			firstAid: 0
+		};
+		while (budget > 0) {
+			var attribute = _.sample(_.keys(disposition));
+			var value = _.random(3, 10);
+			value = Math.min(value, budget);
+
+			disposition[attribute] += value;
+			budget -= value;
+		}
+		// *** select weapon ***
+		var pickedWeaponName = null;
+		_.each(archetype.weapon, function (weaponName, required) {
+			if (disposition.weapon >= required) {
+				pickedWeaponName = weaponName;
+			}
+		});
+		// *** assign skills ***
+		while (disposition.skills >= 10) {
+			var random = _.random(1, 100);
+			var increasedSkill = null;
+			_.each(archetype.skills, function (treshold, skill) {
+				random -= treshold;
+				if (random <= 0 && !increasedSkill) {
+					increasedSkill = skill;
+				}
+			});
+			if (skills[increasedSkill] < service.maxSkill) {
+				skills[increasedSkill]++;
+				disposition.skills -= 10;
+			}
+		}
+		// *** select gear ***
+
+		// *** create character ***
 		return new Character({
 			name: gameService.getNewName(),
-			weapon: null,
+			weapon: pickedWeaponName ? equipmentService.newItemByName(pickedWeaponName) : null,
 			itemSmall: null,
 			itemLarge: null,
 			rofTimer: 0,
@@ -28,22 +76,25 @@ angular.module('ZombieLabApp')
 			conscious: true,
 			alive: true,
 			active: true,
-			skills: {
-				weapons: 0,
-				hacking: 0,
-				explosives: 0,
-				mechanic: 0,
-				firstAid: 0
-			}
+			skills: skills
 		});
 	};
 
-	service.buildNewRoster = function (rosterSize) {
+	service.buildNewRoster = function () {
 		service.roster = [];
-		for (var i = 0; i < rosterSize; i++) {
-			// TODO: make sure we get a nice, varied selection
-			service.roster.push(service.createNewCharacter());
+		var selectedArchetypes = [];
+		_.each(service.archetypes, function (definition, name) {
+			selectedArchetypes.push(name);
+			selectedArchetypes.push(name);
+		});
+		while (selectedArchetypes.length > service.rosterSize) {
+			var idx = _.random(0, selectedArchetypes.length - 1);
+			selectedArchetypes.splice(idx, 1);
 		}
+		_.each(selectedArchetypes, function (archetypeName) {
+			var character = service.createNewCharacter(service.archetypes[archetypeName]);
+			service.roster.push(character);
+		});
 	};
 
 	service.wipeTeam = function () {
