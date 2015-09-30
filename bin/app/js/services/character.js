@@ -5,7 +5,6 @@ angular.module('ZombieLabApp')
 .service('characterService', function (equipmentService, gameService) {
 	var service = this;
 
-	service.names = ['Alan', 'Arthur', 'Jake', 'Jane', 'Hilda', 'Thomas', 'Natalie', 'John', 'Martha', 'Ashley']
 	service.roster = [];
 	service.team = [];
 
@@ -19,8 +18,8 @@ angular.module('ZombieLabApp')
 
 	service.createNewCharacter = function () {
 		return new Character({
-			name: _.sample(service.names),
-			weapon: equipmentService.newWeapon(_.sample(equipmentService.weapons)),
+			name: gameService.getNewName(),
+			weapon: null,
 			itemSmall: null,
 			itemLarge: null,
 			rofTimer: 0,
@@ -28,7 +27,14 @@ angular.module('ZombieLabApp')
 			health: 100,
 			conscious: true,
 			alive: true,
-			active: true
+			active: true,
+			skills: {
+				weapons: 0,
+				hacking: 0,
+				explosives: 0,
+				mechanic: 0,
+				firstAid: 0
+			}
 		});
 	};
 

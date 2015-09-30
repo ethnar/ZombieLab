@@ -170,7 +170,7 @@ angular.module('ZombieLabApp')
 						tile.enemies = enemyService.createGroupForRoom(tile);
 						var idx = 0;
 						while (_.random(0, 5) > idx) {
-							tile.items[idx++] = equipmentService.newWeapon(_.sample(equipmentService.weapons));
+//							tile.items[idx++] = equipmentService.newWeapon(_.sample(equipmentService.weapons));
 						}
 					} else {
 						tile.enemies = enemyService.createGroupForCorridor(tile);
