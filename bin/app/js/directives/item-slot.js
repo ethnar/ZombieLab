@@ -11,7 +11,8 @@ angular.module('ZombieLabApp')
 			item: '=',
 			slot: '@',
 			character: '=',
-			allowedLarge: '@'
+			allowedLarge: '@',
+			disabled: '='
 		},
 		controller: function ($scope, $element) {
 			var controller = this;
@@ -31,6 +32,8 @@ angular.module('ZombieLabApp')
 					var temp = $scope.item;
 					$scope.item = $scopeSource.item;
 					$scopeSource.item = temp;
+				} else {
+					console.error('You can\'t swap these items');
 				}
 				gameService.deselectItem();
 			};
@@ -40,6 +43,9 @@ angular.module('ZombieLabApp')
 			};
 
 			$scope.click = function () {
+				if ($scope.disabled) {
+					return;
+				}
 				if (gameService.selectedItemSlot) {
 					if (gameService.selectedItemSlot === $scope) {
 						if ($scope.character) {

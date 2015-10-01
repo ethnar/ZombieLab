@@ -53,7 +53,7 @@ angular.module('ZombieLabApp')
 		var result = {};
 		var tile = service.map[x][y];
 		_.each(directionOffsets, function (offset, direction) {
-			if (tile[direction] && (!onlyOpen || !tile[direction].door || !tile[direction].closed)) {
+			if (tile[direction] && (!onlyOpen || service.isOpen(direction, tile))) {
 				result[direction] = service.map[x + offset[0]][y + offset[1]];
 			}
 		});
@@ -157,6 +157,11 @@ angular.module('ZombieLabApp')
 
 	service.getNextAreaForTeam = function (direction) {
 		return service.map[service.teamLocation.x + directionOffsets[direction][0]][service.teamLocation.y + directionOffsets[direction][1]];
+	};
+
+	service.isOpen = function (direction, tile) {
+		tile = tile || service.teamLocation;
+		return tile[direction] && (!tile[direction].door || !tile[direction].closed);
 	};
 
 	service.openDoor = function (path) {

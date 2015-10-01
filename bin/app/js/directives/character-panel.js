@@ -9,7 +9,8 @@ angular.module('ZombieLabApp')
 		templateUrl: 'partials/directives/character-panel.html',
 		scope: {
 			character: '=',
-			readOnly: '=?'
+			readOnly: '=?',
+			disableItems: '=?'
 		},
 		controller: function ($scope) {
 		}

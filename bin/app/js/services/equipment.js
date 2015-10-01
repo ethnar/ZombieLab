@@ -24,15 +24,20 @@ angular.module('ZombieLabApp')
 	};
 
 	service.newItemByName = function (itemName) {
+		if (!service.items[itemName]) {
+			throw new Error('No such item as ' + itemName);
+		}
 		return service.newItem(service.items[itemName]);
 	};
 
-	service.newItem = function (item) {
+	service.newItem = function (itemModel) {
 		var newItem = {
-			model: item
+			model: itemModel
 		};
-		if (item.category === 'weapon') {
-			newItem.ammo = item.clipSize;
+		if (itemModel.category === 'weapon') {
+			newItem.ammo = itemModel.clipSize;
+		} else {
+			newItem.charges = itemModel.charges;
 		}
 		return newItem;
 	};

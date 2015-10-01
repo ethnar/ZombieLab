@@ -22,9 +22,11 @@ angular.module('ZombieLabApp')
 		var budget = _.random(80, 100);
 		var disposition = {
 			weapon: 10,
-			gear: 10,
+			equipment: 10,
 			skills: 10
 		};
+		var itemSmall = null;
+		var itemLarge = null;
 		var skills = {
 			weapons: 0,
 			hacking: 0,
@@ -62,14 +64,26 @@ angular.module('ZombieLabApp')
 				disposition.skills -= 10;
 			}
 		}
-		// *** select gear ***
-
+		// *** select equipment ***
+		_.each(archetype.equipment, function (itemName, cost) {
+			if (disposition.equipment >= cost) {
+				var item = equipmentService.newItemByName(itemName);
+				if (!itemLarge || (!item.model.isLarge && !itemSmall)) {
+					disposition.equipment -= cost;
+					if (item.model.isLarge || itemSmall) {
+						itemLarge = item;
+					} else {
+						itemSmall = item;
+					}
+				}
+			}
+		});
 		// *** create character ***
 		return new Character({
 			name: gameService.getNewName(),
 			weapon: pickedWeaponName ? equipmentService.newItemByName(pickedWeaponName) : null,
-			itemSmall: null,
-			itemLarge: null,
+			itemSmall: itemSmall,
+			itemLarge: itemLarge,
 			rofTimer: 0,
 			reloadingTimer: 0,
 			health: 100,

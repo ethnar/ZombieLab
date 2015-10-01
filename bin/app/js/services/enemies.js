@@ -46,14 +46,26 @@ angular.module('ZombieLabApp')
 		}
 	};
 
+	service.damage = function (enemy, damage) {
+		enemy.health -= damage;
+		if (enemy.health <= 0) {
+			service.killEnemy(enemy);
+		}
+	};
+
+	service.killEnemy = function (enemy) {
+		enemy.tile.enemies = _.without(enemy.tile.enemies, _.findWhere(enemy.tile.enemies, enemy)); 
+		mapService.checkVisibility();
+	};
+
 	service.createGroup = function (tile, roomDifficulty, chanceToHaveZombies, specialGroupsBudget) {
 		var hasZobmies = (_.random(0, 100) < chanceToHaveZombies);
 		var enemiesGroup = [];
 		if (hasZobmies) {
 			var maxRoomDifficulty = _.random(roomDifficulty * 0.6, roomDifficulty);
 			var remainingRoomDifficulty = maxRoomDifficulty;
-			while (specialGroupsBudget > 100) {
-				specialGroupsBudget -= 100;
+			while (specialGroupsBudget > 200) {
+				specialGroupsBudget -= 200;
 				var specialTypes = _.filter(service.enemyTypes, function (enemyType) {
 					return !enemyType.filler && enemyType.minDifficulty <= gameService.getDifficulty() && enemyType.difficulty <= remainingRoomDifficulty;
 				});

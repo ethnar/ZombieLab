@@ -91,6 +91,11 @@ angular.module('ZombieLabApp')
 		if (gameService.isItemSelected()) {
 			if (!direction) {
 				$scope.dropSelectedItem();
+			} else {
+				var item = gameService.getSelectedItem();
+				if (item.model.target === 'area') {
+					item.model.use(item, gameService.getSelectedItemOwner(), direction);
+				}
 			}
 			gameService.deselectItem();
 			return;
@@ -202,20 +207,12 @@ angular.module('ZombieLabApp')
 		// TODO: they need to miss too
 		// TODO: and aiming time?
 		character.rofTimer += character.weapon.model.rof;
-		target.enemy.health -= _.random(character.weapon.model.dmgMin, character.weapon.model.dmgMax);
 		console.log(_.sample(['BAM!', 'POW!', 'KABLAM!']));
-		if (target.enemy.health <= 0) {
-			controller.killTarget(target);
-		}
+		enemyService.damage(target.enemy, _.random(character.weapon.model.dmgMin, character.weapon.model.dmgMax));
 		character.weapon.ammo -= 1;
 		if (character.weapon.ammo === 0) {
 			characterService.startReloading(character);
 		}
-	};
-
-	controller.killTarget = function (target) {
-		target.enemy.tile.enemies = _.without(target.enemy.tile.enemies, _.findWhere(target.enemy.tile.enemies, target.enemy)); 
-		mapService.checkVisibility();
 	};
 
 	controller.doTheBiting = function (enemy) {
@@ -294,10 +291,10 @@ angular.module('ZombieLabApp')
 		gameService.resetGame();
 
 		if (characterService.team.length === 0) {
-			for (var i = 0; i < 4; i++) {
-				// TODO: make sure we get a nice, varied selection
-				characterService.team.push(characterService.createNewCharacter());
-			}
+			characterService.team.push(characterService.createNewCharacter(characterService.archetypes['warrior']));
+			characterService.team.push(characterService.createNewCharacter(characterService.archetypes['medic']));
+			characterService.team.push(characterService.createNewCharacter(characterService.archetypes['hacker']));
+			characterService.team.push(characterService.createNewCharacter(characterService.archetypes['grenadier']));
 		}
 		console.log('---- The team:')
 		console.log(characterService.team);

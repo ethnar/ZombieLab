@@ -11,7 +11,7 @@ angular.module('ZombieLabApp')
 	service.availableNames = null;
 	
 	service.resetGame = function () {
-		difficulty = 100;
+		difficulty = 500;
 		service.availableNames = angular.copy(service.names);
 		service.isGameOver = false;
 	};
@@ -32,15 +32,27 @@ angular.module('ZombieLabApp')
 	};
 
 	service.increaseDifficulty = function () {
-		difficulty += 100;
+		difficulty += 70;
 	};
 
 	service.isItemSelected = function () {
 		return !!service.selectedItemSlot;
 	};
 
+	service.getSelectedItem = function () {
+		return service.selectedItemSlot.item;
+	};
+
+	service.getSelectedItemOwner = function () {
+		return service.selectedItemSlot.character;
+	};
+
 	service.deselectItem = function () {
 		service.selectedItemSlot = null;
+	};
+
+	service.destroySelectedItem = function () {
+		service.selectedItemSlot.item = null;
 	};
 });
 

@@ -1,7 +1,8 @@
 <div class="item-slot {{slot}}" ng-class="{selected: isSelected()}" ng-click="click();">
 	<div class="item" ng-show="item">
-		<img class="item-image" ng-src="img/items/{{item.model.name}}.png" />
+		<img class="item-image" ng-src="img/items/{{item.model.category}}/{{item.model.name}}.png" />
 		<div class="ammo" data-ng-show="item.model.category == 'weapon'">{{item.ammo}}</div>
+		<div class="charges" data-ng-show="item.model.charges">{{item.charges}}</div>
 		<div class="reloading" ng-show="slot === 'weapon' &amp;&amp; character.isReloading();">RELOAD</div>
 	</div>
 </div>

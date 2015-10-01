@@ -18,7 +18,7 @@
 .team-setup {
 	.characters {
 		.clearfix();
-		margin: 26px;
+		margin: 26px 26px 10px;
 
 		.character-wrapper {
 			float: left;
@@ -30,6 +30,34 @@
 			}
 		}
 	}
+}
+
+.skill-bar {
+	.clearfix();
+    margin: 3px 6px;
+    clear: both;
+
+	img {
+	    float: left;
+	}
+
+	.skill-gauge {
+	    float: left;
+	    border: 3px solid black;
+	    border-radius: 3px;
+
+		.skill-cell {
+		    width: 10px;
+		    height: 10px;
+		    float: left;
+		
+			&.set {
+			    background-color: black;
+			    border: 1px solid white;
+			}
+		}
+	}
+
 }
 
 .character-panel {
@@ -84,7 +112,7 @@
 			display: block;
 		}
 
-		.ammo {
+		.ammo, .charges {
 			position: absolute;
 			right: 4px;
 			bottom: 4px;
@@ -206,14 +234,14 @@
 	.action-panel {
 		position: absolute;
 		right: 10px;
-		bottom: 10px;
+		top: 10px;
 		z-index: 500;
 
 		.action {
 			line-height: @action-button-size;
 			width: @action-button-size;
 			text-align: center;
-			margin-top: 10px;
+			margin-bottom: 10px;
 
 			border: 3px solid green;
 			border-radius: 5px;
@@ -222,7 +250,7 @@
 
 		.action-progress {
 			position: absolute;
-			bottom: 0px;
+			top: 0px;
 			right: @action-button-size + 10;
 			width: 100px;
 			height: 20px;

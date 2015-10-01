@@ -3,7 +3,7 @@
 		<div class="name">{{character.name}}</div>
 		<div class="health" ng-style="{height: 100 - character.health + '%'}">{{character.health}}</div>
 	</div>
-	<item-slot slot="weapon" item="character.weapon" allowed-large="true" character="character"></item-slot>
-	<item-slot slot="large" item="character.itemLarge" allowed-large="true" character="character"></item-slot>
-	<item-slot slot="small" item="character.itemSmall" character="character"></item-slot>
+	<item-slot slot="weapon" item="character.weapon" allowed-large="true" character="character" disabled="disableItems"></item-slot>
+	<item-slot slot="large" item="character.itemLarge" allowed-large="true" character="character" disabled="disableItems"></item-slot>
+	<item-slot slot="small" item="character.itemSmall" character="character" disabled="disableItems"></item-slot>
 </div>

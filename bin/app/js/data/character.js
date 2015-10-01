@@ -36,8 +36,8 @@ angular.module('ZombieLabApp')
 				firstAid: 50
 			},
 			equipment: {
-				15: 'bandage',
-				30: 'firstAid'
+				30: 'medkit',
+				15: 'bandage'
 			}
 		},
 		grenadier: {
@@ -54,8 +54,8 @@ angular.module('ZombieLabApp')
 				firstAid: 0
 			},
 			equipment: {
-				15: 'grenade',
-				30: 'c4'
+				30: 'c4',
+				15: 'grenade'
 			}
 		},
 		hacker: {
@@ -72,8 +72,7 @@ angular.module('ZombieLabApp')
 				firstAid: 5
 			},
 			equipment: {
-				10: 'terminal',
-				30: 'empGrenade'
+				10: 'terminal'
 			}
 		}
 	}

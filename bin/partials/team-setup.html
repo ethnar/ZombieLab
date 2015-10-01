@@ -1,9 +1,9 @@
 <div class="team-setup" ng-init="init();">
 	<div class="characters">
 		<div class="character-wrapper" ng-repeat="character in model.roster" ng-click="selectCharacter(character);" ng-class="{'selected': character.selected}">
-			<character-panel character="character"></character-panel>
+			<character-panel character="character" disable-items="true"></character-panel>
 			<div class="skills">
-				<div ng-repeat="(skill, value) in character.skills">{{skill}}: {{value}}</div>
+				<skill-bar ng-repeat="(skill, value) in character.skills" skill="skill" value="value"></skill-bar>
 			</div>
 		</div>
 	</div>
