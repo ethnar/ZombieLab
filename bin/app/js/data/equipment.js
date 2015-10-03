@@ -49,12 +49,13 @@ angular.module('ZombieLabApp')
 				actionTime: 6,
 				useChargeAtStart: true,
 				use: function (itemSlot, character, target) {
-					var finalHeal = 10;
+					var finalHeal = 10 * character.skillModifier('firstAid', 3);
 					target.health = Math.min(target.health + finalHeal, character.maxHealth);
 				},
 				progress: function (itemSlot, character, target, delta) {
-					var progressHeal = 60;
+					var progressHeal = 60 * character.skillModifier('firstAid', 3);
 					target.health = Math.min(target.health + progressHeal * delta / 100, character.maxHealth);
+					return true;
 				}
 			}, {
 				name: 'bandage',
@@ -64,12 +65,13 @@ angular.module('ZombieLabApp')
 				actionTime: 2,
 				useChargeAtStart: true,
 				use: function (itemSlot, character, target) {
-					var finalHeal = 10;
+					var finalHeal = 10 * character.skillModifier('firstAid', 2);
 					target.health = Math.min(target.health + finalHeal, character.maxHealth);
 				},
 				progress: function (itemSlot, character, target, delta) {
-					var progressHeal = 20;
+					var progressHeal = 20 * character.skillModifier('firstAid', 2);
 					target.health = Math.min(target.health + progressHeal * delta / 100, character.maxHealth);
+					return true;
 				}
 			}, {
 				name: 'grenade',
@@ -78,33 +80,56 @@ angular.module('ZombieLabApp')
 				target: 'area',
 				actionTime: 0.3,
 				use: function (itemSlot, character, direction) {
-					if (mapService.isOpen(direction)) {
-						var targetTile = mapService.getNextAreaForTeam(direction);
-						_.each(targetTile.enemies, function (enemy) {
-							enemyService.damage(enemy, _.random(4, 15));
-						});
-					} else {
-						ZombieLab.error('You must accessible room');
+					var targetTile = mapService.getNextAreaForTeam(direction);
+					_.each(targetTile.enemies, function (enemy) {
+						enemyService.damage(enemy, _.random(4, 15) * character.skillModifier('explosives', 2));
+					});
+				},
+				progress: function (itemSlot, character, direction, delta) {
+					var isOpen = mapService.isOpen(direction);
+					if (!isOpen) {
+						ZombieLab.error('You must target accessible room');
 					}
+					return isOpen;
 				}
 			}, {
 				name: 'c4',
 				isLarge: true,
 				charges: 2,
-				target: 'door',
-				use: function (character, target) {
-					console.log('Blowing!');
-					console.log(target);
+				target: 'area',
+				actionTime: 3,
+				use: function (itemSlot, character, direction) {
+					var targetTile = mapService.getNextAreaForTeam(direction);
+					var path = mapService.getDirectionPathForTeam(direction);
+					mapService.openDoor(path);
+					_.each(targetTile.enemies, function (enemy) {
+						enemyService.damage(enemy, _.random(2, 30) * character.skillModifier('explosives', 4));
+					});
+				},
+				progress: function (itemSlot, character, direction, delta) {
+					var isDoor = mapService.isDoor(direction);
+					if (!isDoor) {
+						ZombieLab.error('You must target closed door');
+					}
+					return isDoor;
 				}
 			}, {
 				name: 'terminal',
 				isLarge: true,
 				charges: 6,
-				target: 'door',
-				useuseChargeAtStart: true,
-				use: function (character, target) {
-					console.log('Hacking!');
-					console.log(target);
+				target: 'area',
+				use: function (itemSlot, character, direction) {
+					var targetTile = mapService.getNextAreaForTeam(direction);
+					var path = mapService.getDirectionPathForTeam(direction);
+					mapService.openDoor(path);
+				},
+				progress: function (itemSlot, character, direction, delta) {
+					var path = mapService.getDirectionPathForTeam(direction);
+					if (!mapService.isDoor(direction) || !path.security) {
+						ZombieLab.error('You must target closed, secured door');
+						return false;
+					}
+					return Math.pow(path.security, 2) / Math.pow(character.skillModifier('hacking', 4), 2);
 				}
 			}
 		]

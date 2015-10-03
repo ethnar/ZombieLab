@@ -1,3 +1,3 @@
 <div class="wall {{direction}}" data-ng-class="{'has-door': tile[direction].door}" data-ng-show="!tile[direction] || tile[direction].door">
-	<div class="door" data-ng-class="{opened: !tile[direction].closed}"data-ng-show="tile[direction].door"></div>
+	<div class="door security-{{tile[direction].security}}" ng-class="{opened: !tile[direction].closed}" ng-show="tile[direction].door"></div>
 </div>

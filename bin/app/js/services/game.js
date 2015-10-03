@@ -9,9 +9,14 @@ angular.module('ZombieLabApp')
 	service.selectedItemSlot = null;
 	service.names = ['Alan', 'Arthur', 'Jake', 'Jane', 'Hilda', 'Thomas', 'Natalie', 'John', 'Martha', 'Ashley'];
 	service.availableNames = null;
-	
+	service.gamePaused = false;
+
+	service.togglePause = function () {
+		service.gamePaused = !service.gamePaused;		
+	};
+
 	service.resetGame = function () {
-		difficulty = 500;
+		difficulty = 100;
 		service.availableNames = angular.copy(service.names);
 		service.isGameOver = false;
 	};
@@ -32,7 +37,7 @@ angular.module('ZombieLabApp')
 	};
 
 	service.increaseDifficulty = function () {
-		difficulty += 70;
+		difficulty += 40;
 	};
 
 	service.isItemSelected = function () {

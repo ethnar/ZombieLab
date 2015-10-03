@@ -15,6 +15,7 @@ angular.module('ZombieLabApp')
 	service.tileSize; // Needed for the camera
 	service.map = [];
 	service.areas = [];
+	service.paths = [];
 	service.mapSizeX = 14;
 	service.mapSizeY = 9;
 	service.startTile = null;
@@ -164,6 +165,11 @@ angular.module('ZombieLabApp')
 		return tile[direction] && (!tile[direction].door || !tile[direction].closed);
 	};
 
+	service.isDoor = function (direction, tile) {
+		tile = tile || service.teamLocation;
+		return tile[direction] && tile[direction].door && tile[direction].closed;
+	};
+
 	service.openDoor = function (path) {
 		path.closed = false;
 		service.checkVisibility();
@@ -178,7 +184,6 @@ angular.module('ZombieLabApp')
 		var key = _.findIndex(tile.items, function (item) {
 			return !item;
 		});
-		console.log(slot);
 		if (key > -1) {
 			tile.items[key] = slot.item;
 			slot.item = null;

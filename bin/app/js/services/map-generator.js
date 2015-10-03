@@ -18,6 +18,7 @@ angular.module('ZombieLabApp')
 		mapService.roomCount = 0;
 		mapService.areaCount = 0;
 		mapService.areas = [];
+		mapService.paths = [];
 		for (var x = 0; x < mapService.mapSizeX; x++) {
 			mapService.map[x] = [];
 			for (var y = 0; y < mapService.mapSizeY; y++) {
@@ -56,6 +57,7 @@ angular.module('ZombieLabApp')
 				if (mapService.map[x][y][direction]) {
 					mapService.map[x][y][direction].door = true;
 					mapService.map[x][y][direction].closed = true;
+					mapService.map[x][y][direction].security = 0;
 				}
 			});
 			mapService.roomCount++;
@@ -65,17 +67,19 @@ angular.module('ZombieLabApp')
 	};
 
 	service.connectAreas = function (area1, area2) {
+		var path = {};
+		mapService.paths.push(path);
 		if (area1.x === area2.x) {
 			if (area1.y === area2.y - 1) {
-				area1.S = area2.N = {};
+				area1.S = area2.N = path;
 			} else {
-				area1.N = area2.S = {};
+				area1.N = area2.S = path;
 			}
 		} else {
 			if (area1.x === area2.x - 1) {
-				area1.E = area2.W = {};
+				area1.E = area2.W = path;
 			} else {
-				area1.W = area2.E = {};
+				area1.W = area2.E = path;
 			}
 		}
 	};
@@ -181,12 +185,22 @@ angular.module('ZombieLabApp')
 		}
 	};
 
+	service.lockDoors = function () {
+		for (var i = 0; i < mapService.paths.length / 2; i++) {
+			var selected = _.sample(mapService.paths);
+			if (selected.door && selected.security < 3) {
+				selected.security++;
+			}
+		}
+	};
+
 	service.createNewMap = function () {
 		service.wipeMap();
 		service.generatePath();
 		service.placeAdditionalAreas();
 		service.sizeAreas();
 		service.fillRooms();
+		service.lockDoors();
 		mapService.moveTeam(mapService.startTile);
 	};
 });

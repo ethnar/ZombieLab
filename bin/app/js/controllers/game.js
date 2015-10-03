@@ -20,7 +20,7 @@ angular.module('ZombieLabApp')
 		actions = {
 			openDoor: {
 				progress: function (delta) {
-					$scope.model.currentAction.progress += delta / 0.8;
+					$scope.model.currentAction.progress += delta / (0.2 + Math.pow($scope.model.currentAction.target.security, 3) * 5);
 				},
 				complete: function () {
 					mapService.openDoor($scope.model.currentAction.target);
@@ -43,23 +43,35 @@ angular.module('ZombieLabApp')
 			},
 			useItem: {
 				start: function () {
-					$scope.model.currentAction.itemSlot = gameService.getSelectedItemSlot();
-					$scope.model.currentAction.item = gameService.getSelectedItem();
 					$scope.model.currentAction.itemOwner = gameService.getSelectedItemOwner();
-					$scope.model.currentAction.itemSlot.tempDisabled = true;
-					$scope.model.currentAction.itemOwner.active = false;
-					if ($scope.model.currentAction.item.model.useChargeAtStart) {
-						if ($scope.model.currentAction.item.charges && !(--$scope.model.currentAction.item.charges)) {
-							$scope.model.currentAction.itemSlot.item = null;
+					if ($scope.model.currentAction.itemOwner) {
+						$scope.model.currentAction.itemSlot = gameService.getSelectedItemSlot();
+						$scope.model.currentAction.item = gameService.getSelectedItem();
+						$scope.model.currentAction.itemSlot.tempDisabled = true;
+						$scope.model.currentAction.itemOwner.active = false;
+						if ($scope.model.currentAction.item.model.useChargeAtStart) {
+							if ($scope.model.currentAction.item.charges && !(--$scope.model.currentAction.item.charges)) {
+								$scope.model.currentAction.itemSlot.item = null;
+							}
 						}
+					} else {
+						$scope.cancelAction();
 					}
 				},
 				progress: function (delta) {
 					if ($scope.model.currentAction.itemOwner.canPerformAction()) {
+						var continueAction = true;
 						var timeTaken = $scope.model.currentAction.item.model.actionTime;
-						$scope.model.currentAction.progress += delta / timeTaken;
 						if ($scope.model.currentAction.item.model.progress) {
-							$scope.model.currentAction.item.model.progress($scope.model.currentAction.itemSlot, $scope.model.currentAction.itemOwner, $scope.model.currentAction.target, delta / (timeTaken * 10));
+							continueAction = $scope.model.currentAction.item.model.progress($scope.model.currentAction.itemSlot, $scope.model.currentAction.itemOwner, $scope.model.currentAction.target, delta / (timeTaken * 10));
+						}
+						if (timeTaken) {
+							$scope.model.currentAction.progress += delta / timeTaken;
+						} else {
+							$scope.model.currentAction.progress += delta / continueAction;
+						}
+						if (!continueAction) {
+							$scope.cancelAction();
 						}
 					} else {
 						$scope.cancelAction();
@@ -78,8 +90,10 @@ angular.module('ZombieLabApp')
 					$scope.model.currentAction.itemOwner = null;
 				},
 				cancel: function () {
-					$scope.model.currentAction.itemOwner.active = true;
-					$scope.model.currentAction.itemSlot.tempDisabled = false;
+					if ($scope.model.currentAction.itemOwner) {
+						$scope.model.currentAction.itemOwner.active = true;
+						$scope.model.currentAction.itemSlot.tempDisabled = false;
+					}
 					$scope.model.currentAction.item = null;
 					$scope.model.currentAction.itemOwner = null;
 				}
@@ -97,7 +111,7 @@ angular.module('ZombieLabApp')
 	$scope.clickCharacter = function (character) {
 		if (gameService.isItemSelected()) {
 			var item = gameService.getSelectedItem();
-			if (item.model.target === 'character') {
+			if (item.model.target === 'character' && character.alive) {
 				$scope.startAction(actions.useItem, character);
 			}
 			gameService.deselectItem();
@@ -109,6 +123,9 @@ angular.module('ZombieLabApp')
 		$document.bind('keydown', function (event) {
 			var direction = null;
 			switch (event.keyCode) {
+				case 27:
+					gameService.togglePause();
+					break;
 				case 32:
 					$scope.inputDirection('');
 					break;
@@ -200,11 +217,14 @@ angular.module('ZombieLabApp')
 			}
 			var currentTime = new Date(),
 				delta = currentTime - lastTime;
+			lastTime = currentTime;
+			if (gameService.gamePaused) {
+				return;
+			}
 			controller.updateTeamSpeed(delta);
 			controller.progressAction(delta);
 			controller.doTheShooting(delta);
 			controller.doTheWalking(delta);
-			lastTime = currentTime;
 		}, interval);
 	};
 

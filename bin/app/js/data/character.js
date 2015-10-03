@@ -13,8 +13,7 @@ angular.module('ZombieLabApp')
 			skills: {
 				weapons: 75,
 				hacking: 5,
-				explosives: 10,
-				mechanic: 5,
+				explosives: 15,
 				firstAid: 5
 			},
 			equipment: {
@@ -30,9 +29,8 @@ angular.module('ZombieLabApp')
 			},
 			skills: {
 				weapons: 35,
-				hacking: 10,
+				hacking: 15,
 				explosives: 0,
-				mechanic: 5,
 				firstAid: 50
 			},
 			equipment: {
@@ -48,9 +46,8 @@ angular.module('ZombieLabApp')
 			},
 			skills: {
 				weapons: 35,
-				hacking: 5,
-				explosives: 45,
-				mechanic: 15,
+				hacking: 10,
+				explosives: 50,
 				firstAid: 0
 			},
 			equipment: {
@@ -66,10 +63,9 @@ angular.module('ZombieLabApp')
 			},
 			skills: {
 				weapons: 25,
-				hacking: 50,
+				hacking: 55,
 				explosives: 5,
-				mechanic: 15,
-				firstAid: 5
+				firstAid: 15
 			},
 			equipment: {
 				10: 'terminal'

@@ -25,6 +25,15 @@ angular.module('ZombieLabApp')
 	Character.prototype.canShoot = function () {
 		return this.conscious && this.active && this.alive;
 	};
+	Character.prototype.skillModifier = function (skill, level) {
+		var diff = this.skills[skill] - level;
+		switch (true) {
+			case diff <= 0:
+				return 1 + 0.15 * diff;
+			case diff > 0: 
+				return 1 + 0.025 * (diff + 1);
+		}
+	};
 
 	service.createNewCharacter = function (archetype) {
 		var budget = _.random(80, 100);
@@ -39,7 +48,6 @@ angular.module('ZombieLabApp')
 			weapons: 0,
 			hacking: 0,
 			explosives: 0,
-			mechanic: 0,
 			firstAid: 0
 		};
 		while (budget > 0) {
@@ -95,7 +103,7 @@ angular.module('ZombieLabApp')
 			rofTimer: 0,
 			reloadingTimer: 0,
 			reloadingWeapon: null,
-			health: 1,
+			health: 100,
 			maxHealth: 100,
 			conscious: true,
 			alive: true,
@@ -147,7 +155,6 @@ angular.module('ZombieLabApp')
 		character.active = true;
 		character.health = 0;
 		_.each(['weapon', 'itemSmall', 'itemLarge'], function (slot) {
-			console.log(character[slot]);
 			if (character[slot]) {
 				mapService.dropItem({item: character[slot]}, mapService.teamLocation);
 				character[slot] = null;
