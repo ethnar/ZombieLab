@@ -12,6 +12,9 @@ angular.module('ZombieLabApp')
 				dmgMin: 3,
 				dmgMax: 5,
 				clipSize: 30,
+				skillRequired: 2,
+				baseChanceToHit: 85,
+				range: 2,
 				rof: 400, // miliseconds
 				reload: 3000 // miliseconds
 			}, {
@@ -20,6 +23,9 @@ angular.module('ZombieLabApp')
 				dmgMin: 3,
 				dmgMax: 5,
 				clipSize: 7,
+				skillRequired: 1,
+				baseChanceToHit: 80,
+				range: 1,
 				rof: 1100,
 				reload: 2600
 			}, {
@@ -28,6 +34,9 @@ angular.module('ZombieLabApp')
 				dmgMin: 2,
 				dmgMax: 4,
 				clipSize: 17,
+				skillRequired: 0,
+				baseChanceToHit: 70,
+				range: 1,
 				rof: 900,
 				reload: 2600
 			}, {
@@ -36,6 +45,9 @@ angular.module('ZombieLabApp')
 				dmgMin: 5,
 				dmgMax: 9,
 				clipSize: 6,
+				skillRequired: 3,
+				baseChanceToHit: 80,
+				range: 1,
 				rof: 1200,
 				reload: 4000
 			}

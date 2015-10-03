@@ -248,23 +248,26 @@ angular.module('ZombieLabApp')
 		_.each(_.shuffle(characterService.team), function (character) {
 			if (character.weapon && character.canShoot()) {
 				if (character.weapon.ammo > 0 && character.reloadingTimer <= 0) {
-					if (character.rofTimer <= 0) {
-						var validTargets = _.groupBy(mapService.getValidTargets(), 'distance');
-						var target = null;
-						_.each(validTargets, function (targetsGroup) {
-							if (!target) {
-								target = _.sample(targetsGroup);
-							}
-						});
-						if (target) {
-							controller.shootAt(target, character);
+					var validTargets = _.groupBy(mapService.getValidTargets(), 'distance');
+					var target = null;
+					_.each(validTargets, function (targetsGroup, distance) {
+						if (!target && character.weapon.model.range >= distance) {
+							target = _.sample(targetsGroup);
 						}
+					});
+					if (target) {
+						if (character.rofTimer <= 0) {
+							controller.shootAt(target, character);
+							character.resetAim();
+						} else {
+							character.rofTimer -= delta;
+						}
+					} else {
+						character.resetAim();
 					}
 				} else {
 					characterService.reloading(character, delta);
-				}
-				if (character.rofTimer > 0) {
-					character.rofTimer -= delta;
+					character.resetAim();
 				}
 			}
 		});
@@ -272,14 +275,16 @@ angular.module('ZombieLabApp')
 
 	controller.shootAt = function (target, character) {
 		$scope.model.teamTired = 2000;
-		// TODO: they need to miss too
-		// TODO: and aiming time?
-		character.rofTimer += character.weapon.model.rof;
-		console.log(_.sample(['BAM!', 'POW!', 'KABLAM!']));
-		enemyService.damage(target.enemy, _.random(character.weapon.model.dmgMin, character.weapon.model.dmgMax));
+		var chanceToHit = character.weapon.model.baseChanceToHit * character.skillModifier('weapons', character.weapon.model.skillRequired);
+
 		character.weapon.ammo -= 1;
 		if (character.weapon.ammo === 0) {
 			characterService.startReloading(character);
+		}
+
+		if (_.random(1, 100) < chanceToHit) {
+			enemyService.damage(target.enemy, _.random(character.weapon.model.dmgMin, character.weapon.model.dmgMax));
+		} else {
 		}
 	};
 

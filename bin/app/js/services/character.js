@@ -25,6 +25,13 @@ angular.module('ZombieLabApp')
 	Character.prototype.canShoot = function () {
 		return this.conscious && this.active && this.alive;
 	};
+
+	Character.prototype.resetAim = function () {
+		var characterRof = Math.floor(this.weapon.model.rof * Math.pow(this.skillModifier('weapons', this.weapon.model.skillRequired), 0.5));
+		this.rofTimer += characterRof;
+		this.rofTimer = Math.min(this.rofTimer, characterRof);
+	};
+
 	Character.prototype.skillModifier = function (skill, level) {
 		var diff = this.skills[skill] - level;
 		switch (true) {
@@ -59,12 +66,32 @@ angular.module('ZombieLabApp')
 			budget -= value;
 		}
 		// *** select weapon ***
-		var pickedWeaponName = null;
+		var pickedWeapon = null;
 		_.each(archetype.weapon, function (weaponName, required) {
 			if (disposition.weapon >= required) {
-				pickedWeaponName = weaponName;
+				pickedWeapon = {
+					name: weaponName,
+					cost: required
+				};
 			}
 		});
+		disposition.weapon -= pickedWeapon.cost;
+		// *** select equipment ***
+		_.each(archetype.equipment, function (itemName, cost) {
+			if (disposition.equipment >= cost) {
+				var item = equipmentService.newItemByName(itemName);
+				if (!itemLarge || (!item.model.isLarge && !itemSmall)) {
+					disposition.equipment -= cost;
+					if (item.model.isLarge || itemSmall) {
+						itemLarge = item;
+					} else {
+						itemSmall = item;
+					}
+				}
+			}
+		});
+		// ** dump remaining points in skills
+		disposition.skills += disposition.weapon + disposition.equipment;
 		// *** assign skills ***
 		while (disposition.skills >= 10) {
 			var random = _.random(1, 100);
@@ -80,24 +107,10 @@ angular.module('ZombieLabApp')
 				disposition.skills -= 10;
 			}
 		}
-		// *** select equipment ***
-		_.each(archetype.equipment, function (itemName, cost) {
-			if (disposition.equipment >= cost) {
-				var item = equipmentService.newItemByName(itemName);
-				if (!itemLarge || (!item.model.isLarge && !itemSmall)) {
-					disposition.equipment -= cost;
-					if (item.model.isLarge || itemSmall) {
-						itemLarge = item;
-					} else {
-						itemSmall = item;
-					}
-				}
-			}
-		});
 		// *** create character ***
 		return new Character({
 			name: gameService.getNewName(),
-			weapon: pickedWeaponName ? equipmentService.newItemByName(pickedWeaponName) : null,
+			weapon: pickedWeapon.name ? equipmentService.newItemByName(pickedWeapon.name) : null,
 			itemSmall: itemSmall,
 			itemLarge: itemLarge,
 			rofTimer: 0,
