@@ -40,6 +40,49 @@ angular.module('ZombieLabApp')
 				cancel: function () {
 					$scope.model.currentAction.target.teamWalkingTo = false;
 				}
+			},
+			useItem: {
+				start: function () {
+					$scope.model.currentAction.itemSlot = gameService.getSelectedItemSlot();
+					$scope.model.currentAction.item = gameService.getSelectedItem();
+					$scope.model.currentAction.itemOwner = gameService.getSelectedItemOwner();
+					$scope.model.currentAction.itemSlot.tempDisabled = true;
+					$scope.model.currentAction.itemOwner.active = false;
+					if ($scope.model.currentAction.item.model.useChargeAtStart) {
+						if ($scope.model.currentAction.item.charges && !(--$scope.model.currentAction.item.charges)) {
+							$scope.model.currentAction.itemSlot.item = null;
+						}
+					}
+				},
+				progress: function (delta) {
+					if ($scope.model.currentAction.itemOwner.canPerformAction()) {
+						var timeTaken = $scope.model.currentAction.item.model.actionTime;
+						$scope.model.currentAction.progress += delta / timeTaken;
+						if ($scope.model.currentAction.item.model.progress) {
+							$scope.model.currentAction.item.model.progress($scope.model.currentAction.itemSlot, $scope.model.currentAction.itemOwner, $scope.model.currentAction.target, delta / (timeTaken * 10));
+						}
+					} else {
+						$scope.cancelAction();
+					}
+				},
+				complete: function () {
+					$scope.model.currentAction.item.model.use($scope.model.currentAction.itemSlot, $scope.model.currentAction.itemOwner, $scope.model.currentAction.target);
+					$scope.model.currentAction.itemSlot.tempDisabled = false;
+					$scope.model.currentAction.itemOwner.active = true;
+					if (!$scope.model.currentAction.item.model.useChargeAtStart) {
+						if ($scope.model.currentAction.item.charges && !(--$scope.model.currentAction.item.charges)) {
+							$scope.model.currentAction.itemSlot.item = null;
+						}
+					}
+					$scope.model.currentAction.item = null;
+					$scope.model.currentAction.itemOwner = null;
+				},
+				cancel: function () {
+					$scope.model.currentAction.itemOwner.active = true;
+					$scope.model.currentAction.itemSlot.tempDisabled = false;
+					$scope.model.currentAction.item = null;
+					$scope.model.currentAction.itemOwner = null;
+				}
 			}
 		};
 
@@ -49,6 +92,17 @@ angular.module('ZombieLabApp')
 
 	$scope.getMapLeftOffset = function () {
 		return $('#game-area').width() / 2 - mapService.getTileSize() / 2 - mapService.teamLocation.x * mapService.tileSize;
+	};
+
+	$scope.clickCharacter = function (character) {
+		if (gameService.isItemSelected()) {
+			var item = gameService.getSelectedItem();
+			if (item.model.target === 'character') {
+				$scope.startAction(actions.useItem, character);
+			}
+			gameService.deselectItem();
+			return;
+		}
 	};
 
 	$scope.bindKeys = function () {
@@ -94,7 +148,7 @@ angular.module('ZombieLabApp')
 			} else {
 				var item = gameService.getSelectedItem();
 				if (item.model.target === 'area') {
-					item.model.use(item, gameService.getSelectedItemOwner(), direction);
+					$scope.startAction(actions.useItem, direction);
 				}
 			}
 			gameService.deselectItem();
@@ -112,14 +166,8 @@ angular.module('ZombieLabApp')
 		}
 	};
 
-	$scope.dropSelectedItem = function () {
-		var key = _.findIndex(mapService.teamLocation.items, function (item) {
-			return !item;
-		});
-		if (key > -1) {
-			mapService.teamLocation.items[key] = gameService.selectedItemSlot.item;
-			gameService.selectedItemSlot.item = null;
-		}
+	$scope.dropSelectedItem = function () { 
+		mapService.dropItem(gameService.selectedItemSlot, mapService.teamLocation);
 	};
 
 	$scope.isTeamMoving = function () {
@@ -178,7 +226,7 @@ angular.module('ZombieLabApp')
 
 	controller.doTheShooting = function (delta) {
 		_.each(_.shuffle(characterService.team), function (character) {
-			if (character.weapon && character.conscious && character.active && character.alive) {
+			if (character.weapon && character.canShoot()) {
 				if (character.weapon.ammo > 0 && character.reloadingTimer <= 0) {
 					if (character.rofTimer <= 0) {
 						var validTargets = _.groupBy(mapService.getValidTargets(), 'distance');

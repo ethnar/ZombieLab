@@ -2,7 +2,7 @@
 
 angular.module('ZombieLabApp')
 
-.directive('characterPanel', function () {
+.directive('characterPanel', function (characterService) {
 	return {
 		restrict: 'E',
 		replace: true,
@@ -10,9 +10,13 @@ angular.module('ZombieLabApp')
 		scope: {
 			character: '=',
 			readOnly: '=?',
-			disableItems: '=?'
+			disableItems: '=?',
+			characterClickAction: '&?'
 		},
 		controller: function ($scope) {
+			// $scope.killDebug = function () {
+			// 	characterService.kill($scope.character);
+			// }
 		}
 	};
 });

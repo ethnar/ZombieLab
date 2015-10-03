@@ -86,11 +86,19 @@
 		background: rgba(255, 0, 0, 0.4);
 		position: absolute;
 		bottom: 0;
+		transition: height 0.3s;
 	}
 
 	&.dead {
 		.image {
 			background-image: url('@{img-path}character-dead.png');
+		}
+	}
+
+	&.inactive {
+		.weapon {
+			background-color: #444;
+    		opacity: 0.4;
 		}
 	}
 }

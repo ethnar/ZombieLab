@@ -2,7 +2,7 @@
 
 angular.module('ZombieLabApp')
 
-.service('characterService', function (equipmentService, gameService) {
+.service('characterService', function (equipmentService, gameService, mapService) {
 	var service = this;
 
 	service.rosterSize = 6;
@@ -16,6 +16,14 @@ angular.module('ZombieLabApp')
 
 	Character.prototype.isReloading = function () {
 		return this.reloadingTimer > 0 && this.alive;
+	};
+
+	Character.prototype.canPerformAction = function () {
+		return this.conscious && this.alive;
+	};
+
+	Character.prototype.canShoot = function () {
+		return this.conscious && this.active && this.alive;
 	};
 
 	service.createNewCharacter = function (archetype) {
@@ -86,7 +94,9 @@ angular.module('ZombieLabApp')
 			itemLarge: itemLarge,
 			rofTimer: 0,
 			reloadingTimer: 0,
-			health: 100,
+			reloadingWeapon: null,
+			health: 1,
+			maxHealth: 100,
 			conscious: true,
 			alive: true,
 			active: true,
@@ -134,7 +144,15 @@ angular.module('ZombieLabApp')
 
 	service.kill = function (character) {
 		character.alive = character.conscious = false;
+		character.active = true;
 		character.health = 0;
+		_.each(['weapon', 'itemSmall', 'itemLarge'], function (slot) {
+			console.log(character[slot]);
+			if (character[slot]) {
+				mapService.dropItem({item: character[slot]}, mapService.teamLocation);
+				character[slot] = null;
+			}
+		});
 		// TODO: drop stuff on the ground
 		if (service.getAliveMembers().length === 0) {
 			gameService.gameOver();
@@ -150,13 +168,19 @@ angular.module('ZombieLabApp')
 	service.startReloading = function (character) {
 		if (character.weapon.model.clipSize > character.weapon.ammo) {
 			character.reloadingTimer = 4000;
+			character.reloadingWeapon = character.weapon;
 		}
 	};
 
 	service.reloading = function (character, delta) {
-		character.reloadingTimer -= delta;
-		if (character.reloadingTimer <= 0) {
-			character.weapon.ammo = character.weapon.model.clipSize;
+		if (character.reloadingWeapon !== character.weapon) {
+			// weapon swapped, stop reloading
+			character.reloadingTimer = 0;
+		} else {
+			character.reloadingTimer -= delta;
+			if (character.reloadingTimer <= 0) {
+				character.weapon.ammo = character.weapon.model.clipSize;
+			}
 		}
 	};
 });

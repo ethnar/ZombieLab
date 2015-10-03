@@ -1,5 +1,5 @@
-<div class="character-panel" ng-class="{dead: !character.alive}">
-	<div class="image">
+<div class="character-panel" ng-class="{dead: !character.alive, inactive: !character.active}">
+	<div class="image" ng-click="characterClickAction();">
 		<div class="name">{{character.name}}</div>
 		<div class="health" ng-style="{height: 100 - character.health + '%'}">{{character.health}}</div>
 	</div>

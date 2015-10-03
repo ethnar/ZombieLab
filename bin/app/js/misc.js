@@ -14,4 +14,11 @@
 		}
 		return random() * (max - min) + min;
 	};
+
+	ZombieLab = {
+		error: function (msg) {
+			console.error(msg);
+		}
+	};
+
 })();

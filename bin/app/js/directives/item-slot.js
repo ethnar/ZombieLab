@@ -33,7 +33,7 @@ angular.module('ZombieLabApp')
 					$scope.item = $scopeSource.item;
 					$scopeSource.item = temp;
 				} else {
-					console.error('You can\'t swap these items');
+					ZombieLab.error('You can\'t swap these items');
 				}
 				gameService.deselectItem();
 			};
@@ -43,7 +43,7 @@ angular.module('ZombieLabApp')
 			};
 
 			$scope.click = function () {
-				if ($scope.disabled) {
+				if ($scope.disabled || $scope.tempDisabled) {
 					return;
 				}
 				if (gameService.selectedItemSlot) {

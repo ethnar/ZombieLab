@@ -39,6 +39,10 @@ angular.module('ZombieLabApp')
 		return !!service.selectedItemSlot;
 	};
 
+	service.getSelectedItemSlot = function () {
+		return service.selectedItemSlot;
+	};
+
 	service.getSelectedItem = function () {
 		return service.selectedItemSlot.item;
 	};

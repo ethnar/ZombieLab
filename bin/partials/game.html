@@ -1,7 +1,7 @@
 <div ng-init="init();" class="game">
 	<div class="team-panel">
 		<div ng-repeat="id in [0,1,2,3]">
-			<character-panel character="model.team[id]"></character-panel>
+			<character-panel character="model.team[id]" disable-items="!model.team[id].alive" character-click-action="clickCharacter(model.team[id]);"></character-panel>
 		</div>
 	</div>
 	<div class="game-area" id="game-area">

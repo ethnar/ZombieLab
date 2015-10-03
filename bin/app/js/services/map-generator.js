@@ -14,6 +14,7 @@ angular.module('ZombieLabApp')
 	var service = this;
 
 	service.wipeMap = function () {
+		mapService.teamSteps = 10;
 		mapService.roomCount = 0;
 		mapService.areaCount = 0;
 		mapService.areas = [];

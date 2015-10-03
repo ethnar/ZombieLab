@@ -46,35 +46,45 @@ angular.module('ZombieLabApp')
 				isLarge: true,
 				charges: 5,
 				target: 'character',
-				use: function (character, target) {
-					console.log('Healing!');
-					console.log(target);
+				actionTime: 6,
+				useChargeAtStart: true,
+				use: function (itemSlot, character, target) {
+					var finalHeal = 10;
+					target.health = Math.min(target.health + finalHeal, character.maxHealth);
+				},
+				progress: function (itemSlot, character, target, delta) {
+					var progressHeal = 60;
+					target.health = Math.min(target.health + progressHeal * delta / 100, character.maxHealth);
 				}
 			}, {
 				name: 'bandage',
 				isLarge: false,
 				charges: 3,
 				target: 'character',
-				use: function (character, target) {
-					console.log('Healing!');
-					console.log(target);
+				actionTime: 2,
+				useChargeAtStart: true,
+				use: function (itemSlot, character, target) {
+					var finalHeal = 10;
+					target.health = Math.min(target.health + finalHeal, character.maxHealth);
+				},
+				progress: function (itemSlot, character, target, delta) {
+					var progressHeal = 20;
+					target.health = Math.min(target.health + progressHeal * delta / 100, character.maxHealth);
 				}
 			}, {
 				name: 'grenade',
 				isLarge: false,
 				charges: 3,
 				target: 'area',
-				use: function (item, character, direction) {
+				actionTime: 0.3,
+				use: function (itemSlot, character, direction) {
 					if (mapService.isOpen(direction)) {
 						var targetTile = mapService.getNextAreaForTeam(direction);
 						_.each(targetTile.enemies, function (enemy) {
 							enemyService.damage(enemy, _.random(4, 15));
 						});
-						if (!(--item.charges)) {
-							gameService.destroySelectedItem();
-						}
 					} else {
-						console.error('You must accessible room');
+						ZombieLab.error('You must accessible room');
 					}
 				}
 			}, {
@@ -91,6 +101,7 @@ angular.module('ZombieLabApp')
 				isLarge: true,
 				charges: 6,
 				target: 'door',
+				useuseChargeAtStart: true,
 				use: function (character, target) {
 					console.log('Hacking!');
 					console.log(target);

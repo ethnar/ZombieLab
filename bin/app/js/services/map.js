@@ -24,7 +24,7 @@ angular.module('ZombieLabApp')
 	service.mapMargins = 2; // determines start/finish locations distance from borders
 	service.teamLocation = null;
 	service.validTargets = [];
-	service.teamSteps = 0;
+	service.teamSteps = 10;
 
 	service.getTileSize = function () {
 		if (!service.tileSize) {
@@ -174,5 +174,15 @@ angular.module('ZombieLabApp')
 		return service.validTargets;
 	};
 
+	service.dropItem = function (slot, tile) {
+		var key = _.findIndex(tile.items, function (item) {
+			return !item;
+		});
+		console.log(slot);
+		if (key > -1) {
+			tile.items[key] = slot.item;
+			slot.item = null;
+		}
+	};
 });
 
