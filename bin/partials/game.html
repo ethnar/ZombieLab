@@ -5,7 +5,7 @@
 		</div>
 	</div>
 	<div class="game-area" id="game-area">
-		<div data-ng-repeat="direction in ['N', 'E', 'W', 'S', '']" class="action-direction" ng-class="direction" ng-click="inputDirection(direction);"></div>
+		<div data-ng-repeat="direction in ['N', 'E', 'W', 'S', '']" class="action-direction" ng-class="direction ? direction : 'center'" ng-click="inputDirection(direction);"></div>
 		<div class="team">
 			<div class="pulse"></div>
 		</div>
