@@ -123,7 +123,6 @@ angular.module('ZombieLabApp')
 	};
 
 	$scope.clickCharacter = function (character) {
-		console.log('clickCharacter');
 		if (gameService.isItemSelected()) {
 			var item = gameService.getSelectedItem();
 			if (item.model.target === 'character' && character.alive) {
@@ -316,7 +315,6 @@ angular.module('ZombieLabApp')
 		enemy.attackTimer += _.random(900, 1100); // fixed for now
 		var attackedTeamMember = _.sample(characterService.getAliveMembers());
 		if (attackedTeamMember) {
-			console.log('OM NOM NOM!');
 			characterService.doDamage(attackedTeamMember, _.random(Math.floor(enemy.type.damage * 0.8), enemy.type.damage));
 		};
 	};

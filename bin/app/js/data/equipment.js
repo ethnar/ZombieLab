@@ -109,7 +109,6 @@ angular.module('ZombieLabApp')
 				skill: 'explosives',
 				skillRequired: 2,
 				use: function (itemSlot, character, direction) {
-					console.log(this);
 					var targetTile = mapService.getNextAreaForTeam(direction);
 					_.each(targetTile.enemies, function (enemy) {
 						enemyService.damage(enemy, _.random(4, 15) * character.skillModifier(this.skill, this.skillRequired));
