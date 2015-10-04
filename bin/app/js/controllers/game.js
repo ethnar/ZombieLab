@@ -321,8 +321,11 @@ angular.module('ZombieLabApp')
 						enemy.walking += delta;
 						if (enemy.walking > enemy.speed) {
 							enemy.walking -= enemy.speed;
-							var targetTile = mapService.getTileInDirection(tile, tile.enemyDirection);
-							mapService.moveEnemy(enemy, targetTile);
+							var chanceToWalk = Math.min(100 - Math.max(mapService.teamSteps - tile.teamHeat - 2, 0) * 5, 50);
+							if (_.random(1, 100) < chanceToWalk) {
+								var targetTile = mapService.getTileInDirection(tile, tile.enemyDirection);
+								mapService.moveEnemy(enemy, targetTile);
+							}
 						}
 					}
 				}

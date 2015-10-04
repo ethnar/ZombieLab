@@ -2,7 +2,7 @@
 
 @img-path: '../../img/';
 
-@screen-height: 320px;
+@screen-height: 100vh;
 @character-panel-width: 90px;
 @map-tile-size: 90px;
 
@@ -142,6 +142,7 @@
 		    top: 6px;
 		    left: 15px;
 		    transform: rotate(8deg);
+		    -webkit-transform: rotate(8deg);
 		    color: #F66;
 		    font-weight: 800;
 		    font-size: 18px;
@@ -359,6 +360,7 @@
 			opacity: 0;
 			padding: 10px;
 			transition: opacity 0.3s;
+			-webkit-transition: opacity 0.3s;
 
 			&.start::before {
 				content: 'START!';
@@ -427,15 +429,19 @@
 
 					&.N {
 						transform: translateY(-@map-tile-size / 2);
+						-webkit-transform: translateY(-@map-tile-size / 2);
 					}
 					&.S {
 						transform: translateY(@map-tile-size / 2);
+						-webkit-transform: translateY(@map-tile-size / 2);
 					}
 					&.W {
 						transform: translateX(-@map-tile-size / 2) rotate(90deg);
+						-webkit-transform: translateX(-@map-tile-size / 2) rotate(90deg);
 					}
 					&.E {
 						transform: translateX(@map-tile-size / 2) rotate(90deg);
+						-webkit-transform: translateX(@map-tile-size / 2) rotate(90deg);
 					}
 
 					.door {
