@@ -211,10 +211,8 @@ angular.module('ZombieLabApp')
 
 	$scope.mainLoop = function () {
 		var lastTime = new Date();
-		setInterval(function () {
-			ZombieLab.fps.tick();
-		}, 16);
 		$interval(function () {
+			ZombieLab.fps.tick();
 			if (gameService.isGameOver) {
 				return;
 			}
