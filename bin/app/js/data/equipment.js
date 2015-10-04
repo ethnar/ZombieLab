@@ -21,7 +21,7 @@ angular.module('ZombieLabApp')
 				reload: 3000 // miliseconds
 			}, {
 				name: 'M1911',
-				description: 'Old but reliable, this handgun is easy to handle and packs a fir punch.',
+				description: 'Old but reliable, this handgun is easy to handle and packs a fine punch.',
 				weaponClass: 'handgun',
 				dmgMin: 3,
 				dmgMax: 5,
@@ -34,7 +34,7 @@ angular.module('ZombieLabApp')
 				reload: 2600
 			}, {
 				name: 'L131A1',
-				description: 'A handy self-defence tool, this rapid-fire handgun is extremly easy to handle. Missing out on some accuracy, you may want to mind the bullets.',
+				description: 'A handy self-defense tool, this rapid-fire handgun is extremly easy to handle. Lacking some accuracy, you should mind the bullets.',
 				weaponClass: 'handgun',
 				dmgMin: 2,
 				dmgMax: 4,
@@ -47,7 +47,7 @@ angular.module('ZombieLabApp')
 				reload: 2600
 			}, {
 				name: 'M608',
-				description: 'A portable hand-cannon, sure to clear any opposition quickly. Mind the recoil, takes some practice to use it without breaking your joints.',
+				description: 'A portable hand-cannon, sure to clear any opposition quickly. Mind the recoil - it takes some practice to use it without breaking your joints.',
 				weaponClass: 'handgun',
 				dmgMin: 5,
 				dmgMax: 9,
@@ -128,7 +128,7 @@ angular.module('ZombieLabApp')
 				}
 			}, {
 				name: 'C4',
-				description: 'This small satchel charge will help you get through any door real quick, hurting anything that\'s unfortunate enoguh to be on the other side.',
+				description: 'This small satchel charge will help you get through any door real quick, hurting anyone that\'s unfortunate enough to be on the other side.',
 				isLarge: true,
 				charges: 2,
 				target: 'area',
@@ -155,7 +155,7 @@ angular.module('ZombieLabApp')
 				}
 			}, {
 				name: 'Terminal',
-				description: 'Hacker\'s best friend, invaluable when moving through enforced security areas.',
+				description: 'Hacker\'s best friend, invaluable when moving through secured areas.',
 				isLarge: true,
 				charges: 6,
 				target: 'area',
