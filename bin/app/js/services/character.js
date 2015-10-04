@@ -66,7 +66,9 @@ angular.module('ZombieLabApp')
 			budget -= value;
 		}
 		// *** select weapon ***
-		var pickedWeapon = null;
+		var pickedWeapon = {
+			cost: 0
+		};
 		_.each(archetype.weapon, function (weaponName, required) {
 			if (disposition.weapon >= required) {
 				pickedWeapon = {
@@ -187,7 +189,7 @@ angular.module('ZombieLabApp')
 
 	service.startReloading = function (character) {
 		if (character.weapon.model.clipSize > character.weapon.ammo) {
-			character.reloadingTimer = 4000;
+			character.reloadingTimer = character.weapon.model.reload / character.skillModifier('weapons', character.weapon.model.skillRequired);
 			character.reloadingWeapon = character.weapon;
 		}
 	};

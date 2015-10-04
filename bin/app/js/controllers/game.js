@@ -282,9 +282,19 @@ angular.module('ZombieLabApp')
 			characterService.startReloading(character);
 		}
 
+		var weaponFrame = character.$element.find('.weapon');
 		if (_.random(1, 100) < chanceToHit) {
 			enemyService.damage(target.enemy, _.random(character.weapon.model.dmgMin, character.weapon.model.dmgMax));
+			// console.log(weaponFrame.find('weapon-hit'));
+			weaponFrame.find('.weapon-miss').css({opacity: 0});
+			weaponFrame.find('.weapon-hit').stop(true).css({opacity: 1}).animate({opacity: 1}, 600, function () {
+				weaponFrame.find('.weapon-hit').animate({opacity: 0}, 400);
+			});
 		} else {
+			weaponFrame.find('.weapon-hit').css({opacity: 0});
+			weaponFrame.find('.weapon-miss').stop(true).css({opacity: 1}).animate({opacity: 1}, 600, function () {
+				weaponFrame.find('.weapon-miss').animate({opacity: 0}, 400);
+			});
 		}
 	};
 

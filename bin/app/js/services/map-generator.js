@@ -29,6 +29,7 @@ angular.module('ZombieLabApp')
 					enemies: [],
 					items: [],
 					teamHeat: 0,
+					animations: {},
 					x: x,
 					y: y
 				};

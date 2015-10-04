@@ -189,5 +189,15 @@ angular.module('ZombieLabApp')
 			slot.item = null;
 		}
 	};
+
+	service.addAnimation = function (tile, animation, duration) {
+		var idx = _.size(tile.animations);
+		tile.animations[idx] = animation;
+		if (duration) {
+			$timeout(function () {
+				delete tile.animations[idx];
+			}, duration);
+		}
+	};
 });
 

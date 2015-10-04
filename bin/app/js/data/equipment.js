@@ -96,6 +96,7 @@ angular.module('ZombieLabApp')
 					_.each(targetTile.enemies, function (enemy) {
 						enemyService.damage(enemy, _.random(4, 15) * character.skillModifier('explosives', 2));
 					});
+					mapService.addAnimation(targetTile, 'explosion', 1500);
 				},
 				progress: function (itemSlot, character, direction, delta) {
 					var isOpen = mapService.isOpen(direction);
@@ -117,6 +118,7 @@ angular.module('ZombieLabApp')
 					_.each(targetTile.enemies, function (enemy) {
 						enemyService.damage(enemy, _.random(2, 30) * character.skillModifier('explosives', 4));
 					});
+					mapService.addAnimation(targetTile, 'explosion', 1500);
 				},
 				progress: function (itemSlot, character, direction, delta) {
 					var isDoor = mapService.isDoor(direction);

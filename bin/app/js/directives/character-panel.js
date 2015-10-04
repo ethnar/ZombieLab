@@ -13,7 +13,8 @@ angular.module('ZombieLabApp')
 			disableItems: '=?',
 			characterClickAction: '&?'
 		},
-		controller: function ($scope) {
+		controller: function ($scope, $element) {
+			$scope.character.$element = $element;
 			// $scope.killDebug = function () {
 			// 	characterService.kill($scope.character);
 			// }

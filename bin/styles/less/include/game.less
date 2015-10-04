@@ -104,8 +104,10 @@
 }
 
 .item-slot {
+	@item-slot-height: 35px;
+
 	position: relative;
-	height: 35px;
+	height: @item-slot-height;
 	width: 100%;
 	float: left;
 
@@ -113,12 +115,18 @@
 		background-color: rgba(0, 255, 0, 0.3);
 	}
 
+	.weapon-hit, .weapon-miss { 
+		display: none;
+	}
+
 	.item {
 		position: relative;
+
 		.item-image {
 			margin: 0 auto;
 			display: block;
 		}
+
 
 		.ammo, .charges {
 			position: absolute;
@@ -129,7 +137,7 @@
 	}
 
 	&.weapon {
-		.reloading {
+		.reloading:not(.ng-hide) {
 			position: absolute;
 		    top: 6px;
 		    left: 15px;
@@ -139,7 +147,39 @@
 		    font-size: 18px;
 		    z-index: 60;
 		    -webkit-text-stroke: 1px red;
-		    box-shadow: 0 0 65px white inset;
+
+		    + img {
+		    	opacity: 0.3;
+		    }
+		}
+
+		.weapon-hit {
+			line-height: @item-slot-height;
+			text-align: center;
+			color: white;
+			font-weight: bold;
+
+			position: absolute;
+			display: block;
+		    height: 100%;
+		    width: 100%;
+			background: url('@{img-path}anim/hit.png');
+			z-index: 80;
+			opacity: 0;
+		}
+		.weapon-miss {
+			line-height: @item-slot-height;
+			text-align: center;
+			color: white;
+			font-weight: bold;
+
+			position: absolute;
+			display: block;
+		    height: 100%;
+		    width: 100%;
+			background: url('@{img-path}anim/miss.png');
+			z-index: 80;
+			opacity: 0;
 		}
 	}
 
@@ -318,6 +358,7 @@
 			height: @map-tile-size;
 			opacity: 0;
 			padding: 10px;
+			transition: opacity 0.3s;
 
 			&.start::before {
 				content: 'START!';
@@ -338,6 +379,30 @@
 					visibility: inherit;
 				}
 			}
+
+			.animation {
+				@animation-size: @map-tile-size - 20;
+
+			    width: @animation-size;
+			    height: @animation-size;
+			    position: absolute;
+			    top: (@map-tile-size - @animation-size) / 2;
+			    left: (@map-tile-size - @animation-size) / 2;
+
+			    z-index: 45;
+
+				&.explosion {
+					@frames: 30;
+					background: url('@{img-path}anim/explosion.png') left center no-repeat;
+					background-size: @animation-size * @frames @animation-size;
+					animation: explosion .8s steps(@frames);
+
+					@keyframes explosion {
+						100% { background-position: -@animation-size * @frames; }
+					}
+				}
+			}
+
 
 			&.area {
 				background: #EEE;
