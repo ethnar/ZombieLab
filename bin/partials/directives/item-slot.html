@@ -1,4 +1,4 @@
-<div class="item-slot {{slot}}" ng-class="{selected: isSelected()}" ng-click="click();">
+<div class="item-slot {{slot}}" ng-class="{selected: isSelected()}" ng-click="click();" ng-hold="showItemInfo();">
 	<div class="weapon-hit">BAM!</div>
 	<div class="weapon-miss">MISS!</div>
 	<div class="item" ng-show="item">
@@ -7,4 +7,19 @@
 		<div class="reloading" ng-show="slot === 'weapon' &amp;&amp; character.isReloading();">RELOAD</div>
 		<img class="item-image" ng-src="img/items/{{item.model.category}}/{{item.model.name}}.png" />
 	</div>
+
+	<script type="text/ng-template" id="item-info-modal.html">
+		<div class="item-info-modal clearfix">
+			<h3>{{item.model.name}}</h3>
+			<div class="additional-info">
+				<img class="item-image" ng-src="img/items/{{item.model.category}}/{{item.model.name}}.png" />
+				<div class="recommended-skill">
+					Recommended skill:<br/>
+					<skill-bar skill="item.model.skill" value="item.model.skillRequired"></skill-bar>
+				</div>
+			</div>
+			<div class="description">{{item.model.description}}</div>
+			<div ng-click="$close();" class="modal-close">&times;</div>
+		</div>
+	</script>
 </div>

@@ -9,10 +9,16 @@ angular.module('ZombieLabApp')
 	service.selectedItemSlot = null;
 	service.names = ['Alan', 'Arthur', 'Jake', 'Jane', 'Hilda', 'Thomas', 'Natalie', 'John', 'Martha', 'Ashley'];
 	service.availableNames = null;
-	service.gamePaused = false;
+	service.gamePaused = 0;
 
 	service.togglePause = function () {
-		service.gamePaused = !service.gamePaused;		
+		service.gamePaused = service.gamePaused ? 0 : 1;
+	};
+	service.pause = function () {
+		service.gamePaused++;
+	};
+	service.unpause = function () {
+		service.gamePaused--;
 	};
 
 	service.resetGame = function () {

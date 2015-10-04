@@ -359,6 +359,66 @@
 	}
 }
 
+.modal-backdrop {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	left: 0;
+	background: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content-wrapper {
+	position: absolute;
+	top: 30px;
+	left: 50%;
+	height: 0;
+
+	.modal-content {
+	    position: relative;
+		margin-left: -50%;
+    	margin-right: 50%;
+		background: white;
+
+    	.modal-close {
+		    position: absolute;
+		    right: 10px;
+	        top: 8px;
+		    border: 1px solid black;
+		    padding: 2px 5px;
+    	}
+	}
+}
+
+.character-info-modal {
+	.clearfix();
+	padding: 10px 33px 10px 10px;
+
+	.character-panel, .skills {
+		float: left;
+	}
+}
+
+.item-info-modal {
+    width: 420px;
+	padding: 10px;
+
+	.additional-info {
+		float: right;
+		padding: 5px;
+		text-align: center;
+
+		.item-image {
+		    margin: 0 auto;
+    		display: block;
+		}
+
+		.skill-bar {
+		    display: inline-block;
+		}
+	}
+}
+
 .map {
 
 	.column {

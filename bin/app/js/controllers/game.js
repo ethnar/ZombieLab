@@ -2,7 +2,7 @@
 
 angular.module('ZombieLabApp')
 
-.controller('gameController', function ($scope, $location, $document, $interval, characterService, enemyService, mapService, mapGeneratorService, gameService) {
+.controller('gameController', function ($scope, $location, $document, $interval, modalService, characterService, enemyService, mapService, mapGeneratorService, gameService) {
 	var controller = this;
 
 	$scope.model = {
@@ -10,6 +10,7 @@ angular.module('ZombieLabApp')
 		teamTired: 0, // indicates taking part in shootout
 		map: mapService.map,
 		lootingRoom: false,
+		selectedCharacter: null,
 		currentAction: {
 			actionObject: null,
 			target: null,
@@ -108,7 +109,21 @@ angular.module('ZombieLabApp')
 		return $('#game-area').width() / 2 - mapService.getTileSize() / 2 - mapService.teamLocation.x * mapService.tileSize;
 	};
 
+	$scope.showCharacterInfo = function (character) {
+		$scope.model.selectedCharacter = character;
+		gameService.pause();
+		var modal = modalService.open({
+			template: 'character-info-modal.html',
+			scope: $scope
+		});
+
+		modal.on('close', function () {
+			gameService.unpause();
+		});
+	};
+
 	$scope.clickCharacter = function (character) {
+		console.log('clickCharacter');
 		if (gameService.isItemSelected()) {
 			var item = gameService.getSelectedItem();
 			if (item.model.target === 'character' && character.alive) {

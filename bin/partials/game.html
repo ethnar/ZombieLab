@@ -1,7 +1,7 @@
 <div ng-init="init();" class="game">
 	<div class="team-panel">
 		<div ng-repeat="id in [0,1,2,3]">
-			<character-panel character="model.team[id]" disable-items="!model.team[id].alive" character-click-action="clickCharacter(model.team[id]);"></character-panel>
+			<character-panel character="model.team[id]" disable-items="!model.team[id].alive" character-hold-action="showCharacterInfo(model.team[id]);" character-click-action="clickCharacter(model.team[id]);" main-frame="true"></character-panel>
 		</div>
 	</div>
 	<div class="game-area" id="game-area">
@@ -32,4 +32,14 @@
 			</div>
 		</div>
 	</div>
+
+	<script type="text/ng-template" id="character-info-modal.html">
+		<div class="character-info-modal">
+			<character-panel character="model.selectedCharacter" disable-items="true" character-hold-action="showCharacterInfo(model.selectedCharacter);"></character-panel>
+			<div class="skills">
+				<skill-bar ng-repeat="(skill, value) in model.selectedCharacter.skills" skill="skill" value="value"></skill-bar>
+			</div>
+			<div ng-click="$close();" class="modal-close">&times;</div>
+		</div>
+	</script>
 </div>

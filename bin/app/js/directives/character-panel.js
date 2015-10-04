@@ -11,10 +11,13 @@ angular.module('ZombieLabApp')
 			character: '=',
 			readOnly: '=?',
 			disableItems: '=?',
+			characterHoldAction: '&?',
 			characterClickAction: '&?'
 		},
-		controller: function ($scope, $element) {
-			$scope.character.$element = $element;
+		controller: function ($scope, $element, $attrs) {
+			if ($attrs.mainFrame) {
+				$scope.character.$element = $element;
+			}
 			// $scope.killDebug = function () {
 			// 	characterService.kill($scope.character);
 			// }

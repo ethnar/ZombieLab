@@ -1,5 +1,5 @@
 <div class="character-panel" ng-class="{dead: !character.alive, inactive: !character.active}">
-	<div class="image" ng-click="characterClickAction();">
+	<div class="image" ng-hold="characterHoldAction();" ng-click="characterClickAction();">
 		<div class="high-skills">
 			<img ng-repeat="skill in character.bestSkills" ng-src="img/skills/{{skill}}.png" />
 		</div>

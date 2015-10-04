@@ -2,7 +2,7 @@
 
 angular.module('ZombieLabApp')
 
-.directive('itemSlot', function ($timeout, gameService, characterService) {
+.directive('itemSlot', function ($timeout, gameService, characterService, modalService) {
 	return {
 		restrict: 'E',
 		replace: true,
@@ -61,6 +61,18 @@ angular.module('ZombieLabApp')
 					$scope.selectItem();
 					return;
 				}
+			};
+
+			$scope.showItemInfo = function () {
+				gameService.pause();
+				var modal = modalService.open({
+					template: 'item-info-modal.html',
+					scope: $scope
+				});
+
+				modal.on('close', function () {
+					gameService.unpause();
+				});
 			};
 
 			$scope.isSelected = function () {
