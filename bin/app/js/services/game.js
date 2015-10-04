@@ -63,5 +63,6 @@ angular.module('ZombieLabApp')
 	service.destroySelectedItem = function () {
 		service.selectedItemSlot.item = null;
 	};
+
 });
 

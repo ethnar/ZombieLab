@@ -16,7 +16,7 @@ angular.module('ZombieLabApp')
 			progress: 0
 		}
 	};
-	var interval = 10,
+	var interval = 40,
 		actions = {
 			openDoor: {
 				progress: function (delta) {
@@ -212,7 +212,6 @@ angular.module('ZombieLabApp')
 	$scope.mainLoop = function () {
 		var lastTime = new Date();
 		$interval(function () {
-			ZombieLab.fps.tick();
 			if (gameService.isGameOver) {
 				return;
 			}
@@ -286,7 +285,6 @@ angular.module('ZombieLabApp')
 		var weaponFrame = character.$element.find('.weapon');
 		if (_.random(1, 100) < chanceToHit) {
 			enemyService.damage(target.enemy, _.random(character.weapon.model.dmgMin, character.weapon.model.dmgMax));
-			// console.log(weaponFrame.find('weapon-hit'));
 			weaponFrame.find('.weapon-miss').css({opacity: 0});
 			weaponFrame.find('.weapon-hit').stop(true).css({opacity: 1}).animate({opacity: 1}, 600, function () {
 				weaponFrame.find('.weapon-hit').animate({opacity: 0}, 400);
@@ -378,10 +376,10 @@ angular.module('ZombieLabApp')
 		gameService.resetGame();
 
 		if (characterService.team.length === 0) {
-			characterService.team.push(characterService.createNewCharacter(characterService.archetypes['warrior']));
-			characterService.team.push(characterService.createNewCharacter(characterService.archetypes['medic']));
-			characterService.team.push(characterService.createNewCharacter(characterService.archetypes['hacker']));
-			characterService.team.push(characterService.createNewCharacter(characterService.archetypes['grenadier']));
+			characterService.addToTeam(characterService.createNewCharacter(characterService.archetypes['warrior']));
+			characterService.addToTeam(characterService.createNewCharacter(characterService.archetypes['medic']));
+			characterService.addToTeam(characterService.createNewCharacter(characterService.archetypes['hacker']));
+			characterService.addToTeam(characterService.createNewCharacter(characterService.archetypes['grenadier']));
 		}
 		console.log('---- The team:')
 		console.log(characterService.team);

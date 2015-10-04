@@ -80,6 +80,17 @@
 		text-align: center;
 	}
 
+	.high-skills {
+		top: 2px;
+ 		left: 1px;
+    	position: absolute;
+
+		img {
+			display: block;
+    		padding: 2px;
+		}
+	}
+
 	.health {
 		color: transparent;
 		width: 100%;
@@ -409,7 +420,7 @@
 			&.area {
 				background: #EEE;
 
-				.wall {
+				.wall.has-wall {
 					z-index: 50;
 					background: @wall-color;
 					border: (@map-tile-size - @doorway-width) / 2 solid @wall-color;
@@ -423,8 +434,42 @@
 					left: -@wall-thickness / 2;
 					margin-top: -@wall-thickness / 2;
 
+					.door {
+						display: none;
+					}
+
 					&.has-door {
 						background: none;
+
+						.door {
+							display: block;
+							width: @door-width + 1;
+							height: @wall-thickness + 4;
+							top: -2px;
+							border: (@door-width / 2) solid @door-color;
+							border-top: none;
+							border-bottom: none;
+							outline: 1px solid #EEE;
+							position: absolute;
+							left: 50%;
+							margin-left: -@door-width / 2;
+							transition: all 0.5s;
+
+							&.security-1 {
+	    						border-color: orange;
+							}
+							&.security-2 {
+	    						border-color: orangered;
+							}
+							&.security-3 {
+	    						border-color: darkred;
+							}
+						}
+
+						&.opened .door {
+							width: @doorway-width + @door-width;
+							margin-left: (-@doorway-width - @door-width) / 2;
+						}
 					}
 
 					&.N {
@@ -442,35 +487,6 @@
 					&.E {
 						transform: translateX(@map-tile-size / 2) rotate(90deg);
 						-webkit-transform: translateX(@map-tile-size / 2) rotate(90deg);
-					}
-
-					.door {
-						width: @door-width + 1;
-						height: @wall-thickness + 4;
-						top: -2px;
-						border: (@door-width / 2) solid @door-color;
-						border-top: none;
-						border-bottom: none;
-						outline: 1px solid #EEE;
-						position: absolute;
-						left: 50%;
-						margin-left: -@door-width / 2;
-						transition: all 0.5s;
-
-						&.opened {
-							width: @doorway-width + @door-width;
-							margin-left: (-@doorway-width - @door-width) / 2;
-						}
-
-						&.security-1 {
-    						border-color: orange;
-						}
-						&.security-2 {
-    						border-color: orangered;
-						}
-						&.security-3 {
-    						border-color: darkred;
-						}
 					}
 				}
 			}

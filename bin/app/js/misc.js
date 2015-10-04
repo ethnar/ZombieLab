@@ -20,9 +20,4 @@
 			console.error(msg);
 		}
 	};
-
-	$(document).ready(function () {
-		ZombieLab.fps = new FPSMeter($('#fps').get(0));
-	});
-
 })();

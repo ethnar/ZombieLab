@@ -123,7 +123,8 @@ angular.module('ZombieLabApp')
 			conscious: true,
 			alive: true,
 			active: true,
-			skills: skills
+			skills: skills,
+			bestSkills: []
 		});
 	};
 
@@ -150,11 +151,52 @@ angular.module('ZombieLabApp')
 
 	service.addToTeam = function (character) {
 		service.team.push(character);
+		service.recalculateBestSkills();
 	};
 
 	service.getAliveMembers = function () {
 		return _.filter(service.team,  function (character) {
 			return character.alive;
+		});
+	};
+
+	service.recalculateBestSkills = function () {
+		var skills = {
+			weapons: {
+				characters: [],
+				value: 0
+			},
+			hacking: {
+				characters: [],
+				value: 0
+			},
+			explosives: {
+				characters: [],
+				value: 0
+			},
+			firstAid: {
+				characters: [],
+				value: 0
+			}
+		};
+		_.each(service.team, function (character) {
+			character.bestSkills = [];
+			_.each(character.skills, function (value, skill) {
+				if (value == skills[skill].value) {
+					skills[skill].characters.push(character);
+				}
+				if (value > skills[skill].value) {
+					skills[skill] = {
+						value: value,
+						characters: [character]
+					}
+				}
+			});
+		});
+		_.each(skills, function (info, skill) {
+			_.each(info.characters, function (character) {
+				character.bestSkills.push(skill);
+			});
 		});
 	};
 
@@ -179,6 +221,7 @@ angular.module('ZombieLabApp')
 		if (service.getAliveMembers().length === 0) {
 			gameService.gameOver();
 		}
+		service.recalculateBestSkills();
 	};
 
 	service.useItem = function (character, item, size) {
