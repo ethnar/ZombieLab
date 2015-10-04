@@ -11,8 +11,9 @@
 		<script type="text/javascript" src="libs/js/angular/angular-route.js"></script>
 		<script type="text/javascript" src="libs/js/hammer.min.js"></script>
 		<script type="text/javascript" src="libs/js/gestures.min.js"></script>
-		<script type="text/javascript" src="app/js/misc.js"></script>
+		<script type="text/javascript" src="libs/js/fpsmeter.js"></script>
 		
+		<script type="text/javascript" src="app/js/misc.js"></script>
 		<script type="text/javascript" src="app/js/app.js"></script>
 		
 		<script type="text/javascript" src="app/js/controllers/start.js"></script> 
@@ -37,6 +38,7 @@
 
 	</head>
 	<body ng-app="ZombieLabApp">
+		<div id="fps" style="position: fixed;bottom: 35px;right: 100px;"></div>
 		<div ng-view id="main-view">
 		</div>
 	</body>
