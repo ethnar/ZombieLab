@@ -8,7 +8,7 @@ angular.module('ZombieLabApp')
 			{
 				name: 'M4',
 				weaponClass: 'rifle',
-				description: 'Standard-issue mulitary assault rifle. Quick, easy to handle and deadly.',
+				description: 'Standard-issue military assault rifle. Quick, easy to handle and deadly.',
 				isLarge: true,
 				dmgMin: 3,
 				dmgMax: 5,
@@ -60,7 +60,7 @@ angular.module('ZombieLabApp')
 				reload: 4000
 			}
 		],
-		consumable: [
+		consumables: [
 			{
 				name: 'Medkit',
 				description: 'Stuffed with all kinds of medical wonders, this package is sure to get anyone back on their feet quickly.',
@@ -72,11 +72,11 @@ angular.module('ZombieLabApp')
 				skill: 'firstAid',
 				skillRequired: 3,
 				use: function (itemSlot, character, target) {
-					var finalHeal = 10 * character.skillModifier(this.skill, this.skillRequired);
+					var finalHeal = 10 * character.skillModifier(self.skill, self.skillRequired);
 					target.health = Math.min(target.health + finalHeal, character.maxHealth);
 				},
 				progress: function (itemSlot, character, target, delta) {
-					var progressHeal = 60 * character.skillModifier(this.skill, this.skillRequired);
+					var progressHeal = 60 * character.skillModifier(self.skill, self.skillRequired);
 					target.health = Math.min(target.health + progressHeal * delta / 100, character.maxHealth);
 					return true;
 				}
@@ -91,11 +91,13 @@ angular.module('ZombieLabApp')
 				skill: 'firstAid',
 				skillRequired: 2,
 				use: function (itemSlot, character, target) {
-					var finalHeal = 10 * character.skillModifier(this.skill, this.skillRequired);
+					var self = this;
+					var finalHeal = 10 * character.skillModifier(self.skill, self.skillRequired);
 					target.health = Math.min(target.health + finalHeal, character.maxHealth);
 				},
 				progress: function (itemSlot, character, target, delta) {
-					var progressHeal = 20 * character.skillModifier(this.skill, this.skillRequired);
+					var self = this;
+					var progressHeal = 20 * character.skillModifier(self.skill, self.skillRequired);
 					target.health = Math.min(target.health + progressHeal * delta / 100, character.maxHealth);
 					return true;
 				}
@@ -109,13 +111,15 @@ angular.module('ZombieLabApp')
 				skill: 'explosives',
 				skillRequired: 2,
 				use: function (itemSlot, character, direction) {
+					var self = this;
 					var targetTile = mapService.getNextAreaForTeam(direction);
 					_.each(targetTile.enemies, function (enemy) {
-						enemyService.damage(enemy, _.random(4, 15) * character.skillModifier(this.skill, this.skillRequired));
+						enemyService.damage(enemy, _.random(4, 15) * character.skillModifier(self.skill, self.skillRequired));
 					});
 					mapService.addAnimation(targetTile, 'explosion', 1500);
 				},
 				progress: function (itemSlot, character, direction, delta) {
+					var self = this;
 					var isOpen = mapService.isOpen(direction);
 					if (!isOpen) {
 						ZombieLab.error('You must target accessible room');
@@ -132,15 +136,17 @@ angular.module('ZombieLabApp')
 				skill: 'explosives',
 				skillRequired: 4,
 				use: function (itemSlot, character, direction) {
+					var self = this;
 					var targetTile = mapService.getNextAreaForTeam(direction);
 					var path = mapService.getDirectionPathForTeam(direction);
 					mapService.openDoor(path);
 					_.each(targetTile.enemies, function (enemy) {
-						enemyService.damage(enemy, _.random(2, 30) * character.skillModifier(this.skill, this.skillRequired));
+						enemyService.damage(enemy, _.random(2, 30) * character.skillModifier(self.skill, self.skillRequired));
 					});
 					mapService.addAnimation(targetTile, 'explosion', 1500);
 				},
 				progress: function (itemSlot, character, direction, delta) {
+					var self = this;
 					var isDoor = mapService.isDoor(direction);
 					if (!isDoor) {
 						ZombieLab.error('You must target closed door');
@@ -156,17 +162,19 @@ angular.module('ZombieLabApp')
 				skill: 'hacking',
 				skillRequired: 4,
 				use: function (itemSlot, character, direction) {
+					var self = this;
 					var targetTile = mapService.getNextAreaForTeam(direction);
 					var path = mapService.getDirectionPathForTeam(direction);
 					mapService.openDoor(path);
 				},
 				progress: function (itemSlot, character, direction, delta) {
+					var self = this;
 					var path = mapService.getDirectionPathForTeam(direction);
 					if (!mapService.isDoor(direction) || !path.security) {
 						ZombieLab.error('You must target closed, secured door');
 						return false;
 					}
-					return Math.pow(path.security, 2) / Math.pow(character.skillModifier(this.skill, this.skillRequired), 2);
+					return Math.pow(path.security, 2) / Math.pow(character.skillModifier(self.skill, self.skillRequired), 2);
 				}
 			}
 		]

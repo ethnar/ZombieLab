@@ -6,8 +6,7 @@ angular.module('ZombieLabApp')
 		controller: function ($scope, $element, $timeout, $attrs) {
 			var timeout;
 
-			$element.on('mousedown touchstart', function () {
-				event.preventDefault();
+			$element.on('mousedown touchstart', function (event) {
 				timeout = $timeout(function () {
 					$scope.$eval($attrs.ngHold);
 				}, 500);
