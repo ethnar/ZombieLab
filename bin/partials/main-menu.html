@@ -1,4 +1,10 @@
 <div class="main-menu">
-	<a href="" ng-click="startNewGame();">New Game</a>
-	<a href="" ng-click="continueGame();">Continue</a>
+	<div class="big-button-wrapper">
+		<div class="big-button" ng-click="startNewGame();">
+			New Game
+		</div>
+		<div class="big-button" ng-disabled="true" ng-click="continueGame();">
+			Continue
+		</div>
+	</div>
 </div>
