@@ -40,10 +40,13 @@ angular.module('ZombieLabApp')
 		service.gameLoading.progress += progress;
 	};
 	service.finishLoading = function (delay) {
+		var defer = $q.defer();
 		$timeout(function () {
 			service.gameLoading.isLoading = false;
-		}, delay);
-	}
+			defer.resolve();
+		}, loadingTransition * 1000 + delay);
+		return defer.promise;
+	};
 
 	service.resetGame = function () {
 		difficulty = 100;

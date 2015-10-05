@@ -11,6 +11,7 @@ angular.module('ZombieLabApp')
 		map: mapService.map,
 		lootingRoom: false,
 		selectedCharacter: null,
+		gameReady: false,
 		currentAction: {
 			actionObject: null,
 			target: null,
@@ -378,8 +379,14 @@ angular.module('ZombieLabApp')
 	};
 
 	$scope.finishLevel = function () {
-		gameService.increaseDifficulty();
-		mapGeneratorService.createNewMap();
+		$scope.model.gameReady = false;
+		gameService.startLoading().then(function () {
+			gameService.increaseDifficulty();
+			mapGeneratorService.createNewMap();
+			gameService.finishLoading(200).then(function () {
+				$scope.model.gameReady = true;
+			});
+		});
 	};
 
 	$scope.isGameOver = function () {
@@ -389,7 +396,7 @@ angular.module('ZombieLabApp')
 	$scope.init = function () {
 		/* START: quick setup */
 		if (characterService.team.length === 0) {
-			$location.path('main-menu');
+			//$location.path('main-menu');
 
 			gameService.resetGame();
 
@@ -410,6 +417,8 @@ angular.module('ZombieLabApp')
 
 		$scope.mainLoop();
 
-		gameService.finishLoading(500);
+		gameService.finishLoading(200).then(function () {
+			$scope.model.gameReady = true;
+		});
 	};
 });
