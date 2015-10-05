@@ -11,8 +11,7 @@ angular.module('ZombieLabApp')
 	service.availableNames = null;
 	service.gamePaused = 0;
 	service.gameLoading = {
-		isLoading: true,
-		progress: 0
+		isLoading: true
 	};
 	var loadingTransition = parseFloat($('.loading-overlay').css('transition').match(/[0-9]*\.?[0-9]s/)[0]);
 
@@ -29,22 +28,20 @@ angular.module('ZombieLabApp')
 	service.startLoading = function () {
 		var defer = $q.defer();
 		service.gameLoading.isLoading = true;
-		service.gameLoading.progress = 0;
 
 		$timeout(function () {
 			defer.resolve();
 		}, loadingTransition * 1000 + 100);
 		return defer.promise;
 	};
-	service.loadingProgress = function (progress) {
-		service.gameLoading.progress += progress;
-	};
 	service.finishLoading = function (delay) {
 		var defer = $q.defer();
 		$timeout(function () {
 			service.gameLoading.isLoading = false;
-			defer.resolve();
-		}, loadingTransition * 1000 + delay);
+			$timeout(function () {
+				defer.resolve();
+			}, loadingTransition * 1000);
+		}, delay);
 		return defer.promise;
 	};
 

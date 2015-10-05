@@ -43,7 +43,8 @@
 	</head>
 	<body ng-app="ZombieLabApp" ng-controller="zombieLabController" oncontextmenu="return false" ondragstart="return false" onselectstart="return false">
 		<div class="loading-overlay loading-in-progress" ng-class="{'loading-in-progress': model.loading.isLoading}">
-			<div class="loading-progress" style="{width: model.loading.progress}"></div>
+			<div class="loading-animation">
+			</div>
 		</div>
 		<div ng-view id="main-view">
 		</div>

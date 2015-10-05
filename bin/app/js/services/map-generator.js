@@ -2,7 +2,7 @@
 
 angular.module('ZombieLabApp')
 
-.service('mapGeneratorService', function ($timeout, enemyService, mapService, equipmentService) {
+.service('mapGeneratorService', function ($timeout, enemyService, mapService, equipmentService, gameService) {
 	var directions = ['N', 'E', 'S', 'W'];
 	var directionOffsets = {
 		'N': [0, -1],
