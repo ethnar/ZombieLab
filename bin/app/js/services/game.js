@@ -2,7 +2,7 @@
 
 angular.module('ZombieLabApp')
 
-.service('gameService', function () {
+.service('gameService', function ($q, $timeout) {
 	var service = this;
 	var difficulty;
 	service.isGameOver = false;
@@ -10,6 +10,11 @@ angular.module('ZombieLabApp')
 	service.names = ['Alan', 'Arthur', 'Jake', 'Jane', 'Hilda', 'Thomas', 'Natalie', 'John', 'Martha', 'Ashley'];
 	service.availableNames = null;
 	service.gamePaused = 0;
+	service.gameLoading = {
+		isLoading: true,
+		progress: 0
+	};
+	var loadingTransition = parseFloat($('.loading-overlay').css('transition').match(/[0-9]*\.?[0-9]s/)[0]);
 
 	service.togglePause = function () {
 		service.gamePaused = service.gamePaused ? 0 : 1;
@@ -20,6 +25,25 @@ angular.module('ZombieLabApp')
 	service.unpause = function () {
 		service.gamePaused--;
 	};
+
+	service.startLoading = function () {
+		var defer = $q.defer();
+		service.gameLoading.isLoading = true;
+		service.gameLoading.progress = 0;
+
+		$timeout(function () {
+			defer.resolve();
+		}, loadingTransition * 1000 + 100);
+		return defer.promise;
+	};
+	service.loadingProgress = function (progress) {
+		service.gameLoading.progress += progress;
+	};
+	service.finishLoading = function (delay) {
+		$timeout(function () {
+			service.gameLoading.isLoading = false;
+		}, delay);
+	}
 
 	service.resetGame = function () {
 		difficulty = 100;
@@ -70,5 +94,6 @@ angular.module('ZombieLabApp')
 		service.selectedItemSlot.item = null;
 	};
 
+	return service;
 });
 

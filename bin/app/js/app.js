@@ -26,4 +26,10 @@ angular.module('ZombieLabApp', ['ngRoute', 'angular-gestures'])
         	velocity: 0.01
         }]]
     });
+})
+
+.controller('zombieLabController', function ($scope, gameService) {
+	$scope.model = {
+		loading: gameService.gameLoading
+	};
 });

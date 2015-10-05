@@ -1,0 +1,170 @@
+.skill-bar {
+	.clearfix();
+    margin: 3px 6px;
+    clear: both;
+
+	img {
+	    float: left;
+	}
+
+	.skill-gauge {
+	    float: left;
+	    border: 3px solid black;
+	    border-radius: 3px;
+
+		.skill-cell {
+		    width: 10px;
+		    height: 10px;
+		    float: left;
+		
+			&.set {
+			    background-color: black;
+			    border: 1px solid white;
+			}
+		}
+	}
+
+}
+
+.character-panel {
+	.clearfix();
+	position: relative;
+	background: url('@{img-path}character-panel.png');
+	width: @character-panel-width;
+
+	.image {
+		position: relative;
+		height: 90px;
+		background-image: url('@{img-path}character.png');
+		clear: both;
+	}
+
+	.name {
+		position: absolute;
+		bottom: 0;
+		width: 100%;
+		text-align: center;
+	}
+
+	.high-skills {
+		top: 2px;
+ 		left: 1px;
+    	position: absolute;
+
+		img {
+			display: block;
+    		padding: 2px;
+		}
+	}
+
+	.health {
+		color: transparent;
+		width: 100%;
+		background: rgba(255, 0, 0, 0.4);
+		position: absolute;
+		bottom: 0;
+		transition: height 0.3s;
+	}
+
+	&.dead {
+		.image {
+			background-image: url('@{img-path}character-dead.png');
+		}
+	}
+
+	&.inactive {
+		.weapon {
+			background-color: #444;
+    		opacity: 0.4;
+		}
+	}
+}
+
+.item-slot {
+	@item-slot-height: 35px;
+
+	position: relative;
+	height: @item-slot-height;
+	width: 100%;
+	float: left;
+
+	&.selected {
+		background-color: rgba(0, 255, 0, 0.3);
+	}
+
+	.weapon-hit, .weapon-miss { 
+		display: none;
+	}
+
+	.item {
+		position: relative;
+
+		.item-image {
+			margin: 0 auto;
+			display: block;
+		}
+
+
+		.ammo, .charges {
+			position: absolute;
+			right: 4px;
+			bottom: 4px;
+			z-index: 50;
+		}
+	}
+
+	&.weapon {
+		.reloading:not(.ng-hide) {
+			position: absolute;
+		    top: 6px;
+		    left: 15px;
+		    transform: rotate(8deg);
+		    -webkit-transform: rotate(8deg);
+		    color: #F66;
+		    font-weight: 800;
+		    font-size: 18px;
+		    z-index: 60;
+		    -webkit-text-stroke: 1px red;
+
+		    + img {
+		    	opacity: 0.3;
+		    }
+		}
+
+		.weapon-hit {
+			line-height: @item-slot-height;
+			text-align: center;
+			color: white;
+			font-weight: bold;
+
+			position: absolute;
+			display: block;
+		    height: 100%;
+		    width: 100%;
+			background: url('@{img-path}anim/hit.png');
+			z-index: 80;
+			opacity: 0;
+		}
+		.weapon-miss {
+			line-height: @item-slot-height;
+			text-align: center;
+			color: white;
+			font-weight: bold;
+
+			position: absolute;
+			display: block;
+		    height: 100%;
+		    width: 100%;
+			background: url('@{img-path}anim/miss.png');
+			z-index: 80;
+			opacity: 0;
+		}
+	}
+
+	&.large {
+		width: 60%;
+	}
+	&.small {
+		width: 40%;
+	}
+}

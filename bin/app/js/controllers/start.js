@@ -2,6 +2,6 @@
 
 angular.module('ZombieLabApp')
 
-.controller('startController', function () {
-
+.controller('startController', function ($timeout, gameService) {
+	gameService.finishLoading();
 });

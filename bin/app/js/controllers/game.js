@@ -300,11 +300,13 @@ angular.module('ZombieLabApp')
 		if (_.random(1, 100) < chanceToHit) {
 			enemyService.damage(target.enemy, _.random(character.weapon.model.dmgMin, character.weapon.model.dmgMax));
 			weaponFrame.find('.weapon-miss').css({opacity: 0});
+			// TODO: turn into CSS animation to support Zepto  in some shape or form
 			weaponFrame.find('.weapon-hit').stop(true).css({opacity: 1}).animate({opacity: 1}, 600, function () {
 				weaponFrame.find('.weapon-hit').animate({opacity: 0}, 400);
 			});
 		} else {
 			weaponFrame.find('.weapon-hit').css({opacity: 0});
+			// TODO: turn into CSS animation to support Zepto  in some shape or form
 			weaponFrame.find('.weapon-miss').stop(true).css({opacity: 1}).animate({opacity: 1}, 600, function () {
 				weaponFrame.find('.weapon-miss').animate({opacity: 0}, 400);
 			});
@@ -386,23 +388,28 @@ angular.module('ZombieLabApp')
 
 	$scope.init = function () {
 		/* START: quick setup */
-		gameService.resetGame();
-
 		if (characterService.team.length === 0) {
+			$location.path('main-menu');
+
+			gameService.resetGame();
+
 			characterService.addToTeam(characterService.createNewCharacter(characterService.archetypes['warrior']));
 			characterService.addToTeam(characterService.createNewCharacter(characterService.archetypes['medic']));
 			characterService.addToTeam(characterService.createNewCharacter(characterService.archetypes['hacker']));
 			characterService.addToTeam(characterService.createNewCharacter(characterService.archetypes['grenadier']));
+
+			console.log('---- The team:')
+			console.log(characterService.team);
+			mapGeneratorService.createNewMap();
+			console.log('---- The map:')
+			console.log(mapService.map);
 		}
-		console.log('---- The team:')
-		console.log(characterService.team);
-		mapGeneratorService.createNewMap();
-		console.log('---- The map:')
-		console.log(mapService.map);
 		/* END: quick setup */
 
 		$scope.bindKeys();
 
 		$scope.mainLoop();
+
+		gameService.finishLoading(500);
 	};
 });

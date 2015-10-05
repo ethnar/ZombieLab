@@ -17,23 +17,20 @@ angular.module('ZombieLabApp')
 	};
 
 	$scope.startGame = function () {
-		characterService.wipeTeam();
-		_.each(characterService.roster, function (character) {
-			if (character.selected) {
-				characterService.addToTeam(character);
-			}
+		gameService.startLoading().then(function () {
+			characterService.wipeTeam();
+			_.each(characterService.roster, function (character) {
+				if (character.selected) {
+					characterService.addToTeam(character);
+				}
+			});
+			$location.path('game');
 		});
-		$location.path('game');
 	};
 
 	$scope.init = function () {
 		if (characterService.roster.length === 0) {
-			// $location.path('main-menu');
-
-			// * quick start *
-			gameService.resetGame();
-			characterService.buildNewRoster();
-			$scope.model.roster = characterService.roster;
+			$location.path('main-menu');
 		}
 	};
 });

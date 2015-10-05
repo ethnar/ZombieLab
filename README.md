@@ -9,3 +9,5 @@ Prototype for ZombieLab game
 - Full mobile support (back navigation handling, screen rotation, cross-mobile)
 - Loading screens
 - Saves (one save only)
+- consider http://zeptojs.com/
+- touchstart instead of click

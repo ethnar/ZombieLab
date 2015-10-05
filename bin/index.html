@@ -6,7 +6,10 @@
 		<link rel="stylesheet" type="text/css" href="styles/css/style.css">
 
 		<script type="text/javascript" src="libs/js/lodash.min.js"></script>
-		<script type="text/javascript" src="libs/js/jquery-1.11.3.min.js"></script>
+		<script type="text/javascript" src="libs/js/jquery-1.11.3.min.js"></script> 
+<!--		<script type="text/javascript" src="libs/js/zepto.js"></script>-->
+<!--		<script type="text/javascript" src="libs/js/zepto-extras.js"></script>-->
+		
 		<script type="text/javascript" src="libs/js/angular/angular.min.js"></script>
 		<script type="text/javascript" src="libs/js/angular/angular-route.js"></script>
 		<script type="text/javascript" src="libs/js/hammer.min.js"></script>
@@ -38,8 +41,10 @@
 		<script type="text/javascript" src="app/js/data/character.js"></script> 
 
 	</head>
-	<body ng-app="ZombieLabApp" oncontextmenu="return false" ondragstart="return false" onselectstart="return false">
-		<div id="fps" style="position: fixed;bottom: 35px;right: 100px;"></div>
+	<body ng-app="ZombieLabApp" ng-controller="zombieLabController" oncontextmenu="return false" ondragstart="return false" onselectstart="return false">
+		<div class="loading-overlay loading-in-progress" ng-class="{'loading-in-progress': model.loading.isLoading}">
+			<div class="loading-progress" style="{width: model.loading.progress}"></div>
+		</div>
 		<div ng-view id="main-view">
 		</div>
 	</body>

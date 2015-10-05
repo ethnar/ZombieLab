@@ -32,177 +32,6 @@
 	}
 }
 
-.skill-bar {
-	.clearfix();
-    margin: 3px 6px;
-    clear: both;
-
-	img {
-	    float: left;
-	}
-
-	.skill-gauge {
-	    float: left;
-	    border: 3px solid black;
-	    border-radius: 3px;
-
-		.skill-cell {
-		    width: 10px;
-		    height: 10px;
-		    float: left;
-		
-			&.set {
-			    background-color: black;
-			    border: 1px solid white;
-			}
-		}
-	}
-
-}
-
-.character-panel {
-	.clearfix();
-	position: relative;
-	background: url('@{img-path}character-panel.png');
-	width: @character-panel-width;
-
-	.image {
-		position: relative;
-		height: 90px;
-		background-image: url('@{img-path}character.png');
-		clear: both;
-	}
-
-	.name {
-		position: absolute;
-		bottom: 0;
-		width: 100%;
-		text-align: center;
-	}
-
-	.high-skills {
-		top: 2px;
- 		left: 1px;
-    	position: absolute;
-
-		img {
-			display: block;
-    		padding: 2px;
-		}
-	}
-
-	.health {
-		color: transparent;
-		width: 100%;
-		background: rgba(255, 0, 0, 0.4);
-		position: absolute;
-		bottom: 0;
-		transition: height 0.3s;
-	}
-
-	&.dead {
-		.image {
-			background-image: url('@{img-path}character-dead.png');
-		}
-	}
-
-	&.inactive {
-		.weapon {
-			background-color: #444;
-    		opacity: 0.4;
-		}
-	}
-}
-
-.item-slot {
-	@item-slot-height: 35px;
-
-	position: relative;
-	height: @item-slot-height;
-	width: 100%;
-	float: left;
-
-	&.selected {
-		background-color: rgba(0, 255, 0, 0.3);
-	}
-
-	.weapon-hit, .weapon-miss { 
-		display: none;
-	}
-
-	.item {
-		position: relative;
-
-		.item-image {
-			margin: 0 auto;
-			display: block;
-		}
-
-
-		.ammo, .charges {
-			position: absolute;
-			right: 4px;
-			bottom: 4px;
-			z-index: 50;
-		}
-	}
-
-	&.weapon {
-		.reloading:not(.ng-hide) {
-			position: absolute;
-		    top: 6px;
-		    left: 15px;
-		    transform: rotate(8deg);
-		    -webkit-transform: rotate(8deg);
-		    color: #F66;
-		    font-weight: 800;
-		    font-size: 18px;
-		    z-index: 60;
-		    -webkit-text-stroke: 1px red;
-
-		    + img {
-		    	opacity: 0.3;
-		    }
-		}
-
-		.weapon-hit {
-			line-height: @item-slot-height;
-			text-align: center;
-			color: white;
-			font-weight: bold;
-
-			position: absolute;
-			display: block;
-		    height: 100%;
-		    width: 100%;
-			background: url('@{img-path}anim/hit.png');
-			z-index: 80;
-			opacity: 0;
-		}
-		.weapon-miss {
-			line-height: @item-slot-height;
-			text-align: center;
-			color: white;
-			font-weight: bold;
-
-			position: absolute;
-			display: block;
-		    height: 100%;
-		    width: 100%;
-			background: url('@{img-path}anim/miss.png');
-			z-index: 80;
-			opacity: 0;
-		}
-	}
-
-	&.large {
-		width: 60%;
-	}
-	&.small {
-		width: 40%;
-	}
-}
-
 .game {
 	.team-panel {
 		width: @character-panel-width * 2;
@@ -332,260 +161,48 @@
 		}
 	}
 
-	.game-over {
-		position: absolute;
-		top: 0;
-		bottom: 0;
-		right: 0;
-		left: 0;
-		z-index: 9000;
-		background: rgba(0, 0, 0, 0.4);
-
-		.exit-button-wrapper {
-			position: absolute;
-			top: 50%;
-			left: 50%;
-
-			.exit-button {
-				margin-left: -50%;
-			    margin-right: 50%;
-				padding: 10px;
-				font-size: 200%;
-				background: white;
-				border: 4px solid black;
-				border-radius: 10px;
-			}
-		}
-	}
 }
 
-.modal-backdrop {
+.game-over {
 	position: absolute;
 	top: 0;
 	bottom: 0;
 	right: 0;
 	left: 0;
+	z-index: 9000;
 	background: rgba(0, 0, 0, 0.4);
-}
 
-.modal-content-wrapper {
-	position: absolute;
-	top: 30px;
-	right: 50%;
-	height: 0;
-
-	.modal-content {
-	    position: relative;
-    	left: 50%;
-		background: white;
-
-    	.modal-close {
-		    position: absolute;
-		    right: 10px;
-	        top: 8px;
-		    border: 1px solid black;
-		    padding: 2px 5px;
-    	}
-	}
-}
-
-.character-info-modal {
-	.clearfix();
-	padding: 10px 33px 10px 10px;
-
-	.character-panel, .skills {
-		float: left;
-	}
-}
-
-.item-info-modal {
-    width: 420px;
-	padding: 10px;
-
-	.additional-info {
-		float: right;
-		padding: 5px;
-		text-align: center;
-
-		.item-image {
-		    margin: 0 auto;
-    		display: block;
-		}
-
-		.skill-bar {
-		    display: inline-block;
-		}
-	}
-}
-
-.map {
-
-	.column {
-		float: left;
-
-		.tile {
-			position: relative;
-			width: @map-tile-size;
-			height: @map-tile-size;
-			opacity: 0;
-			padding: 10px;
-			transition: opacity 0.3s;
-			-webkit-transition: opacity 0.3s;
-
-			&.start::before {
-				content: 'START!';
-			}
-
-			&.finish::before {
-				content: 'FINISH!';
-			}
-
-			&.revealed {
-				opacity: 0.4;
-			}
-
-			&.visible {
-				opacity: 1;
-
-				.enemy {
-					visibility: inherit;
-				}
-			}
-
-			.animation {
-				@animation-size: @map-tile-size - 20;
-
-			    width: @animation-size;
-			    height: @animation-size;
-			    position: absolute;
-			    top: (@map-tile-size - @animation-size) / 2;
-			    left: (@map-tile-size - @animation-size) / 2;
-
-			    z-index: 45;
-
-				&.explosion {
-					@frames: 30;
-					background: url('@{img-path}anim/explosion.png') left center no-repeat;
-					background-size: @animation-size * @frames @animation-size;
-					animation: explosion .8s steps(@frames);
-
-					@keyframes explosion {
-						100% { background-position: -@animation-size * @frames; }
-					}
-				}
-			}
-
-
-			&.area {
-				background: #EEE;
-
-				.wall.has-wall {
-					z-index: 50;
-					background: @wall-color;
-					border: (@map-tile-size - @doorway-width) / 2 solid @wall-color;
-					border-top: none;
-					border-bottom: none;
-					width: @map-tile-size + @wall-thickness;
-					height: @wall-thickness;
-					
-					position: absolute;
-					top: 50%;
-					left: -@wall-thickness / 2;
-					margin-top: -@wall-thickness / 2;
-
-					.door {
-						display: none;
-					}
-
-					&.has-door {
-						background: none;
-
-						.door {
-							display: block;
-							width: @door-width + 1;
-							height: @wall-thickness + 4;
-							top: -2px;
-							border: (@door-width / 2) solid @door-color;
-							border-top: none;
-							border-bottom: none;
-							outline: 1px solid #EEE;
-							position: absolute;
-							left: 50%;
-							margin-left: -@door-width / 2;
-							transition: all 0.5s;
-
-							&.security-1 {
-	    						border-color: orange;
-							}
-							&.security-2 {
-	    						border-color: orangered;
-							}
-							&.security-3 {
-	    						border-color: darkred;
-							}
-						}
-
-						&.opened .door {
-							width: @doorway-width + @door-width;
-							margin-left: (-@doorway-width - @door-width) / 2;
-						}
-					}
-
-					&.N {
-						transform: translateY(-@map-tile-size / 2);
-						-webkit-transform: translateY(-@map-tile-size / 2);
-					}
-					&.S {
-						transform: translateY(@map-tile-size / 2);
-						-webkit-transform: translateY(@map-tile-size / 2);
-					}
-					&.W {
-						transform: translateX(-@map-tile-size / 2) rotate(90deg);
-						-webkit-transform: translateX(-@map-tile-size / 2) rotate(90deg);
-					}
-					&.E {
-						transform: translateX(@map-tile-size / 2) rotate(90deg);
-						-webkit-transform: translateX(@map-tile-size / 2) rotate(90deg);
-					}
-				}
-			}
-		}
-	}
-
-	.enemies-panel {
+	.exit-button-wrapper {
 		position: absolute;
-		top: 3px;
-		right: 3px;
-	    text-align: right;
+		top: 50%;
+		left: 50%;
 
-		.enemy {
-			visibility: hidden;
-			z-index: 15;
-
-			.enemyCount {
-				vertical-align: top;
-				display: inline-block;
-				padding: 2px 5px;
-			}
-
-			.enemyIcon {
-				display: inline-block;
-				width: 20px;
-				height: 20px;
-
-				&.crawler {
-					background-color: cyan;
-				}
-				&.walker {
-					background-color: green;
-				}
-				&.runner {
-					background-color: red;
-				}
-				&.hulk {
-					background-color: black;
-				}
-			}
+		.exit-button {
+			margin-left: -50%;
+		    margin-right: 50%;
+			padding: 10px;
+			font-size: 200%;
+			background: white;
+			border: 4px solid black;
+			border-radius: 10px;
 		}
+	}
+}
+
+.loading-overlay {
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	background-color: darkgrey;
+	opacity: 0;
+	transition: opacity 0.4s;
+	pointer-events: none;
+	z-index: 9100;
+
+	&.loading-in-progress {
+		opacity: 1;
+		pointer-events: all;
 	}
 }
