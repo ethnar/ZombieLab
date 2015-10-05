@@ -363,7 +363,6 @@ angular.module('ZombieLabApp')
 	};
 
 	$scope.canFinishLevel = function () {
-		return true;
 		return mapService.teamLocation.finish;
 	};
 
