@@ -2,7 +2,7 @@
 
 angular.module('ZombieLabApp')
 
-.service('gameService', function ($q, $timeout) {
+.service('gameService', function ($q, $timeout, equipmentService) {
 	var service = this;
 	var difficulty;
 	service.isGameOver = false;
@@ -48,6 +48,7 @@ angular.module('ZombieLabApp')
 	service.resetGame = function () {
 		difficulty = 100;
 		service.availableNames = angular.copy(service.names);
+		equipmentService.removeAmmo();
 		service.isGameOver = false;
 	};
 

@@ -39,7 +39,11 @@ angular.module('ZombieLabApp')
 			};
 
 			$scope.selectItem = function () {
-				gameService.selectedItemSlot = $scope; // that's pretty bad, but workarounds would be worse
+				if ($scope.item.model.immediateUse) {
+					$scope.item.model.use($scope);
+				} else {
+					gameService.selectedItemSlot = $scope; // that's pretty bad, but workarounds would be worse
+				}
 			};
 
 			$scope.click = function () {

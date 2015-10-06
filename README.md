@@ -4,7 +4,7 @@ Prototype for ZombieLab game
 - Room types
 - Zombie spawners (?)
 - Fire! (+toxic gas?)
-- Various items
+- Various items (armor, ammobox, etc)
 - Story elements
 - Full mobile support (back navigation handling, screen rotation, cross-mobile)
 - Loading screens

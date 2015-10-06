@@ -151,6 +151,14 @@ angular.module('ZombieLabApp')
 
 	service.addToTeam = function (character) {
 		service.team.push(character);
+		_.each(['weapon', 'smallItem', 'largeItem'], function (slotName) {
+			if (character[slotName] && character[slotName].model.startingAmmo) {
+				_.each(character[slotName].model.startingAmmo, function (qty, type) {
+					equipmentService.ammo[type] = equipmentService.ammo[type] || 0;
+					equipmentService.ammo[type] += qty;
+				});
+			}
+		});
 		service.recalculateBestSkills();
 	};
 
@@ -231,20 +239,24 @@ angular.module('ZombieLabApp')
 	};
 
 	service.startReloading = function (character) {
-		if (character.weapon.model.clipSize > character.weapon.ammo) {
+		var ammoType = character.weapon.model.weaponClass;
+		if (character.weapon.model.clipSize > character.weapon.ammo && equipmentService.ammo[ammoType] > 0) {
 			character.reloadingTimer = character.weapon.model.reload / character.skillModifier('weapons', character.weapon.model.skillRequired);
 			character.reloadingWeapon = character.weapon;
 		}
 	};
 
 	service.reloading = function (character, delta) {
-		if (character.reloadingWeapon !== character.weapon) {
+		var ammoType = character.weapon.model.weaponClass;
+		if (character.reloadingWeapon !== character.weapon || equipmentService.ammo[ammoType] == 0) {
 			// weapon swapped, stop reloading
 			character.reloadingTimer = 0;
 		} else {
 			character.reloadingTimer -= delta;
 			if (character.reloadingTimer <= 0) {
-				character.weapon.ammo = character.weapon.model.clipSize;
+				var ammoAdded = Math.min(character.weapon.model.clipSize - character.weapon.ammo, equipmentService.ammo[ammoType]);
+				character.weapon.ammo += ammoAdded;
+				equipmentService.ammo[ammoType] -= ammoAdded;
 			}
 		}
 	};

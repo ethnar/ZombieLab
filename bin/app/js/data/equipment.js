@@ -18,7 +18,8 @@ angular.module('ZombieLabApp')
 				baseChanceToHit: 85,
 				range: 2,
 				rof: 400, // miliseconds
-				reload: 3000 // miliseconds
+				reload: 3000, // miliseconds
+				startingAmmo: {rifle: 60}
 			}, {
 				name: 'M1911',
 				description: 'Old but reliable, this handgun is easy to handle and packs a fine punch.',
@@ -31,7 +32,8 @@ angular.module('ZombieLabApp')
 				baseChanceToHit: 80,
 				range: 1,
 				rof: 1100,
-				reload: 2600
+				reload: 2600,
+				startingAmmo: {handgun: 40}
 			}, {
 				name: 'L131A1',
 				description: 'A handy self-defense tool, this rapid-fire handgun is extremly easy to handle. Lacking some accuracy, you should mind the bullets.',
@@ -44,7 +46,8 @@ angular.module('ZombieLabApp')
 				baseChanceToHit: 70,
 				range: 1,
 				rof: 800,
-				reload: 2600
+				reload: 2600,
+				startingAmmo: {handgun: 60}
 			}, {
 				name: 'M608',
 				description: 'A portable hand-cannon, sure to clear any opposition quickly. Mind the recoil - it takes some practice to use it without breaking your joints.',
@@ -57,7 +60,8 @@ angular.module('ZombieLabApp')
 				baseChanceToHit: 80,
 				range: 1,
 				rof: 1200,
-				reload: 4000
+				reload: 4000,
+				startingAmmo: {handgun: 35}
 			}
 		],
 		consumables: [
@@ -72,10 +76,12 @@ angular.module('ZombieLabApp')
 				skill: 'firstAid',
 				skillRequired: 3,
 				use: function (itemSlot, character, target) {
+					var self = this;
 					var finalHeal = 10 * character.skillModifier(self.skill, self.skillRequired);
 					target.health = Math.min(target.health + finalHeal, character.maxHealth);
 				},
 				progress: function (itemSlot, character, target, delta) {
+					var self = this;
 					var progressHeal = 60 * character.skillModifier(self.skill, self.skillRequired);
 					target.health = Math.min(target.health + progressHeal * delta / 100, character.maxHealth);
 					return true;
@@ -176,6 +182,30 @@ angular.module('ZombieLabApp')
 					}
 					return Math.pow(path.security, 2) / Math.pow(character.skillModifier(self.skill, self.skillRequired), 2);
 				}
+			}
+		],
+		powerUps: [
+			{
+				name: 'Rifle ammo',
+				image: 'ammo/rifle',
+				ammoType: 'rifle',
+				description: 'Ammunition for rifles.',
+				immediateUse: true,
+				use: function (itemSlot) {
+					equipmentService.addAmmo(this.ammoType, itemSlot.item.quantity);
+					itemSlot.item = null;
+				}
+			}, {
+				name: 'Handgun ammo',
+				image: 'ammo/handgun',
+				ammoType: 'handgun',
+				description: 'Ammunition for handguns.',
+				immediateUse: true,
+				use: function (itemSlot) {
+					equipmentService.addAmmo(this.ammoType, itemSlot.item.quantity);
+					itemSlot.item = null;
+				}
+
 			}
 		]
 	});

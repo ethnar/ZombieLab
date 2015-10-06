@@ -98,14 +98,19 @@
 
 	.item {
 		position: relative;
+		height: 35px;
 
 		.item-image {
-			margin: 0 auto;
-			display: block;
+			margin: auto;
+			top: 0;
+		    bottom: 0;
+		    left: 0;
+		    right: 0;
+		    position: absolute;
 		}
 
 
-		.ammo, .charges {
+		.ammo, .charges, .quantity {
 			position: absolute;
 			right: 4px;
 			bottom: 4px;

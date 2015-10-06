@@ -2,11 +2,12 @@
 
 angular.module('ZombieLabApp')
 
-.controller('gameController', function ($scope, $location, $document, $interval, modalService, characterService, enemyService, mapService, mapGeneratorService, gameService) {
+.controller('gameController', function ($scope, $location, $document, $interval, modalService, characterService, enemyService, mapService, mapGeneratorService, gameService, equipmentService) {
 	var controller = this;
 
 	$scope.model = {
 		team: characterService.team,
+		ammo: equipmentService.ammo,
 		teamTired: 0, // indicates taking part in shootout
 		map: mapService.map,
 		lootingRoom: false,

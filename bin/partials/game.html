@@ -16,6 +16,9 @@
 		<div class="team-running" data-ng-show="model.teamTired <= 0">
 			RUNNING!
 		</div>
+		<div class="ammo-status">
+			<div class="ammo-slot" ng-repeat="(type, quantity) in model.ammo"><img class="ammo-icon" ng-src="img/items/ammo/{{type}}.png" />{{quantity}}</div>
+		</div>
 		<div class="action-panel">
 			<div class="action-progress" ng-show="model.currentAction.actionObject">
 				<div class="progress-bar" ng-style="{width: model.currentAction.progress / 10 + '%'}"></div>

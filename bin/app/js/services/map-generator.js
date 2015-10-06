@@ -175,8 +175,12 @@ angular.module('ZombieLabApp')
 					if (tile.room) {
 						tile.enemies = enemyService.createGroupForRoom(tile);
 						var idx = 0;
-						while (_.random(0, 2) > idx) {
-							tile.items[idx++] = equipmentService.newItem(_.sample(equipmentService.items));
+						while (_.random(0, 6) > idx) {
+							 var item = equipmentService.newItem(_.sample(equipmentService.items));
+							 if (item.model.category == 'powerUps') {
+							 	item.quantity = 30;
+							 }
+							 tile.items[idx++] = item;
 						}
 					} else {
 						tile.enemies = enemyService.createGroupForCorridor(tile);

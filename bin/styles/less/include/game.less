@@ -57,6 +57,55 @@
 		z-index: 400;
 	}
 
+	.ammo-status {
+		position: absolute;
+		top: 3px;
+		right: 3px;
+		.ammo-slot {
+			float: right;
+			margin-left: 20px;
+
+			.ammo-icon {
+				vertical-align: top;
+			}
+		}
+	}
+
+	.action-panel {
+		position: absolute;
+		right: 10px;
+		top: 22px;
+		z-index: 500;
+
+		.action {
+			line-height: @action-button-size;
+			width: @action-button-size;
+			text-align: center;
+			margin-bottom: 10px;
+
+			border: 3px solid green;
+			border-radius: 5px;
+			background: lime;
+		}
+
+		.action-progress {
+			position: absolute;
+			top: 0px;
+			right: @action-button-size + 10;
+			width: 100px;
+			height: 20px;
+
+			border: 2px solid green;
+			border-radius: 2px;
+			background: black;
+
+			.progress-bar {
+				background: lime;
+				height: 100%;
+			}
+		}
+	}
+
 	.game-area {
 		height: @screen-height;
 		position: relative;
@@ -130,42 +179,6 @@
 		    }
 		}
 	}
-
-	.action-panel {
-		position: absolute;
-		right: 10px;
-		top: 10px;
-		z-index: 500;
-
-		.action {
-			line-height: @action-button-size;
-			width: @action-button-size;
-			text-align: center;
-			margin-bottom: 10px;
-
-			border: 3px solid green;
-			border-radius: 5px;
-			background: lime;
-		}
-
-		.action-progress {
-			position: absolute;
-			top: 0px;
-			right: @action-button-size + 10;
-			width: 100px;
-			height: 20px;
-
-			border: 2px solid green;
-			border-radius: 2px;
-			background: black;
-
-			.progress-bar {
-				background: lime;
-				height: 100%;
-			}
-		}
-	}
-
 }
 
 .game-over {

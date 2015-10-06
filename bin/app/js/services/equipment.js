@@ -6,6 +6,7 @@ angular.module('ZombieLabApp')
 	var service = this;
 
 	service.items = {};
+	service.ammo = {};
 
 	service.registerItem = function (item) {
 		item.price = item.price || 0;
@@ -21,6 +22,17 @@ angular.module('ZombieLabApp')
 				service.registerItem(item);
 			});
 		});
+	};
+
+	service.removeAmmo = function () {
+		_.each(service.ammo, function (qty, type) {
+			service.ammo[type] = 0;
+		});
+	};
+
+	service.addAmmo = function (type, qty) {
+		service.ammo[type] = service.ammo[type] || 0;
+		service.ammo[type] += qty;
 	};
 
 	service.newItemByName = function (itemName) {
