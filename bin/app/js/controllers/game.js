@@ -139,9 +139,6 @@ angular.module('ZombieLabApp')
 		$document.bind('keydown', function (event) {
 			var direction = null;
 			switch (event.keyCode) {
-				case 27:
-					gameService.togglePause();
-					break;
 				case 32:
 					$scope.inputDirection('');
 					break;

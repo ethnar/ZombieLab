@@ -14,7 +14,7 @@
 			<h3>{{item.model.name}}</h3>
 			<div class="additional-info">
 				<img class="item-image" ng-src="img/items/{{item.model.image || (item.model.category + '/' + item.model.name)}}.png" />
-				<div class="recommended-skill" ng-show="{{item.model.skill}}">
+				<div class="recommended-skill" ng-show="item.model.skill">
 					Recommended skill:<br/>
 					<skill-bar skill="item.model.skill" value="item.model.skillRequired"></skill-bar>
 				</div>

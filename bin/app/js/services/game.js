@@ -24,6 +24,9 @@ angular.module('ZombieLabApp')
 	service.unpause = function () {
 		service.gamePaused--;
 	};
+	service.isPaused = function () {
+		return service.gamePaused > 0;
+	};
 
 	service.startLoading = function () {
 		var defer = $q.defer();

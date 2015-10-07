@@ -1,0 +1,28 @@
+.tutorial-highlight {
+	box-shadow: 0 0 0 10000px black;
+    z-index: 10000;
+    position: fixed;
+    border-radius: 400px;
+    opacity: 0;
+    transition: opacity 0.8s;
+
+    &::before {
+    	content: "";
+    	position: fixed;
+    	top: 0;
+    	left: 0;
+    	right: 0;
+    	bottom: 0;
+    }
+}
+
+.tutorial-text {
+	z-index: 10010;
+	position: fixed;
+	top: 10px;
+	width: 100%;
+	text-align: center;
+	font-size: 150%;
+	color: white;
+    text-shadow: 0 0 4px black;
+}
