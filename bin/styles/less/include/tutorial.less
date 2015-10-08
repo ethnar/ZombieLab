@@ -1,19 +1,14 @@
-.tutorial-highlight {
-	box-shadow: 0 0 0 10000px black;
-    z-index: 10000;
+.tutorial-overlay {
     position: fixed;
-    border-radius: 400px;
-    opacity: 0;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: black;
+	opacity: 0;
+	z-index: 10000;
     transition: opacity 0.4s;
-
-    &::before {
-    	content: "";
-    	position: fixed;
-    	top: 0;
-    	left: 0;
-    	right: 0;
-    	bottom: 0;
-    }
+    display: none;
 
     &::after {
     	content: "Tap to continue";
@@ -28,6 +23,13 @@
     }
 }
 
+.tutorial-highlight {
+	background-color: white;
+    z-index: 10010;
+    position: fixed;
+    border-radius: 400px;
+}
+
 .tutorial-text {
 	z-index: 10010;
 	position: fixed;
@@ -36,5 +38,6 @@
 	text-align: center;
 	font-size: 150%;
 	color: white;
-    text-shadow: 0 0 4px black;
+	z-index: 10010;
+    text-shadow: 0 0 9px black, 0 0 9px black, 0 0 9px black, 0 0 9px black;
 }

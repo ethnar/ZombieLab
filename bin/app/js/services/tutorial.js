@@ -3,6 +3,7 @@
 angular.module('ZombieLabApp')
 
 .run(function ($interval, $rootScope, gameService, mapService) {
+	var waitForTouchEvents = false;
 	var tutorialHints = [{
 		/*********************************************************************************/
 		text: 'Select 4 characters for your squad<br/>Consider each character\'s items and skills',
@@ -51,7 +52,7 @@ angular.module('ZombieLabApp')
 			return delay('team-setup-4-characters-selection', charactersSelected < 4, 15);
 		},
 		considerDone: function () {
-			return $('.game').length || $('.character-wrapper.selected').length === 4;
+			return $('.game').length;
 		},
 		getHighlights: function () {
 			return getElementHighlight($('.character-wrapper:not(.selected) .image'), 80);
@@ -95,17 +96,21 @@ angular.module('ZombieLabApp')
 	}
 
 	function closeHint() {
-		var tutorialElements = $('.tutorial-highlight,.tutorial-text');
-		tutorialElements.css('opacity', 0);
+		var tutorialElements = $('.tutorial-highlight');
+		$('.tutorial-overlay').css('opacity', 0);
+		$('.tutorial-text').remove();
 		setTimeout(function () {
 			tutorialElements.remove();
 			gameService.unpause();
+			$('.tutorial-overlay').hide();
 		}, 300);
+		$('.tutorial-overlay').unbind('click');
 	}
 
 	function displayHint(highlights, text) {
 		delays = {};
 		var last;
+		var overlay = $('.tutorial-overlay');
 		_.each(highlights, function (highlight) {
 			var highlightElement;
 			last = highlightElement = $('<div></div>')
@@ -114,20 +119,35 @@ angular.module('ZombieLabApp')
 				.css('height', highlight.size)
 				.css('top', highlight.y)
 				.css('left', highlight.x)
-				.appendTo($('body'))
-				.click(closeHint);
-			setTimeout(function () {
-				highlightElement.css('opacity', 0.6 / highlights.length);
-			}, 100);
+				.appendTo(overlay);
 		});
+		$('.tutorial-overlay').show()
+		setTimeout(function () {
+			$('.tutorial-overlay').css('opacity', 0.3);
+		}, 100);
+		setTimeout(function () {
+			$('.tutorial-overlay').unbind('click').click(closeHint);
+		}, 400);
 		$('<div></div>')
 			.addClass('tutorial-text')
 			.html(text)
 			.appendTo($('body'));
+		overlay.show();
 	};
+
+	$(document).on('touchstart mousedown', function () {
+		waitForTouchEvents = true;
+	});
+
+	$(document).on('touchend touchcancel mouseup', function () {
+		waitForTouchEvents = false;
+	});
 
 	setInterval(function () {
 		console.time('tutorial');
+		if (waitForTouchEvents) {
+			return;
+		}
 		if (gameService.isPaused()) {
 			delays = {};
 			return;
@@ -145,6 +165,6 @@ angular.module('ZombieLabApp')
 				}
 			};
 		});
-		console.timeEnd('tutorial');
+//		console.timeEnd('tutorial');
 	}, 500);
 });

@@ -17,15 +17,12 @@ angular.module('ZombieLabApp')
 
 	service.togglePause = function () {
 		service.gamePaused = service.gamePaused ? 0 : 1;
-		console.log('Pause toggled: ' + service.gamePaused);
 	};
 	service.pause = function () {
 		service.gamePaused++;
-		console.log('Pause');
 	};
 	service.unpause = function () {
 		service.gamePaused--;
-		console.log('Un-Pause');
 	};
 	service.isPaused = function () {
 		return service.gamePaused > 0;

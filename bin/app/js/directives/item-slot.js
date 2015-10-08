@@ -68,6 +68,9 @@ angular.module('ZombieLabApp')
 			};
 
 			$scope.showItemInfo = function () {
+				if (!$scope.item) {
+					return;
+				}
 				gameService.pause();
 				var modal = modalService.open({
 					template: 'item-info-modal.html',
