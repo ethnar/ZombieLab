@@ -11,8 +11,8 @@
 			</div>
 			<div class="teamWalkingDirection" data-ng-show="tile.teamWalkingTo">MOVING HERE!</div>
 			<div class="enemies-panel">
-				<div ng-repeat="(enemyType, enemyCount) in getGroupedEnemies(tile.enemies)" class="enemy {{enemyType}}">
-					<span class="enemyCount">{{enemyCount}}</span><span class="enemyIcon {{enemyType}}"></span>
+				<div ng-repeat="(enemyType, enemyCount) in getGroupedEnemies(tile.enemies)" class="enemy {{::enemyType}}">
+					<span class="enemyCount">{{enemyCount}}</span><span class="enemyIcon {{::enemyType}}"></span>
 				</div>
 			</div>
 		</div>

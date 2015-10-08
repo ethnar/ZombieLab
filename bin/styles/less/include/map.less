@@ -62,10 +62,52 @@
 					z-index: 50;
 					background: @wall-color;
 					border: (@map-tile-size - @doorway-width) / 2 solid @wall-color;
-					border-top: none;
-					border-bottom: none;
-					width: @map-tile-size + @wall-thickness;
-					height: @wall-thickness;
+
+					&.S, &.N {
+						border-top: none;
+						border-bottom: none;
+						width: @map-tile-size + @wall-thickness;
+						height: @wall-thickness;
+
+						.door {
+							width: @door-width + 1;
+							height: @wall-thickness + 4;
+							top: -2px;
+							border: (@door-width / 2) solid @door-color;
+							border-top: none;
+							border-bottom: none;
+							left: 50%;
+							margin-left: -@door-width / 2;
+						}
+
+						&.opened .door {
+							width: @doorway-width + @door-width;
+							margin-left: (-@doorway-width - @door-width) / 2;
+						}
+					}
+
+					&.E, &.W {
+						border-left: none;
+						border-right: none;
+						height: @map-tile-size + @wall-thickness;
+						width: @wall-thickness;
+
+						.door {
+							height: @door-width + 1;
+							width: @wall-thickness + 4;
+							left: -2px;
+							border: (@door-width / 2) solid @door-color;
+							border-left: none;
+							border-right: none;
+							top: 50%;
+							margin-top: -@door-width / 2;
+						}
+
+						&.opened .door {
+							height: @doorway-width + @door-width;
+							margin-top: (-@doorway-width - @door-width) / 2;
+						}
+					}
 					
 					position: absolute;
 					top: 50%;
@@ -81,16 +123,8 @@
 
 						.door {
 							display: block;
-							width: @door-width + 1;
-							height: @wall-thickness + 4;
-							top: -2px;
-							border: (@door-width / 2) solid @door-color;
-							border-top: none;
-							border-bottom: none;
 							outline: 1px solid #EEE;
 							position: absolute;
-							left: 50%;
-							margin-left: -@door-width / 2;
 							transition: all 0.5s;
 
 							&.security-1 {
@@ -103,11 +137,6 @@
 	    						border-color: darkred;
 							}
 						}
-
-						&.opened .door {
-							width: @doorway-width + @door-width;
-							margin-left: (-@doorway-width - @door-width) / 2;
-						}
 					}
 
 					&.N {
@@ -119,12 +148,12 @@
 						-webkit-transform: translateY(@map-tile-size / 2);
 					}
 					&.W {
-						transform: translateX(-@map-tile-size / 2) rotate(90deg);
-						-webkit-transform: translateX(-@map-tile-size / 2) rotate(90deg);
+						transform: translateY(-@map-tile-size / 2);
+						-webkit-transform: translateY(-@map-tile-size / 2);
 					}
 					&.E {
-						transform: translateX(@map-tile-size / 2) rotate(90deg);
-						-webkit-transform: translateX(@map-tile-size / 2) rotate(90deg);
+						transform: translateY(-@map-tile-size / 2) translateX(@map-tile-size);
+						-webkit-transform:  translateY(-@map-tile-size / 2) translateX(@map-tile-size);
 					}
 				}
 			}

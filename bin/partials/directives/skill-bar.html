@@ -1,5 +1,5 @@
 <div class="skill-bar">
-	<img ng-src="img/skills/{{skill}}.png" />
+	<img ng-src="img/skills/{{::skill}}.png" />
 	<div class="skill-gauge">
 		<div ng-repeat="i in [1, 2, 3, 4, 5]" class="skill-cell" ng-class="{set: value >= i}"></div>
 	</div>

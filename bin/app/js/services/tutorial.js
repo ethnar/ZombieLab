@@ -11,7 +11,7 @@ angular.module('ZombieLabApp')
 			return $('.team-setup .item:visible').length;
 		},
 		considerDone: function () {
-			return $('.game').length;
+			return commons.mainGame;
 		},
 		getHighlights: function () {
 			return _.union(
@@ -26,7 +26,7 @@ angular.module('ZombieLabApp')
 			return $('.team-setup .item:visible').length;
 		},
 		considerDone: function () {
-			return $('.game').length;
+			return commons.mainGame;
 		},
 		getHighlights: function () {
 			return getElementHighlight($('.team-setup .item-slot.small .item:visible,.team-setup .item:visible').eq(2), 60);
@@ -34,12 +34,12 @@ angular.module('ZombieLabApp')
 	}, {
 		/*********************************************************************************/
 		text: 'Tap character image to include them in your team',
+		delay: 3,
 		condition: function () {
-			var nothingSelected = $('.character-wrapper').length && !$('.character-wrapper.selected').length;
-			return delay('team-setup-any-character-selection', nothingSelected, 3);
+			return $('.character-wrapper').length && !$('.character-wrapper.selected').length;
 		},
 		considerDone: function () {
-			return $('.game').length || $('.character-wrapper.selected').length;
+			return commons.mainGame || $('.character-wrapper.selected').length;
 		},
 		getHighlights: function () {
 			return getElementHighlight($('.character-panel .image'), 80);
@@ -47,12 +47,13 @@ angular.module('ZombieLabApp')
 	}, {
 		/*********************************************************************************/
 		text: 'You will need 4 characters for your team',
+		delay: 15,
 		condition: function () {
 			var charactersSelected = $('.character-wrapper.selected').length;
-			return delay('team-setup-4-characters-selection', charactersSelected < 4, 15);
+			return charactersSelected < 4;
 		},
 		considerDone: function () {
-			return $('.game').length;
+			return commons.mainGame;
 		},
 		getHighlights: function () {
 			return getElementHighlight($('.character-wrapper:not(.selected) .image'), 80);
@@ -60,17 +61,107 @@ angular.module('ZombieLabApp')
 	}, {
 		/*********************************************************************************/
 		text: 'You can start the game',
+		delay: 2,
 		condition: function () {
 			var charactersSelected = $('.character-wrapper.selected').length;
-			return delay('team-setup-go', charactersSelected == 4, 2);
+			return charactersSelected == 4;
 		},
 		considerDone: function () {
-			return $('.game').length;
+			return commons.mainGame;
 		},
 		getHighlights: function () {
 			return getElementHighlight($('button.start-game'), 50);
 		}
+	}, {
+		/*********************************************************************************/
+		text: 'Tap in direction to open door',
+		delay: 3,
+		condition: function () {
+			return !commons.takingAction && commons.mainGame;
+		},
+		considerDone: function () {
+			return $('.wall.has-door.opened').length;
+		},
+		getHighlights: function () {
+			return getElementHighlight($('.start .wall.has-door:visible'), 30);
+		}
+	}, {
+		/*********************************************************************************/
+		text: 'Tap nearby room to move there',
+		delay: 3,
+		condition: function () {
+			return !commons.takingAction && commons.mainGame && $('.wall.has-door.opened').length && mapService.teamLocation.start;
+		},
+		considerDone: function () {
+			return !mapService.teamLocation.start;
+		},
+		getHighlights: function () {
+			return getElementHighlight($('.area.visible:not(.start):visible'), 80);
+		}
+	}, {
+		/*********************************************************************************/
+		text: 'This room has some items here<br/>Tap "Search" to see what\'s there',
+		delay: 1,
+		condition: function () {
+			return mapService.hasItems(mapService.teamLocation);
+		},
+		considerDone: function () {
+			return $('.loot-window:visible').length;
+		},
+		getHighlights: function () {
+			return _.union(
+				getElementHighlight($('.action-panel .action.search'), 80),
+				getElementHighlight($('.action-direction.center'), 80)
+			);
+		}
+	}, {
+		/*********************************************************************************/
+		text: 'Simply tap ammo to pick it up',
+		delay: 1,
+		condition: function () {
+			return $('.loot-window:visible img[src*="ammo"]').length;
+		},
+		considerDone: function () {
+			return false;
+		},
+		getHighlights: function () {
+			return getElementHighlight($('.loot-window img[src*="ammo"]'), 30);
+		}
+	}, {
+		/*********************************************************************************/
+		text: 'Tap item to select it<br/>and then tap empty slot to pick it up',
+		delay: 1,
+		condition: function () {
+			return $('.loot-window:visible img:not([src*="ammo"])').length;
+		},
+		considerDone: function () {
+			return false;
+		},
+		getHighlights: function () {
+			return _.union(
+				getElementHighlight($('.loot-window:visible img:not([src*="ammo"])').first(), 30),
+				getElementHighlight($('.team-panel .item-slot .item:not(:visible)').first().parents('.item-slot'), 30)
+			);
+		}
 	}];
+
+	// TODO: use explosives, reload weapon, exit level, swap items (?)
+
+	var commonsCalculations = {
+		teamSelection: function () {
+			return $('.team-setup');
+		},
+		mainGame: function () {
+			return $('.game').length;
+		},
+		fighting: function () {
+			return !$('.team-running:visible').length;
+		},
+		takingAction: function () {
+			return $('.action-progress:visible').length;
+		}
+	}
+	var commons = {};
 
 	var delays = {};
 	function delay(category, condition, time) {
@@ -152,9 +243,16 @@ angular.module('ZombieLabApp')
 			delays = {};
 			return;
 		}
+		_.each(commonsCalculations, function (method, key) {
+			commons[key] = method();
+		});
 		_.each(tutorialHints, function (hint, idx) {
 			if (!hint.done) {
-				if (!gameService.isPaused() && hint.condition()) {
+				var meetCondition = hint.condition();
+				if (hint.delay) {
+					meetCondition = delay(hint.text, meetCondition, hint.delay);
+				}
+				if (!gameService.isPaused() && meetCondition) {
 					gameService.pause();
 					displayHint(hint.getHighlights(), hint.text);
 					// remove hint
