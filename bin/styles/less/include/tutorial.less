@@ -4,7 +4,7 @@
     position: fixed;
     border-radius: 400px;
     opacity: 0;
-    transition: opacity 0.8s;
+    transition: opacity 0.4s;
 
     &::before {
     	content: "";
@@ -13,6 +13,18 @@
     	left: 0;
     	right: 0;
     	bottom: 0;
+    }
+
+    &::after {
+    	content: "Tap to continue";
+
+    	position: fixed;
+    	right: 5px;
+    	bottom: 5px;
+
+		color: white;
+	    text-shadow: 0 0 4px black;
+	    font-size: 120%;
     }
 }
 

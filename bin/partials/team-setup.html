@@ -8,7 +8,7 @@
 		</div>
 	</div>
 	<div>Team members selected: {{model.charactersSelectedCount}} / {{model.targetTeamSize}}
-	<button ng-click="startGame();" ng-disabled="model.charactersSelectedCount != model.targetTeamSize">
+	<button class="start-game" ng-click="startGame();" ng-disabled="model.charactersSelectedCount != model.targetTeamSize">
 		Go!
 	</button>
 </div>
