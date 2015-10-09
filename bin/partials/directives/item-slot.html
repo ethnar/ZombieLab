@@ -6,7 +6,7 @@
 		<div class="charges" data-ng-show="item.model.charges">{{item.charges}}</div>
 		<div class="quantity" data-ng-show="item.quantity">{{item.quantity}}</div>
 		<div class="reloading" ng-show="slot === 'weapon' &amp;&amp; character.isReloading();">RELOAD</div>
-		<img class="item-image" ng-if="item" ng-src="img/items/{{::item.model.image || (item.model.category + '/' + item.model.name)}}.png" />
+		<img class="item-image" ng-if="item" ng-src="img/items/{{item.model.image || (item.model.category + '/' + item.model.name)}}.png" />
 	</div>
 
 	<script type="text/ng-template" id="item-info-modal.html">
