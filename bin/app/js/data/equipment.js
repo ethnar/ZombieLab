@@ -16,7 +16,7 @@ angular.module('ZombieLabApp')
 				skill: 'weapons',
 				skillRequired: 2,
 				baseChanceToHit: 85,
-				range: 2,
+				range: 1,
 				rof: 400, // miliseconds
 				reload: 3000, // miliseconds
 				startingAmmo: {rifle: 60}

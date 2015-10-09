@@ -1,8 +1,11 @@
 # ZombieLab
 Prototype for ZombieLab game
+# ToDo - top prio
+- Zombie spawners (?)
+- Choose tutorial
 # ToDo
 - Room types
-- Zombie spawners (?)
+- Viewport fixes
 - Fire! (+toxic gas?)
 - Various items (armor, ammobox, etc)
 - Story elements

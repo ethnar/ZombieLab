@@ -9,18 +9,6 @@
 	z-index: 10000;
     transition: opacity 0.4s;
     display: none;
-
-    &::after {
-    	content: "Tap to continue";
-
-    	position: fixed;
-    	right: 5px;
-    	bottom: 5px;
-
-		color: white;
-	    text-shadow: 0 0 4px black;
-	    font-size: 120%;
-    }
 }
 
 .tutorial-highlight {
@@ -32,12 +20,18 @@
 
 .tutorial-text {
 	z-index: 10010;
-	position: fixed;
-	top: 10px;
+	position: absolute;
+	bottom: 10px;
 	width: 100%;
 	text-align: center;
 	font-size: 150%;
 	color: white;
 	z-index: 10010;
     text-shadow: 0 0 9px black, 0 0 9px black, 0 0 9px black, 0 0 9px black;
+
+    &.top {
+		top: 10px;
+		bottom: inherit;
+	}
 }
+

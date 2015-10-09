@@ -88,14 +88,14 @@ angular.module('ZombieLabApp')
 	};
 	
 	service.createGroupForRoom = function (tile) {
-		var roomDifficulty = gameService.getDifficulty();
+		var roomDifficulty = gameService.getDifficulty() / 5 + 80;
 		var chanceToHaveZombies = -1 / (gameService.getDifficulty() / 4000) + 95;
 		var specialGroupsBudget = _.random(0, gameService.getDifficulty() / 2);
 		return service.createGroup(tile, roomDifficulty, chanceToHaveZombies, specialGroupsBudget);
 	};
 
 	service.createGroupForCorridor = function (tile) {
-		var roomDifficulty = gameService.getDifficulty() / 3;
+		var roomDifficulty = (gameService.getDifficulty() / 5 + 80) / 3;
 		var chanceToHaveZombies = -1 / (gameService.getDifficulty() / 2000) + 95;
 		var specialGroupsBudget = 0;
 		return service.createGroup(tile, roomDifficulty, chanceToHaveZombies, specialGroupsBudget);

@@ -22,6 +22,7 @@ angular.module('ZombieLabApp')
 	}, {
 		/*********************************************************************************/
 		text: 'Tap & hold to see item details',
+		delay: 2,
 		condition: function () {
 			return commons.teamSelection && $('.team-setup .item:visible').length;
 		},
@@ -47,7 +48,7 @@ angular.module('ZombieLabApp')
 	}, {
 		/*********************************************************************************/
 		text: 'You will need 4 characters for your team',
-		delay: 15,
+		delay: 7,
 		condition: function () {
 			return commons.teamSelection && $('.character-wrapper.selected').length < 4;
 		},
@@ -61,6 +62,7 @@ angular.module('ZombieLabApp')
 		/*********************************************************************************/
 		text: 'You can start the game',
 		delay: 2,
+		position: 'top',
 		condition: function () {
 			return commons.teamSelection && $('.character-wrapper.selected').length == 4;
 		},
@@ -91,7 +93,7 @@ angular.module('ZombieLabApp')
 			return commons.mainGame && !commons.fighting && !commons.takingAction && $('.wall.has-door.opened').length && mapService.teamLocation.start;
 		},
 		considerDone: function () {
-			return !mapService.teamLocation.start;
+			return commons.mainGame && !mapService.teamLocation.start;
 		},
 		getHighlights: function () {
 			return getElementHighlight($('.area.visible:not(.start):visible'), 80);
@@ -169,7 +171,7 @@ angular.module('ZombieLabApp')
 		}
 	}];
 
-	// TODO: use explosives, enemies, tougher enemies, reload weapon, exit level, swap items (?)
+	// TODO: use explosives, tougher enemies, reload weapon, exit level, biting, healing, swap items (?)
 
 	var commonsCalculations = {
 		teamSelection: function () {
@@ -222,8 +224,9 @@ angular.module('ZombieLabApp')
 		$('.tutorial-overlay').unbind('click');
 	}
 
-	function displayHint(highlights, text) {
+	function displayHint(hint) {
 		delays = {};
+		var highlights = hint.getHighlights();
 		var last;
 		var overlay = $('.tutorial-overlay');
 		_.each(highlights, function (highlight) {
@@ -245,7 +248,8 @@ angular.module('ZombieLabApp')
 		}, 400);
 		$('<div></div>')
 			.addClass('tutorial-text')
-			.html(text)
+			.html(hint.text)
+			.toggleClass('top', hint.position === 'top')
 			.appendTo($('body'));
 		overlay.show();
 	};
@@ -278,7 +282,7 @@ angular.module('ZombieLabApp')
 				}
 				if (!gameService.isPaused() && meetCondition) {
 					gameService.pause();
-					displayHint(hint.getHighlights(), hint.text);
+					displayHint(hint);
 					// remove hint
 					hint.done = true;
 					$rootScope.$apply();
@@ -287,6 +291,6 @@ angular.module('ZombieLabApp')
 				}
 			};
 		});
-//		console.timeEnd('tutorial');
+		console.timeEnd('tutorial');
 	}, 500);
 });

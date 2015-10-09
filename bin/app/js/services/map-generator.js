@@ -191,9 +191,10 @@ angular.module('ZombieLabApp')
 	};
 
 	service.lockDoors = function () {
-		for (var i = 0; i < mapService.paths.length / 2; i++) {
+		var maxSecurity = Math.min(gameService.getDifficulty() / 100, 3);
+		for (var i = 0; i < mapService.paths.length * maxSecurity / 6 ; i++) {
 			var selected = _.sample(mapService.paths);
-			if (selected.door && selected.security < 3) {
+			if (selected.door && selected.security < maxSecurity) {
 				selected.security++;
 			}
 		}
