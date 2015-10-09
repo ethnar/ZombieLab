@@ -8,7 +8,7 @@ angular.module('ZombieLabApp')
 		/*********************************************************************************/
 		text: 'Select 4 characters for your squad<br/>Consider each character\'s items and skills',
 		condition: function () {
-			return $('.team-setup .item:visible').length;
+			return commons.teamSelection && $('.team-setup .item:visible').length;
 		},
 		considerDone: function () {
 			return commons.mainGame;
@@ -23,7 +23,7 @@ angular.module('ZombieLabApp')
 		/*********************************************************************************/
 		text: 'Tap & hold to see item details',
 		condition: function () {
-			return $('.team-setup .item:visible').length;
+			return commons.teamSelection && $('.team-setup .item:visible').length;
 		},
 		considerDone: function () {
 			return commons.mainGame;
@@ -36,7 +36,7 @@ angular.module('ZombieLabApp')
 		text: 'Tap character image to include them in your team',
 		delay: 3,
 		condition: function () {
-			return $('.character-wrapper').length && !$('.character-wrapper.selected').length;
+			return commons.teamSelection && $('.character-wrapper').length && !$('.character-wrapper.selected').length;
 		},
 		considerDone: function () {
 			return commons.mainGame || $('.character-wrapper.selected').length;
@@ -49,8 +49,7 @@ angular.module('ZombieLabApp')
 		text: 'You will need 4 characters for your team',
 		delay: 15,
 		condition: function () {
-			var charactersSelected = $('.character-wrapper.selected').length;
-			return charactersSelected < 4;
+			return commons.teamSelection && $('.character-wrapper.selected').length < 4;
 		},
 		considerDone: function () {
 			return commons.mainGame;
@@ -63,8 +62,7 @@ angular.module('ZombieLabApp')
 		text: 'You can start the game',
 		delay: 2,
 		condition: function () {
-			var charactersSelected = $('.character-wrapper.selected').length;
-			return charactersSelected == 4;
+			return commons.teamSelection && $('.character-wrapper.selected').length == 4;
 		},
 		considerDone: function () {
 			return commons.mainGame;
@@ -77,7 +75,7 @@ angular.module('ZombieLabApp')
 		text: 'Tap in direction to open door',
 		delay: 3,
 		condition: function () {
-			return !commons.takingAction && commons.mainGame;
+			return commons.mainGame && !commons.takingAction;
 		},
 		considerDone: function () {
 			return $('.wall.has-door.opened').length;
@@ -90,7 +88,7 @@ angular.module('ZombieLabApp')
 		text: 'Tap nearby room to move there',
 		delay: 3,
 		condition: function () {
-			return !commons.takingAction && commons.mainGame && $('.wall.has-door.opened').length && mapService.teamLocation.start;
+			return commons.mainGame && !commons.fighting && !commons.takingAction && $('.wall.has-door.opened').length && mapService.teamLocation.start;
 		},
 		considerDone: function () {
 			return !mapService.teamLocation.start;
@@ -103,7 +101,7 @@ angular.module('ZombieLabApp')
 		text: 'This room has some items here<br/>Tap "Search" to see what\'s there',
 		delay: 1,
 		condition: function () {
-			return mapService.hasItems(mapService.teamLocation);
+			return commons.mainGame && !commons.fighting && mapService.hasItems(mapService.teamLocation);
 		},
 		considerDone: function () {
 			return $('.loot-window:visible').length;
@@ -119,7 +117,7 @@ angular.module('ZombieLabApp')
 		text: 'Simply tap ammo to pick it up',
 		delay: 1,
 		condition: function () {
-			return $('.loot-window:visible img[src*="ammo"]').length;
+			return commons.mainGame && $('.loot-window:visible img[src*="ammo"]').length;
 		},
 		considerDone: function () {
 			return false;
@@ -132,7 +130,7 @@ angular.module('ZombieLabApp')
 		text: 'Tap item to select it<br/>and then tap empty slot to pick it up',
 		delay: 1,
 		condition: function () {
-			return $('.loot-window:visible img:not([src*="ammo"])').length;
+			return commons.mainGame && $('.loot-window:visible img:not([src*="ammo"])').length;
 		},
 		considerDone: function () {
 			return false;
@@ -143,9 +141,35 @@ angular.module('ZombieLabApp')
 				getElementHighlight($('.team-panel .item-slot .item:not(:visible)').first().parents('.item-slot'), 30)
 			);
 		}
+	}, {
+		/*********************************************************************************/
+		text: 'Those are zombies<br/>Your team automatically shoots at them',
+		delay: 0,
+		condition: function () {
+			return commons.mainGame && $('.tile.visible .enemies-panel .enemy').length;
+		},
+		considerDone: function () {
+			return false;
+		},
+		getHighlights: function () {
+			return getElementHighlight($('.tile.visible .enemies-panel .enemy').parents('.enemies-panel').first(), 30);
+		}
+	}, {
+		/*********************************************************************************/
+		text: 'All actions take time, including walking<br/>Progress is shown in top-right corner',
+		delay: 1,
+		condition: function () {
+			return commons.mainGame && commons.takingAction;
+		},
+		considerDone: function () {
+			return false;
+		},
+		getHighlights: function () {
+			return getElementHighlight($('.action-progress'), 50);
+		}
 	}];
 
-	// TODO: use explosives, reload weapon, exit level, swap items (?)
+	// TODO: use explosives, enemies, tougher enemies, reload weapon, exit level, swap items (?)
 
 	var commonsCalculations = {
 		teamSelection: function () {
