@@ -259,7 +259,7 @@ angular.module('ZombieLabApp')
 
 	controller.doTheShooting = function (delta) {
 		_.each(_.shuffle(characterService.team), function (character) {
-			if (character.weapon && character.canShoot()) {
+			if (character.weapon && character.weapon.model.category === 'weapon' && character.canShoot()) {
 				if (character.weapon.ammo > 0 && character.reloadingTimer <= 0) {
 					var validTargets = _.groupBy(mapService.getValidTargets(), 'distance');
 					var target = null;
