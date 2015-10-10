@@ -182,8 +182,20 @@ angular.module('ZombieLabApp')
 		getHighlights: function () {
 			return getElementHighlight($('.action.next-level'), 80);
 		}
+	}, {
+		/*********************************************************************************/
+		text: 'Sewers and Restrooms continually spawn zombies',
+		delay: 0,
+		condition: function () {
+			return $('.tile.visible:contains("restrooms"),.tile.visible:contains("sewers")').length;
+		},
+		considerDone: function () {
+			return false;
+		},
+		getHighlights: function () {
+			return getElementHighlight($('.tile.visible:contains("restrooms"),.tile.visible:contains("sewers")'), 80);
+		}
 	}];
-
 
 	// TODO: use explosives, tougher enemies, reload weapon, exit level, biting, healing, swap items (?)
 

@@ -30,7 +30,7 @@ angular.module('ZombieLabApp')
 		sewers: {
 			chance: 30,
 			enemies: 0.6,
-			spawn: 2,
+			spawn: 1.5,
 			spawnSpecial: true
 			// spawning?
 		},

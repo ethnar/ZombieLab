@@ -214,7 +214,7 @@ angular.module('ZombieLabApp')
 		_.each(items, function (score, itemCategory) {
 			switch (itemCategory) {
 				case 'ammo':
-					var amount = Math.floor(Math.sqrt(gameDifficulty) * score);
+					var amount = Math.floor(Math.sqrt(gameDifficulty) * score) * 2;
 					var ammo = {};
 					while (amount > 0) {
 						var add = Math.min(_.random(3, 9));
@@ -291,7 +291,7 @@ angular.module('ZombieLabApp')
 	};
 
 	service.getMaxDoorSecurity = function () {
-		return Math.min(gameService.getDifficulty() / 100, 3);
+		return Math.floor(Math.min(gameService.getDifficulty() / 100, 3));
 	};
 
 	service.lockDoors = function () {
