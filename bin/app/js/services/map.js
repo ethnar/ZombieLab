@@ -16,6 +16,7 @@ angular.module('ZombieLabApp')
 	service.map = [];
 	service.areas = [];
 	service.paths = [];
+	service.spawners = [];
 	service.mapSizeX = 10;
 	service.mapSizeY = 8;
 	service.startTile = null;
@@ -26,6 +27,7 @@ angular.module('ZombieLabApp')
 	service.teamLocation = null;
 	service.validTargets = [];
 	service.teamSteps = 10;
+	service.roomTypes
 
 	service.getTileSize = function () {
 		if (!service.tileSize) {

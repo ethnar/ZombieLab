@@ -14,3 +14,4 @@ Prototype for ZombieLab game
 - Saves (one save only)
 - consider http://zeptojs.com/
 - touchstart instead of click
+- remove 2x2 corridors

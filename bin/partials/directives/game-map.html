@@ -5,6 +5,7 @@
 			<game-map-wall tile="tile" direction="E"></game-map-wall>
 			<game-map-wall tile="tile" direction="W"></game-map-wall>
 			<game-map-wall tile="tile" direction="S"></game-map-wall>
+			<div class="room-type">{{tile.roomType}}</div>
 			<div class="items" ng-show="hasItems(tile)">ITEMS!</div>
 			<div class="animations-frame">
 				<div ng-repeat="animation in tile.animations" class="animation" ng-class="animation"></div>

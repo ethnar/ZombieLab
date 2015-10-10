@@ -238,7 +238,27 @@ angular.module('ZombieLabApp')
 			controller.progressAction(delta);
 			controller.doTheShooting(delta);
 			controller.doTheWalking(delta);
+			controller.spawnZombies(delta);
 		}, interval);
+	};
+
+	controller.spawnZombies = function (delta) {
+		_.each(mapService.spawners, function (spawnerTile) {
+			if (spawnerTile.teamHeat) {
+				spawnerTile.spawnTimer -= delta;
+				if (spawnerTile.spawnTimer < 0) {
+					var random = _.random(1, 100);
+					if (random < 5) {
+						var enemy = _.sample(enemyService.enemyTypesSpecials);
+					} else {
+						var enemy = _.sample(enemyService.enemyTypesFillers);
+					}
+					spawnerTile.enemies.push(enemyService.newEnemy(enemy, spawnerTile));
+					mapService.checkVisibility();
+					spawnerTile.spawnTimer += _.random(5000, 10000) / spawnerTile.spawnRate;
+				}
+			}
+		});
 	};
 
 	controller.updateTeamSpeed = function (delta) {
@@ -259,7 +279,7 @@ angular.module('ZombieLabApp')
 
 	controller.doTheShooting = function (delta) {
 		_.each(_.shuffle(characterService.team), function (character) {
-			if (character.weapon && character.weapon.model.category === 'weapon' && character.canShoot()) {
+			if (character.weapon && character.weapon.model.category === 'weapons' && character.canShoot()) {
 				if (character.weapon.ammo > 0 && character.reloadingTimer <= 0) {
 					var validTargets = _.groupBy(mapService.getValidTargets(), 'distance');
 					var target = null;

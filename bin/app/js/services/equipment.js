@@ -5,14 +5,17 @@ angular.module('ZombieLabApp')
 .service('equipmentService', function () {
 	var service = this;
 
-	service.items = {};
+	service.itemTypesByName = {};
+	service.itemTypes = {};
 	service.ammo = {};
 
 	service.registerItem = function (item) {
 		item.price = item.price || 0;
 		item.size = item.size || 'small';
 		item.isLarge = item.isLarge || false;
-		service.items[item.name] = item;
+		service.itemTypes[item.category] = service.itemTypes[item.category] || {};
+		service.itemTypesByName[item.name] = item;
+		service.itemTypes[item.category][item.name] = item;
 	};
 
 	service.registerItems = function (data) {
@@ -36,17 +39,17 @@ angular.module('ZombieLabApp')
 	};
 
 	service.newItemByName = function (itemName) {
-		if (!service.items[itemName]) {
+		if (!service.itemTypesByName[itemName]) {
 			throw new Error('No such item as ' + itemName);
 		}
-		return service.newItem(service.items[itemName]);
+		return service.newItem(service.itemTypesByName[itemName]);
 	};
 
 	service.newItem = function (itemModel) {
 		var newItem = {
 			model: itemModel
 		};
-		if (itemModel.category === 'weapon') {
+		if (itemModel.category === 'weapons') {
 			newItem.ammo = itemModel.clipSize;
 		} else {
 			newItem.charges = itemModel.charges;

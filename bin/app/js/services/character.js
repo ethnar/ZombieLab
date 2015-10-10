@@ -233,7 +233,7 @@ angular.module('ZombieLabApp')
 	};
 
 	service.useItem = function (character, item, size) {
-		if (item.model.category === 'weapon' && size === 'weapon') {
+		if (item.model.category === 'weapons' && size === 'weapon') {
 			service.startReloading(character);
 		}
 	};

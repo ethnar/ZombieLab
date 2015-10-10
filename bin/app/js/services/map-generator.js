@@ -19,6 +19,7 @@ angular.module('ZombieLabApp')
 		mapService.areaCount = 0;
 		mapService.areas = [];
 		mapService.paths = [];
+		mapService.spawners = [];
 		for (var x = 0; x < mapService.mapSizeX; x++) {
 			mapService.map[x] = [];
 			for (var y = 0; y < mapService.mapSizeY; y++) {
@@ -167,31 +168,134 @@ angular.module('ZombieLabApp')
 		}
 	};
 
+	var roomChanceSum = 0;
+	service.pickRandomRoom = function (tile) {
+		if (!roomChanceSum) {
+			_.each(mapService.roomTypes, function (roomType) {
+				roomChanceSum += roomType.chance;
+			});
+		}
+
+		var random = _.random(1, roomChanceSum);
+
+		_.each(mapService.roomTypes, function (roomType, roomTypeName) {
+			if (random >= 0 && random <= roomType.chance) {
+				tile.roomType = roomTypeName;
+				random -= roomType.chance;
+			} else {
+				random -= roomType.chance;
+			}
+		});
+		var roomType = mapService.roomTypes[tile.roomType];
+
+		if (roomType.security) {
+			service.lockRoomDoors(tile, Math.min(roomType.security, service.getMaxDoorSecurity()));
+		}
+
+		if (roomType.spawn) {
+			service.createSpawner(tile, roomType);
+		}
+
+		tile.enemies = enemyService.createGroup(tile, roomType.enemies, roomType.enemiesSpecial);
+
+		service.putItemsInRoom(roomType.items, tile);
+	};
+
+	service.createSpawner = function (tile, roomType) {
+		tile.spawnRate = roomType.spawn;
+		tile.spawnSpecial = roomType.spawnSpecial;
+		tile.spawnTimer = 0;
+		mapService.spawners.push(tile);
+	};
+
+	service.putItemsInRoom = function (items, tile) {
+		var gameDifficulty = gameService.getDifficulty();
+		var idx = 0;
+		_.each(items, function (score, itemCategory) {
+			switch (itemCategory) {
+				case 'ammo':
+					var amount = Math.floor(Math.sqrt(gameDifficulty) * score);
+					var ammo = {};
+					while (amount > 0) {
+						var add = Math.min(_.random(3, 9));
+						var ammoType = _.sample(equipmentService.itemTypes.ammo).name;
+						amount -= add;
+						ammo[ammoType] = ammo[ammoType] || 0;
+						ammo[ammoType] += add;
+					}
+					_.each(ammo, function (qty, type) {
+						var item = equipmentService.newItem(equipmentService.itemTypesByName[type]);
+						item.quantity = qty;
+						tile.items[idx++] = item;
+					});
+					break;
+				case 'weapons':
+					while (score > 0) {
+						var random = Math.floor(_.random(gameDifficulty * 0.9, gameDifficulty * 1.1)) * Math.min(1, score);
+						score -= 1;
+						var selected = null;
+						var difference = Infinity;
+						_.each(equipmentService.itemTypes.weapons, function (weapon) {
+							var currentDifference = Math.abs(weapon.gameDifficulty - random);
+							if (currentDifference < difference) {
+								selected = weapon;
+								difference = currentDifference;
+							}
+						});
+						tile.items[idx++] = equipmentService.newItem(selected);
+					}
+					break;
+				case 'medications':
+				case 'explosives':
+				case 'hacking':
+					var random = _.random(score * 0.8, score * 1.2, true);
+					while (random > 0) {
+						var validItems = _.filter(equipmentService.itemTypes[itemCategory], function (med) {
+							return med.value <= random;
+						});
+						var item = _.sample(validItems);
+						if (!item) {
+							break;
+						}
+						tile.items[idx++] = equipmentService.newItem(item);
+						random -= item.value;
+					}
+					break;
+				default:
+					console.warn('Oi! You forgot about ' + itemCategory);
+			}
+		});
+	};
+
+	service.lockRoomDoors = function (tile, security) {
+		_.each(directions, function (direction) {
+			if (tile[direction] && tile[direction].door) {
+				tile[direction].security = Math.max(tile[direction].security, security);
+			}
+		});
+	};
+
 	service.fillRooms = function () {
 		for (var x = 0; x < mapService.mapSizeX; x++) {
 			for (var y = 0; y < mapService.mapSizeY; y++) {
 				var tile = mapService.map[x][y];
-				if (tile.area && !tile.start) {
+				if (tile.area && !tile.start && !tile.finish) {
 					if (tile.room) {
-						tile.enemies = enemyService.createGroupForRoom(tile);
-						var idx = 0;
-						while (_.random(0, 6) > idx) {
-							 var item = equipmentService.newItem(_.sample(equipmentService.items));
-							 if (item.model.category == 'powerUps') {
-							 	item.quantity = 30;
-							 }
-							 tile.items[idx++] = item;
-						}
+						service.pickRandomRoom(tile);
 					} else {
-						tile.enemies = enemyService.createGroupForCorridor(tile);
+						tile.enemies = enemyService.createGroup(tile, 0.3, 0);
 					}
 				}
 			}
 		}
 	};
 
+	service.getMaxDoorSecurity = function () {
+		return Math.min(gameService.getDifficulty() / 100, 3);
+	};
+
 	service.lockDoors = function () {
-		var maxSecurity = Math.min(gameService.getDifficulty() / 100, 3);
+		var maxSecurity = service.getMaxDoorSecurity();
 		for (var i = 0; i < mapService.paths.length * maxSecurity / 6 ; i++) {
 			var selected = _.sample(mapService.paths);
 			if (selected.door && selected.security < maxSecurity) {
