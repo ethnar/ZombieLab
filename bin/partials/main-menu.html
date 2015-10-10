@@ -1,10 +1,18 @@
 <div class="main-menu">
 	<div class="big-button-wrapper">
-		<div class="big-button" ng-click="startNewGame();">
+		<div class="big-button" ng-click="selectingTutorial = true;">
 			New Game
 		</div>
 		<div class="big-button" ng-disabled="true" ng-click="continueGame();">
 			Continue
+		</div>
+	</div>
+	<div class="big-button-wrapper" ng-show="selectingTutorial">
+		<div class="big-button" ng-click="startNewGame(true);">
+			With tutorial
+		</div>
+		<div class="big-button" ng-click="startNewGame(false);">
+			Skip tutorial
 		</div>
 	</div>
 </div>

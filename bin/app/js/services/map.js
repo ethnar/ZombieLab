@@ -16,8 +16,8 @@ angular.module('ZombieLabApp')
 	service.map = [];
 	service.areas = [];
 	service.paths = [];
-	service.mapSizeX = 14;
-	service.mapSizeY = 9;
+	service.mapSizeX = 10;
+	service.mapSizeY = 8;
 	service.startTile = null;
 	service.finishTile = null;
 	service.roomCount = 0;

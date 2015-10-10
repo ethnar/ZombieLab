@@ -169,7 +169,21 @@ angular.module('ZombieLabApp')
 		getHighlights: function () {
 			return getElementHighlight($('.action-progress'), 50);
 		}
+	}, {
+		/*********************************************************************************/
+		text: 'From here you can go to the next level',
+		delay: 0,
+		condition: function () {
+			return $('.action.next-level:visible').length;
+		},
+		considerDone: function () {
+			return false;
+		},
+		getHighlights: function () {
+			return getElementHighlight($('.action.next-level'), 80);
+		}
 	}];
+
 
 	// TODO: use explosives, tougher enemies, reload weapon, exit level, biting, healing, swap items (?)
 
@@ -264,7 +278,7 @@ angular.module('ZombieLabApp')
 
 	setInterval(function () {
 		console.time('tutorial');
-		if (waitForTouchEvents) {
+		if (waitForTouchEvents || !gameService.tutorialEnabled) {
 			return;
 		}
 		if (gameService.isPaused()) {

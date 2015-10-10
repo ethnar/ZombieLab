@@ -9,6 +9,7 @@ angular.module('ZombieLabApp')
 	service.selectedItemSlot = null;
 	service.names = ['Alan', 'Arthur', 'Jake', 'Jane', 'Hilda', 'Thomas', 'Natalie', 'John', 'Martha', 'Ashley'];
 	service.availableNames = null;
+	service.tutorialEnabled = false;
 	service.gamePaused = 0;
 	service.gameLoading = {
 		isLoading: true
