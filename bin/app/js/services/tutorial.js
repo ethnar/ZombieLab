@@ -175,7 +175,7 @@ angular.module('ZombieLabApp')
 
 	var commonsCalculations = {
 		teamSelection: function () {
-			return $('.team-setup');
+			return $('.team-setup').length;
 		},
 		mainGame: function () {
 			return $('.game').length;
@@ -291,6 +291,6 @@ angular.module('ZombieLabApp')
 				}
 			};
 		});
-		console.timeEnd('tutorial');
+//		console.timeEnd('tutorial');
 	}, 500);
 });
