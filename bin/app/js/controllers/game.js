@@ -248,8 +248,9 @@ angular.module('ZombieLabApp')
 				spawnerTile.spawnTimer -= delta;
 				if (spawnerTile.spawnTimer < 0) {
 					var random = _.random(1, 100);
-					if (random < 5) {
-						var enemy = _.sample(enemyService.enemyTypesSpecials);
+					var specialEnemies = enemyService.getEnemyTypesSpecialsForLevel();
+					if (specialEnemies.length && random < 3) {
+						var enemy = _.sample(specialEnemies);
 					} else {
 						var enemy = _.sample(enemyService.enemyTypesFillers);
 					}

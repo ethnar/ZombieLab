@@ -248,15 +248,20 @@ angular.module('ZombieLabApp')
 
 	service.reloading = function (character, delta) {
 		var ammoType = character.weapon.model.weaponClass;
-		if (character.reloadingWeapon !== character.weapon || equipmentService.ammo[ammoType] == 0) {
-			// weapon swapped, stop reloading
+		if ((character.reloadingWeapon && character.reloadingWeapon !== character.weapon) || equipmentService.ammo[ammoType] == 0) {
+			// weapon swapped or no ammo, stop reloading
+			character.reloadingWeapon = null;
 			character.reloadingTimer = 0;
 		} else {
-			character.reloadingTimer -= delta;
-			if (character.reloadingTimer <= 0) {
-				var ammoAdded = Math.min(character.weapon.model.clipSize - character.weapon.ammo, equipmentService.ammo[ammoType]);
-				character.weapon.ammo += ammoAdded;
-				equipmentService.ammo[ammoType] -= ammoAdded;
+			if (character.reloadingWeapon) {
+				character.reloadingTimer -= delta;
+				if (character.reloadingTimer <= 0) {
+					var ammoAdded = Math.min(character.weapon.model.clipSize - character.weapon.ammo, equipmentService.ammo[ammoType]);
+					character.weapon.ammo += ammoAdded;
+					equipmentService.ammo[ammoType] -= ammoAdded;
+				}
+			} else {
+				service.startReloading(character);
 			}
 		}
 	};

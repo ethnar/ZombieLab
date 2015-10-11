@@ -41,6 +41,17 @@ angular.module('ZombieLabApp')
 		return !enemyType.filler;
 	});
 
+	var getEnemyTypesSpecialsForLevelCache = {};
+	service.getEnemyTypesSpecialsForLevel = function () {
+		var difficulty = gameService.getDifficulty();
+		if (!getEnemyTypesSpecialsForLevelCache[difficulty]) {
+			getEnemyTypesSpecialsForLevelCache[difficulty] = _.filter(service.enemyTypesSpecials, function (enemyType) {
+				return enemyType.minDifficulty <= gameService.getDifficulty();
+			});
+		}
+		return getEnemyTypesSpecialsForLevelCache[difficulty];
+	};
+
 	service.newEnemy = function (type, tile) {
 		return {
 			type: type,
