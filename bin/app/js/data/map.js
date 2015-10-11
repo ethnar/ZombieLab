@@ -20,7 +20,7 @@ angular.module('ZombieLabApp')
 		},
 
 		restrooms: {
-			chance: 50,
+			chance: 30,
 			enemies: 0.6,
 			spawn: 1,
 			items: {
@@ -28,7 +28,7 @@ angular.module('ZombieLabApp')
 			}
 		},
 		sewers: {
-			chance: 30,
+			chance: 15,
 			enemies: 0.6,
 			spawn: 1.5,
 			spawnSpecial: true
