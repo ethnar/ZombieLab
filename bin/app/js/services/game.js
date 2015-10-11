@@ -14,7 +14,7 @@ angular.module('ZombieLabApp')
 	service.gameLoading = {
 		isLoading: true
 	};
-	var loadingTransition = parseFloat($('.loading-overlay').css('transition').match(/[0-9]*\.?[0-9]s/)[0]);
+	var loadingTransition = parseFloat($('.loading-overlay').css('transition').match(/[0-9]*\.?[0-9]s/) ? $('.loading-overlay').css('transition').match(/[0-9]*\.?[0-9]s/)[0] : 0.4);
 
 	service.togglePause = function () {
 		service.gamePaused = service.gamePaused ? 0 : 1;

@@ -289,7 +289,7 @@ angular.module('ZombieLabApp')
 	});
 
 	setInterval(function () {
-		console.time('tutorial');
+//		console.time('tutorial');
 		if (waitForTouchEvents || !gameService.tutorialEnabled) {
 			return;
 		}
