@@ -184,7 +184,7 @@ angular.module('ZombieLabApp')
 		}
 	}, {
 		/*********************************************************************************/
-		text: 'Sewers and Restrooms continually spawn zombies',
+		text: 'Sewers and Restrooms periodically spawn zombies',
 		delay: 0,
 		condition: function () {
 			return $('.tile.visible:contains("restrooms"),.tile.visible:contains("sewers")').length;
@@ -197,7 +197,7 @@ angular.module('ZombieLabApp')
 		}
 	}];
 
-	// TODO: use explosives, tougher enemies, reload weapon, exit level, biting, healing, swap items (?)
+	// TODO: use explosives, tougher enemies, reload weapon, biting, healing, swap items (?)
 
 	var commonsCalculations = {
 		teamSelection: function () {

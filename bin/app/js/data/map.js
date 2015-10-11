@@ -52,7 +52,7 @@ angular.module('ZombieLabApp')
 			//mini-tension room?
 		},
 
-		securityRoom: {
+		security: {
 			// hack for map / guns
 			chance: 10,
 			security: 1,
@@ -100,7 +100,7 @@ angular.module('ZombieLabApp')
 			}
 			// GUNS / ammo
 		},
-		securityCheckpoint: {
+		checkpoint: {
 			chance: 10,
 			security: 1,
 			enemies: 1,

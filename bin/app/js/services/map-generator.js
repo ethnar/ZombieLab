@@ -304,6 +304,42 @@ angular.module('ZombieLabApp')
 		}
 	};
 
+	service.fixCorridors = function () {
+		for (var x = 0; x < mapService.mapSizeX - 1; x++) {
+			for (var y = 0; y < mapService.mapSizeY - 1; y++) {
+				var tile = mapService.map[x][y];
+				if (!tile.room && tile.E && tile.S) {
+					var tileE = mapService.map[x + 1][y];
+					var tileS = mapService.map[x][y + 1];
+					if (!tileE.room && tileE.S && !tileS.room && tileS.E) {
+						var tileSE = mapService.map[x + 1][y + 1];
+						if (!tileSE.room) {
+							var random = _.sample(directions);
+							switch (random) {
+								case 'E': 
+									delete tile.E;
+									delete tileE.W;
+									break;
+								case 'S':
+									delete tileE.S;
+									delete tileSE.N;
+									break;
+								case 'W':
+									delete tileSE.W;
+									delete tileS.E;
+									break;
+								case 'N':
+									delete tileS.N;
+									delete tile.S;
+									break;
+							}
+						}
+					}
+				}
+			}
+		}
+	};
+
 	service.createNewMap = function () {
 		service.wipeMap();
 		service.generatePath();
@@ -311,6 +347,7 @@ angular.module('ZombieLabApp')
 		service.sizeAreas();
 		service.fillRooms();
 		service.lockDoors();
+		service.fixCorridors();
 		mapService.moveTeam(mapService.startTile);
 	};
 });

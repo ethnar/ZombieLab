@@ -123,7 +123,7 @@ angular.module('ZombieLabApp')
 				distance++;
 				currentTile.teamHeat = service.teamSteps - distance;
 				service.registerValidTargets(currentTile, distance);
-				if (currentTile.room) {
+				if (currentTile.room || true) {// only 1 sq sight range
 					break;
 				}
 			} while (true);

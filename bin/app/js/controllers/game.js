@@ -255,7 +255,7 @@ angular.module('ZombieLabApp')
 					}
 					spawnerTile.enemies.push(enemyService.newEnemy(enemy, spawnerTile));
 					mapService.checkVisibility();
-					spawnerTile.spawnTimer += _.random(5000, 10000) / spawnerTile.spawnRate;
+					spawnerTile.spawnTimer += _.random(10000, 16000) / spawnerTile.spawnRate;
 				}
 			}
 		});
