@@ -1,8 +1,8 @@
 'use strict';
 
-angular.module('ZombieLabApp', ['ngRoute', 'angular-gestures'])
+angular.module('ZombieLabApp', ['ngRoute', 'ngTouch'])
 
-.config(function($routeProvider, $locationProvider, hammerDefaultOptsProvider) {
+.config(function($routeProvider, $locationProvider) {
 	$routeProvider
 		.when('/main-menu', {
 			templateUrl: 'partials/main-menu.html',

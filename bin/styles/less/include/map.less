@@ -140,7 +140,9 @@
 							display: block;
 							outline: 1px solid #EEE;
 							position: absolute;
-							transition: all 0.5s;
+							.game-ready & {
+								transition: all 0.5s;
+							}
 
 							&.security-1 {
 	    						border-color: orange;

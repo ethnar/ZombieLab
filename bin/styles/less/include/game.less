@@ -33,11 +33,6 @@
 }
 
 .game {
-	&.game-ready {
-		.map {
-			transition: 1s top, 1s left;
-		}
-	}
 
 	.team-panel {
 		width: @character-panel-width * 2;
@@ -112,6 +107,9 @@
 		overflow: hidden;
 
 		.map {
+			.game-ready& {
+				transition: 1s top, 1s left;
+			}
 			position: absolute;
 			width: @map-tile-size * 50;
 		}

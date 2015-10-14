@@ -38,7 +38,7 @@
 
 	<script type="text/ng-template" id="character-info-modal.html">
 		<div class="character-info-modal">
-			<character-panel character="model.selectedCharacter" disable-items="true" character-hold-action="showCharacterInfo(model.selectedCharacter);"></character-panel>
+			<character-panel character="model.selectedCharacter" disable-items="true"></character-panel>
 			<div class="skills">
 				<skill-bar ng-repeat="(skill, value) in model.selectedCharacter.skills" skill="skill" value="value"></skill-bar>
 			</div>
