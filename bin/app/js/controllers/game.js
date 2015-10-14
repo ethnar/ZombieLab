@@ -362,6 +362,11 @@ angular.module('ZombieLabApp')
 							if (_.random(1, 100) < chanceToWalk) {
 								var targetTile = mapService.getTileInDirection(tile, tile.enemyDirection);
 								mapService.moveEnemy(enemy, targetTile);
+								_.each(tile.enemies, function (otherEnemiesInTheRoom) {
+									if (otherEnemiesInTheRoom !== enemy) {
+										otherEnemiesInTheRoom.walking -= 200;
+									}
+								});
 							}
 						}
 					}
