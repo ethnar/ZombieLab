@@ -247,7 +247,7 @@ angular.module('ZombieLabApp')
 			gameService.unpause();
 			$('.tutorial-overlay').hide();
 		}, 300);
-		$('.tutorial-overlay').unbind('click');
+		$('.tutorial-overlay').unbind(ZombieLab.tap);
 	}
 
 	function displayHint(hint) {
@@ -270,7 +270,7 @@ angular.module('ZombieLabApp')
 			$('.tutorial-overlay').css('opacity', 0.3);
 		}, 100);
 		setTimeout(function () {
-			$('.tutorial-overlay').unbind('click').click(closeHint);
+			$('.tutorial-overlay').unbind(ZombieLab.tap).on(ZombieLab.tap, closeHint);
 		}, 400);
 		$('<div></div>')
 			.addClass('tutorial-text')
@@ -280,11 +280,11 @@ angular.module('ZombieLabApp')
 		overlay.show();
 	};
 
-	$(document).on('touchstart mousedown', function () {
+	$(document).on(ZombieLab.touchstart, function () {
 		waitForTouchEvents = true;
 	});
 
-	$(document).on('touchend touchcancel mouseup', function () {
+	$(document).on(ZombieLab.touchend, function () {
 		waitForTouchEvents = false;
 	});
 

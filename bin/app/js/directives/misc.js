@@ -6,12 +6,14 @@ angular.module('ZombieLabApp')
 		controller: function ($scope, $element, $timeout, $attrs) {
 			var timeout;
 
-			$element.on('mousedown touchstart', function (event) {
+			$element.on(ZombieLab.touchstart, function (event) {
+				$timeout.cancel(timeout);
 				timeout = $timeout(function () {
 					$scope.$eval($attrs.ngHold);
 				}, 500);
 			});
-			$element.on('mouseup touchend touchcancel', function (event) {
+
+			$element.on(ZombieLab.touchend, function (event) {
 				if (timeout) {
 					$timeout.cancel(timeout);
 					timeout = null;

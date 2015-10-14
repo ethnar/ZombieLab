@@ -16,8 +16,21 @@
 	};
 
 	ZombieLab = {
-		error: function (msg) {
-			console.error(msg);
-		}
 	};
+
+	ZombieLab.error = function (msg) {
+		console.error(msg);
+	};
+
+	ZombieLab.touchSupport = ('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch;
+
+	if (ZombieLab.touchSupport) {
+		ZombieLab.touchstart = 'touchstart';
+		ZombieLab.touchend = 'touchend touchcancel';
+		ZombieLab.tap = 'touchstart';
+	} else {
+		ZombieLab.touchstart = 'mousedown';
+		ZombieLab.touchend = 'mouseup';
+		ZombieLab.tap = 'click';
+	}
 })();
