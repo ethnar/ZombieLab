@@ -205,11 +205,15 @@ angular.module('ZombieLabApp')
 	};
 
 	$scope.startAction = function (action, target) {
-		$scope.model.currentAction.actionObject = action;
-		$scope.model.currentAction.progress = 0;
-		$scope.model.currentAction.target = target;
-		if ($scope.model.currentAction.actionObject.start) {
-			$scope.model.currentAction.actionObject.start();
+		if (!$scope.model.currentAction.actionObject) {
+			$scope.model.currentAction.actionObject = action;
+			$scope.model.currentAction.progress = 0;
+			$scope.model.currentAction.target = target;
+			if ($scope.model.currentAction.actionObject.start) {
+				$scope.model.currentAction.actionObject.start();
+			}
+		} else {
+			console.error('Another action in progress');
 		}
 	};
 

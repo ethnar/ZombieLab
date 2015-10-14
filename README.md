@@ -9,3 +9,4 @@ Prototype for ZombieLab game
 - Saves (one save only)
 - consider http://zeptojs.com/
 - touchstart instead of click
+- stop zombies from rushing all at once
