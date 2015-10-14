@@ -32,15 +32,3 @@ angular.module('ZombieLabApp')
 		}
 	};
 })
-
-.directive('gameMapWall', function () {
-	return {
-		restrict: 'E',
-		replace: true,
-		templateUrl: 'partials/directives/game-map-wall.html',
-		scope: {
-			tile: '=',
-			direction: '@'
-		}
-	};
-})

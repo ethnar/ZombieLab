@@ -1,10 +1,18 @@
 <div class="map">
 	<div ng-repeat="column in map" class="column">
 		<div ng-repeat="tile in column" ng-class="{area: tile.area, room: tile.room, visible: tile.visible, revealed: tile.revealed, start: tile.start, finish: tile.finish}" class="tile">
-			<game-map-wall tile="tile" direction="N"></game-map-wall>
-			<game-map-wall tile="tile" direction="E"></game-map-wall>
-			<game-map-wall tile="tile" direction="W"></game-map-wall>
-			<game-map-wall tile="tile" direction="S"></game-map-wall>
+			<div class="wall N" ng-class="{'has-door': tile.N.door, opened: !tile.N.closed, 'has-wall': !tile.N || tile.N.door}">
+				<div class="door security-{{::tile.N.security}}"></div>
+			</div>
+			<div class="wall E" ng-class="{'has-door': tile.E.door, opened: !tile.E.closed, 'has-wall': !tile.E || tile.E.door}">
+				<div class="door security-{{::tile.E.security}}"></div>
+			</div>
+			<div class="wall W" ng-class="{'has-door': tile.W.door, opened: !tile.W.closed, 'has-wall': !tile.W || tile.W.door}">
+				<div class="door security-{{::tile.W.security}}"></div>
+			</div>
+			<div class="wall S" ng-class="{'has-door': tile.S.door, opened: !tile.S.closed, 'has-wall': !tile.S || tile.S.door}">
+				<div class="door security-{{::tile.S.security}}"></div>
+			</div>
 			<div class="room-type">{{tile.roomType}}</div>
 			<div class="items" ng-show="hasItems(tile)">ITEMS!</div>
 			<div class="animations-frame">
