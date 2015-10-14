@@ -16,9 +16,9 @@ angular.module('ZombieLabApp')
 	};
 
 	modalObject.prototype.close = function () {
-		this.backdrop.remove();
-		this.content.remove();
-		this.scope.$close = this.lastClose;
+		angular.element(this.backdrop).remove();
+		angular.element(this.content).remove();
+		this.scope.$destroy();
 		this.callEvents('close');
 		zIndex -= 20;
 	};
@@ -41,11 +41,14 @@ angular.module('ZombieLabApp')
 			.appendTo($('body'))
 			.css('z-index', zIndex + 10);
 
+
+
+		modal.scope = modal.scope.$new();
+ 
 		$compile(modal.content)(modal.scope);
 
 		zIndex += 20;
 
-		modal.lastClose = modal.scope.$close;
 		modal.scope.$close = function () {
 			modal.close();
 		};
