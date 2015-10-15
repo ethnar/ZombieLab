@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('ZombieLabApp', ['ngRoute', 'ngTouch'])
+angular.module('ZombieLabApp', ['ngRoute'/*, 'ngTouch'*/])
 
 .config(function($routeProvider, $locationProvider) {
 	$routeProvider
