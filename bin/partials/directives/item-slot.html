@@ -1,12 +1,14 @@
-<div class="item-slot {{::slot}}" ng-class="{selected: isSelected()}" ng-click="click();" ng-hold="showItemInfo();">
-	<div class="weapon-hit">BAM!</div>
-	<div class="weapon-miss">MISS!</div>
-	<div class="item">
-		<div class="ammo" data-ng-show="item.model.category == 'weapons'">{{item.ammo}}</div>
-		<div class="charges" data-ng-show="item.model.charges">{{item.charges}}</div>
-		<div class="quantity" data-ng-show="item.quantity">{{item.quantity}}</div>
-		<div class="reloading" ng-show="slot === 'weapon' &amp;&amp; character.isReloading();">RELOAD</div>
-		<img class="item-image" ng-if="item" ng-src="img/items/{{item.model.category + '/' + (item.model.image || item.model.name)}}.png" />
+<div class="item-slot {{::slot}}" ng-class="{selected: isSelected()}" ng-hold="showItemInfo();">
+	<div class="item-slot-inner-wrapper" ng-click="click();">
+		<div class="weapon-hit">BAM!</div>
+		<div class="weapon-miss">MISS!</div>
+		<div class="item">
+			<div class="ammo" data-ng-show="item.model.category == 'weapons'">{{item.ammo}}</div>
+			<div class="charges" data-ng-show="item.model.charges">{{item.charges}}</div>
+			<div class="quantity" data-ng-show="item.quantity">{{item.quantity}}</div>
+			<div class="reloading" ng-show="slot === 'weapon' &amp;&amp; character.isReloading();">RELOAD</div>
+			<img class="item-image" ng-if="item" ng-src="img/items/{{item.model.category + '/' + (item.model.image || item.model.name)}}.png" />
+		</div>
 	</div>
 
 	<script type="text/ng-template" id="item-info-modal.html">
