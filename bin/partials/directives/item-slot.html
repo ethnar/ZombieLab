@@ -17,8 +17,14 @@
 			<div class="additional-info">
 				<img class="item-image" ng-src="img/items/{{::item.model.category + '/' + (item.model.image || item.model.name)}}.png" />
 				<div class="recommended-skill" ng-show="item.model.skill">
-					Recommended skill:<br/>
-					<skill-bar skill="item.model.skill" value="item.model.skillRequired"></skill-bar>
+					<div>
+						Recommended skill:<br/>
+						<skill-bar skill="item.model.skill" value="item.model.skillRequired"></skill-bar>
+					</div>
+					<div data-ng-show="item.model.ammoType">
+						Ammo used:<br/>
+						<img class="ammo-image" ng-src="img/items/ammo/{{item.model.ammoType}}.png" />
+					</div>
 				</div>
 			</div>
 			<div class="description">{{::item.model.description}}</div>

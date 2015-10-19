@@ -7,8 +7,8 @@ angular.module('ZombieLabApp')
 		warrior: {
 			weapon: {
 				10: 'L131A1',
-				20: 'M608',
-				50: 'M4' // breakpoints
+				20: 'M1911',
+				50: 'AK47' // breakpoints
 			},
 			skills: {
 				weapons: 75,
@@ -23,9 +23,9 @@ angular.module('ZombieLabApp')
 		},
 		medic: {
 			weapon: {
-				15: 'M1911',
+				15: 'SW1905',
 				20: 'L131A1',
-				40: 'M608'
+				40: 'M1911'
 			},
 			skills: {
 				weapons: 35,
@@ -40,9 +40,9 @@ angular.module('ZombieLabApp')
 		},
 		grenadier: {
 			weapon: {
-				10: 'M1911',
-				15: 'L131A1',
-				30: 'M608'
+				10: 'L131A1',
+				15: 'M1911',
+				30: 'SPAS12'
 			},
 			skills: {
 				weapons: 35,
@@ -57,9 +57,9 @@ angular.module('ZombieLabApp')
 		},
 		hacker: {
 			weapon: {
-				10: 'M1911',
+				10: 'SW1905',
 				20: 'L131A1',
-				40: 'M608'
+				40: 'M1911'
 			},
 			skills: {
 				weapons: 25,
