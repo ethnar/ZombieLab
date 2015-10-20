@@ -1,0 +1,155 @@
+<!DOCTYPE html5>
+<html>
+	<head>
+		<meta name="viewport" content="height=320, width=device-width">
+
+		<link rel="stylesheet" type="text/css" href="styles/css/style.css">
+
+		<script type="text/javascript" src="cordova.js"></script>
+		<script type="text/javascript" src="libs/js/lodash.min.js"></script>
+		<script type="text/javascript" src="libs/js/jquery-1.11.3.min.js"></script> 
+		
+		<script type="text/javascript" src="libs/js/angular/angular.js"></script>
+		<script type="text/javascript" src="libs/js/angular/angular-touch.min.js"></script>
+		<script type="text/javascript" src="libs/js/angular/angular-route.min.js"></script>
+		
+		<script type="text/javascript" src="app/js/misc.js"></script>
+		<script>
+			'use strict';
+
+			angular.module('ZombieLabApp', [])
+
+			.controller('ZombieLabBenchmarkWeaponsController', function ($scope, $timeout, equipmentService, enemyService, mapGeneratorService, mapService, gameService) {
+				$scope.weapons = _.sortBy(equipmentService.itemTypes.weapons, 'gameDifficulty');
+				$scope.weapons = _.sortBy($scope.weapons, 'ammoType');
+				$scope.enemies = enemyService.enemyTypes;
+				$scope.Math = Math;
+
+				$scope.enemiesPacks = {};
+
+				gameService.setDifficulty(100);
+				mapGeneratorService.createNewMap();
+				$timeout(function () {
+					for (var i = 100; i < 2000; i += 100) {
+						gameService.setDifficulty(i);
+						mapGeneratorService.emptyRooms();
+						mapGeneratorService.fillRooms();
+						var enemies = [];
+						var ammo = {};
+						for (var x = 0; x < mapService.mapSizeX; x++) {
+							for (var y = 0; y < mapService.mapSizeY; y++) {
+								enemies = _.union(enemies, mapService.map[x][y].enemies);
+								_.each(mapService.map[x][y].items, function (item) {
+									if (item && item.model.category == 'ammo') {
+										ammo[item.model.ammoType] = ammo[item.model.ammoType] || 0;
+										ammo[item.model.ammoType] += item.quantity;
+									}
+								});
+							}
+						}
+						$scope.enemiesPacks[i] = enemies;
+						_.each($scope.weapons, function (weapon) {
+							// reset enemies health
+							_.each(enemies, function (enemy) {
+								enemy.health = enemy.type.health;
+							});
+							weapon.killCounts = weapon.killCounts || {};
+							weapon.killPercents = weapon.killPercents || {};
+							weapon.killCounts[i] = weapon.killCounts[i] || 0;
+							// iterate through ammo
+							var enemyIdx = 0;
+							var ammoCount = ammo[weapon.ammoType];
+							//ammoCount = ammo.handgun + ammo.shotgun + ammo.rifle;
+							for (var a = 0; a < ammoCount; a++) {
+								var enemy = enemies[enemyIdx];
+								if (!enemy) break;
+
+								// check chance to hit
+								if (_.random(1, 100) < weapon.baseChanceToHit) {
+									// damage
+									enemy.health -= _.random(weapon.dmgMin, weapon.dmgMax);
+								}
+								// kill
+								if (enemy.health <= 0) {
+									enemyIdx++;
+									weapon.killCounts[i]++;
+								}
+							}
+							weapon.killPercents[i] = Math.floor(100 * weapon.killCounts[i] / enemies.length);
+						});
+					}
+				}, 100);
+				
+			});
+		</script>
+		
+		<script type="text/javascript" src="app/js/data/equipment.js"></script> 
+		<script type="text/javascript" src="app/js/data/character.js"></script> 
+		<script type="text/javascript" src="app/js/data/map.js"></script> 
+
+		<script type="text/javascript" src="app/js/controllers/start.js"></script> 
+		<script type="text/javascript" src="app/js/controllers/main-menu.js"></script> 
+		<script type="text/javascript" src="app/js/controllers/team-setup.js"></script> 
+		<script type="text/javascript" src="app/js/controllers/game.js"></script>
+
+		<script type="text/javascript" src="app/js/services/game.js"></script> 
+		<script type="text/javascript" src="app/js/services/character.js"></script> 
+		<script type="text/javascript" src="app/js/services/equipment.js"></script> 
+		<script type="text/javascript" src="app/js/services/map.js"></script> 
+		<script type="text/javascript" src="app/js/services/map-generator.js"></script> 
+		<script type="text/javascript" src="app/js/services/enemies.js"></script>
+		<script type="text/javascript" src="app/js/services/tutorial.js"></script>
+		<script type="text/javascript" src="app/js/services/misc.js"></script>
+
+		<script type="text/javascript" src="app/js/directives/character-panel.js"></script> 
+		<script type="text/javascript" src="app/js/directives/item-slot.js"></script> 
+		<script type="text/javascript" src="app/js/directives/game-map.js"></script>
+		<script type="text/javascript" src="app/js/directives/skill-bar.js"></script>
+		<script type="text/javascript" src="app/js/directives/misc.js"></script>
+		<style>
+			table td {
+				padding: 3px;
+				border: 1px solid gray;
+			}
+			.number {
+				text-align: right;
+			}
+			.killCount {
+				text-align: right;
+				width: 50px;
+			}
+		</style>
+	</head>
+	<body ng-app="ZombieLabApp" ng-controller="ZombieLabBenchmarkWeaponsController">
+		<table>
+			<tr>
+				<td>Name</td>
+				<td></td>
+				<td>Level</td>
+				<td>Ammo</td>
+				<td>RoF</td>
+				<td>ToHit</td>
+				<td>Damage</td>
+				<td>Damage Avg.</td>
+				<td>DPS</td>
+				<td>DPS (inc. reload)</td>
+				<td ng-repeat="enemy in enemies">{{enemy.name}}</td>
+				<td ng-repeat="(key, enemiesPack) in enemiesPacks">{{key}}</td>
+			</tr>
+			<tr ng-repeat="weapon in weapons">
+				<td>{{weapon.name}}</td>
+				<td><img ng-src="img/items/weapons/{{weapon.name}}.png" /></td>
+				<td class="number">{{weapon.gameDifficulty}}</td>
+				<td><img ng-src="img/items/ammo/{{weapon.ammoType}}.png" /></td>
+				<td class="number">{{weapon.rof}}</td>
+				<td class="number">{{weapon.baseChanceToHit}}</td>
+				<td class="number">{{weapon.dmgMin}} - {{weapon.dmgMax}}</td>
+				<td class="number">{{(weapon.dmgMin + weapon.dmgMax) / 2}}</td>
+				<td class="number">{{(weapon.dmgMin + weapon.dmgMax) * 1000 / 2 / weapon.rof | number : 2}}</td>
+				<td class="number">{{(weapon.dmgMin + weapon.dmgMax) * weapon.clipSize * 1000 / 2 / (weapon.rof * weapon.clipSize + weapon.reload) | number : 2}}</td>
+				<td ng-repeat="enemy in enemies">{{Math.ceil(enemy.health / ((weapon.dmgMin + weapon.dmgMax) / 2))}}</td>
+				<td ng-repeat="killPercent in weapon.killPercents" class="killCount" style="background: linear-gradient(90deg, greenyellow {{killPercent}}%, white {{killPercent}}%);">{{killPercent}}</td>
+			</tr>
+		</table>
+	</body>
+</html>

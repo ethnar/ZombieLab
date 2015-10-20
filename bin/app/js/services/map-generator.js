@@ -214,7 +214,7 @@ angular.module('ZombieLabApp')
 		_.each(items, function (score, itemCategory) {
 			switch (itemCategory) {
 				case 'ammo':
-					var amount = Math.floor(Math.sqrt(gameDifficulty) * score) * 3;
+					var amount = Math.floor(gameDifficulty * score) / 5;
 					var ammo = {};
 					while (amount > 0) {
 						var add = Math.min(_.random(3, 9));
@@ -289,6 +289,20 @@ angular.module('ZombieLabApp')
 			}
 		}
 	};
+
+	service.emptyRooms = function () {
+		for (var x = 0; x < mapService.mapSizeX; x++) {
+			for (var y = 0; y < mapService.mapSizeY; y++) {
+				var tile = mapService.map[x][y];
+				if (tile.items) {
+					tile.items = [];
+				}
+				if (tile.enemies) {
+					tile.enemies = [];
+				}
+			}
+		}
+	}
 
 	service.getMaxDoorSecurity = function () {
 		return Math.floor(Math.min(gameService.getDifficulty() / 100, 3));

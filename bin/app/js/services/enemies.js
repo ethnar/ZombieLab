@@ -29,7 +29,7 @@ angular.module('ZombieLabApp')
 	}, {
 		name: 'runner',
 		speed: 1500,
-		health: 6,
+		health: 18,
 		damage: 5,
 		difficulty: 30,
 		minDifficulty: 300
