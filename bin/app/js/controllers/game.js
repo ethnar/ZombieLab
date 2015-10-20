@@ -14,6 +14,7 @@ angular.module('ZombieLabApp')
 		selectedCharacter: null,
 		gameReady: false,
 		floor: 1,
+		allHoldFire: false,
 		currentAction: {
 			actionObject: null,
 			target: null,
@@ -133,6 +134,9 @@ angular.module('ZombieLabApp')
 			}
 			gameService.deselectItem();
 			return;
+		} else {
+			character.holdFire = !character.holdFire;
+			$scope.checkIfAllHoldFire();
 		}
 	};
 
@@ -287,22 +291,24 @@ angular.module('ZombieLabApp')
 		_.each(_.shuffle(characterService.team), function (character) {
 			if (character.weapon && character.weapon.model.category === 'weapons' && character.canShoot()) {
 				if (character.weapon.ammo > 0 && character.reloadingTimer <= 0) {
-					var validTargets = _.groupBy(mapService.getValidTargets(), 'distance');
-					var target = null;
-					_.each(validTargets, function (targetsGroup, distance) {
-						if (!target && character.weapon.model.range >= distance) {
-							target = _.sample(targetsGroup);
-						}
-					});
-					if (target) {
-						if (character.rofTimer <= 0) {
-							controller.shootAt(target, character);
-							character.resetAim();
+					if (!character.holdFire) {
+						var validTargets = _.groupBy(mapService.getValidTargets(), 'distance');
+						var target = null;
+						_.each(validTargets, function (targetsGroup, distance) {
+							if (!target && character.weapon.model.range >= distance) {
+								target = _.sample(targetsGroup);
+							}
+						});
+						if (target) {
+							if (character.rofTimer <= 0) {
+								controller.shootAt(target, character);
+								character.resetAim();
+							} else {
+								character.rofTimer -= delta;
+							}
 						} else {
-							character.rofTimer -= delta;
+							character.resetAim();
 						}
-					} else {
-						character.resetAim();
 					}
 				} else {
 					characterService.reloading(character, delta);
@@ -377,10 +383,20 @@ angular.module('ZombieLabApp')
 				}
 			});
 		});
-		var validTargets = mapService.getValidTargets();
+	};
 
-		_.each(validTargets, function (target) {
+	$scope.checkIfAllHoldFire = function () {
+		$scope.model.allHoldFire = true;
+		_.each(characterService.team, function (character) {
+			$scope.model.allHoldFire = $scope.model.allHoldFire && character.holdFire;
 		});
+	};
+
+	$scope.toggleHoldFire = function () {
+		_.each(characterService.team, function (character) {
+			character.holdFire = !$scope.model.allHoldFire;
+		});
+		$scope.checkIfAllHoldFire();
 	};
 
 	$scope.backToMenu = function () {

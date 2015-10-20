@@ -119,10 +119,11 @@
 	}
 
 	&.weapon {
-		.reloading:not(.ng-hide) {
+		.item-text:not(.ng-hide) {
 			position: absolute;
 		    top: 6px;
-		    left: 15px;
+		    width: 100%;
+    		text-align: center;
 		    transform: rotate(8deg);
 		    -webkit-transform: rotate(8deg);
 		    color: #F66;
@@ -132,7 +133,7 @@
 		    -webkit-text-stroke: 1px red;
 		    text-stroke: 1px red;
 
-		    + img {
+		    ~ img {
 		    	opacity: 0.3;
 		    }
 		}

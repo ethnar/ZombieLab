@@ -6,7 +6,8 @@
 			<div class="ammo" data-ng-show="item.model.category == 'weapons'">{{item.ammo}}</div>
 			<div class="charges" data-ng-show="item.model.charges">{{item.charges}}</div>
 			<div class="quantity" data-ng-show="item.quantity">{{item.quantity}}</div>
-			<div class="reloading" ng-show="slot === 'weapon' &amp;&amp; character.isReloading();">RELOAD</div>
+			<div class="item-text reloading" ng-show="slot === 'weapon' &amp;&amp; character.isReloading();">RELOAD</div>
+			<div class="item-text hold-fire" ng-show="slot === 'weapon' &amp;&amp; character.holdFire &amp;&amp; !character.isReloading();">HOLD</div>
 			<img class="item-image" ng-if="item" ng-src="img/items/{{item.model.category + '/' + (item.model.image || item.model.name)}}.png" />
 		</div>
 	</div>

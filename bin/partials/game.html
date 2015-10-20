@@ -29,6 +29,7 @@
 			<div class="action next-level" ng-show="canFinishLevel();" ng-click="finishLevel();">></div>
 			<div class="action search" ng-show="canSearchRoom();" ng-click="searchRoom();">Search</div>
 			<div class="action cancel" ng-show="model.currentAction.actionObject" data-ng-click="cancelAction();">X</div>
+			<div class="action hold-fire" data-ng-click="toggleHoldFire();">{{model.allHoldFire ? 'FIRE' : 'HOLD'}}</div>
 		</div>
 	</div>
 	<div class="game-over" data-ng-show="isGameOver();">
