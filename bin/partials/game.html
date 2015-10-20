@@ -13,8 +13,11 @@
 			<item-slot ng-repeat="item in getTeamLocation().items track by $index" slot="loot" item="getTeamLocation().items[$index]" allowed-large="true"></item-slot>
 		</div>
 		<game-map map="model.map" ng-style="{top: getMapTopOffset(), left: getMapLeftOffset()}"></game-map>
-		<div class="team-running" data-ng-show="model.teamTired <= 0">
-			RUNNING!
+		<div class="top-left-info-panel">
+			FLOOR: {{model.floor}}
+			<div class="team-running" data-ng-show="model.teamTired <= 0">
+				RUNNING!
+			</div>
 		</div>
 		<div class="ammo-status">
 			<div class="ammo-slot" ng-repeat="(type, quantity) in model.ammo"><img class="ammo-icon" ng-src="img/items/ammo/{{::type}}.png" />{{quantity}}</div>

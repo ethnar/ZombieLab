@@ -13,6 +13,7 @@ angular.module('ZombieLabApp')
 		lootingRoom: false,
 		selectedCharacter: null,
 		gameReady: false,
+		floor: 1,
 		currentAction: {
 			actionObject: null,
 			target: null,
@@ -411,6 +412,7 @@ angular.module('ZombieLabApp')
 		gameService.startLoading().then(function () {
 			gameService.increaseDifficulty();
 			mapGeneratorService.createNewMap();
+			$scope.model.floor++;
 			gameService.finishLoading(200).then(function () {
 				$scope.model.gameReady = true;
 			});

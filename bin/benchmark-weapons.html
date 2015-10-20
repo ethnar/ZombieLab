@@ -78,6 +78,19 @@
 							weapon.killPercents[i] = Math.floor(100 * weapon.killCounts[i] / enemies.length);
 						});
 					}
+					var totalEnemies = 0;
+					_.each($scope.enemiesPacks, function (enemiesPack) {
+						totalEnemies += enemiesPack.length;
+					});
+					_.each($scope.weapons, function (weapon) {
+						var totalKills = 0;
+						_.each(weapon.killCounts, function (killCount) {
+							totalKills += killCount;
+						});
+						weapon.killCounts.all = totalKills;
+						weapon.killPercents.all = Math.floor(100 * totalKills / totalEnemies);
+					});
+					$scope.enemiesPacks.all = [];
 				}, 100);
 				
 			});
