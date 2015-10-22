@@ -355,25 +355,27 @@ angular.module('ZombieLabApp')
 	controller.doTheWalking = function (delta) {
 		_.each(mapService.areas, function (tile) {
 			_.each(tile.enemies, function (enemy) {
-				if (tile.enemyDirection == '') {
+				if (tile.teamPresent) {
 					enemy.walking = 0;
 					if (enemy.attackTimer <= 0) {
 						controller.doTheBiting(enemy);
 					}
 				} else {
-					if (tile.enemyDirection !== '-') {
+					if (tile.enemyDirection) {
 						enemy.walking += delta;
 						if (enemy.walking > enemy.speed) {
 							enemy.walking -= enemy.speed;
 							var chanceToWalk = Math.max(100 - Math.max(mapService.teamSteps - tile.teamHeat - 3, 0) * 5, 50);
 							if (_.random(1, 100) < chanceToWalk) {
 								var targetTile = mapService.getTileInDirection(tile, tile.enemyDirection);
-								mapService.moveEnemy(enemy, targetTile);
-								_.each(tile.enemies, function (otherEnemiesInTheRoom) {
-									if (otherEnemiesInTheRoom !== enemy) {
-										otherEnemiesInTheRoom.walking -= 200;
-									}
-								});
+								if (mapService.isOpen(tile.enemyDirection, tile)) {
+									mapService.moveEnemy(enemy, targetTile);
+									_.each(tile.enemies, function (otherEnemiesInTheRoom) {
+										if (otherEnemiesInTheRoom !== enemy) {
+											otherEnemiesInTheRoom.walking -= 200;
+										}
+									});
+								}
 							}
 						}
 					}

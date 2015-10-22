@@ -141,7 +141,7 @@ angular.module('ZombieLabApp')
 					bestHeatDirection = direction;
 				}
 			});
-			currentTile.enemyDirection = bestHeat !== 0 ? bestHeatDirection : '-';
+			currentTile.enemyDirection = bestHeat !== 0 ? bestHeatDirection : '';
 		});
 	};
 
@@ -169,13 +169,19 @@ angular.module('ZombieLabApp')
 
 	service.isDoor = function (direction, tile) {
 		tile = tile || service.teamLocation;
-		return tile[direction] && tile[direction].door && tile[direction].closed;
+		return tile[direction] && tile[direction].door;
 	};
 
 	service.openDoor = function (path) {
 		path.closed = false;
 		service.checkVisibility();
 		service.calculateEnemyPaths();
+	};
+
+	service.closeDoor = function (path, security) {
+		path.closed = true;
+		path.security = security || 0;
+		service.checkVisibility();
 	};
 
 	service.getValidTargets = function () {

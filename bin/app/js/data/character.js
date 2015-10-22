@@ -68,6 +68,7 @@ angular.module('ZombieLabApp')
 				firstAid: 15
 			},
 			equipment: {
+				25: 'Barricade',
 				10: 'Terminal'
 			}
 		}

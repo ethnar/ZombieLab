@@ -325,7 +325,7 @@ angular.module('ZombieLabApp')
 			{
 				name: 'Terminal',
 				description: 'Hacker\'s best friend, invaluable when moving through secured areas.',
-				minDifficulty: 200,
+				minDifficulty: 100,
 				isLarge: true,
 				charges: 6,
 				target: 'area',
@@ -341,11 +341,40 @@ angular.module('ZombieLabApp')
 				progress: function (itemSlot, character, direction, delta) {
 					var self = this;
 					var path = mapService.getDirectionPathForTeam(direction);
-					if (!mapService.isDoor(direction) || !path.security) {
+					if (!mapService.isDoor(direction) || !path.closed || !path.security) {
 						ZombieLab.error('You must target closed, secured door');
 						return false;
 					}
 					return Math.pow(path.security, 2) / Math.pow(character.skillModifier(self.skill, self.skillRequired), 2);
+				}
+			}
+		],
+		misc: [
+			{
+				name: 'Barricade',
+				description: 'Strudy barricade that can be used to block an open doorway.',
+				minDifficulty: 250,
+				isLarge: true,
+				charges: 2,
+				target: 'area',
+				skill: 'explosives',
+				skillRequired: 0,
+				actionTime: 3,
+				value: 0.5,
+				use: function (itemSlot, character, direction) {
+					var self = this;
+					var targetTile = mapService.getNextAreaForTeam(direction);
+					var path = mapService.getDirectionPathForTeam(direction);
+					mapService.closeDoor(path, 1);
+				},
+				progress: function (itemSlot, character, direction, delta) {
+					var self = this;
+					var path = mapService.getDirectionPathForTeam(direction);
+					if (!mapService.isDoor(direction) || path.closed) {
+						ZombieLab.error('You must target opened door');
+						return false;
+					}
+					return true;
 				}
 			}
 		],

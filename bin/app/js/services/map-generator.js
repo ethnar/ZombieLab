@@ -248,6 +248,7 @@ angular.module('ZombieLabApp')
 				case 'medications':
 				case 'explosives':
 				case 'hacking':
+				case 'misc':
 					var random = _.random(score * 0.8, score * 1.2, true);
 					while (random > 0) {
 						var validItems = _.filter(equipmentService.itemTypes[itemCategory], function (med) {
