@@ -18,7 +18,7 @@ angular.module('ZombieLabApp')
 			},
 			equipment: {
 				30: 'L131A1',
-				20: 'Grenade'
+				20: 'Knife'
 			}
 		},
 		medic: {

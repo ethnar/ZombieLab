@@ -1,9 +1,9 @@
 <div class="item-slot {{::slot}}" ng-class="{selected: isSelected()}" ng-hold="showItemInfo();">
 	<div class="item-slot-inner-wrapper" ng-click="click();">
-		<div class="weapon-hit">BAM!</div>
+		<div class="weapon-hit">{{item.model.sound}}</div>
 		<div class="weapon-miss">MISS!</div>
 		<div class="item">
-			<div class="ammo" data-ng-show="item.model.category == 'weapons'">{{item.ammo}}</div>
+			<div class="ammo" data-ng-show="item.model.clipSize">{{item.ammo}}</div>
 			<div class="charges" data-ng-show="item.model.charges">{{item.charges}}</div>
 			<div class="quantity" data-ng-show="item.quantity">{{item.quantity}}</div>
 			<div class="item-text reloading" ng-show="slot === 'weapon' &amp;&amp; character.isReloading();">RELOAD</div>

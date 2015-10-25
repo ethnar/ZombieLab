@@ -290,7 +290,7 @@ angular.module('ZombieLabApp')
 	controller.doTheShooting = function (delta) {
 		_.each(_.shuffle(characterService.team), function (character) {
 			if (character.weapon && character.weapon.model.category === 'weapons' && character.canShoot()) {
-				if (character.weapon.ammo > 0 && character.reloadingTimer <= 0) {
+				if ((character.weapon.ammo > 0 || !character.weapon.model.clipSize) && character.reloadingTimer <= 0) {
 					if (!character.holdFire) {
 						var validTargets = _.groupBy(mapService.getValidTargets(), 'distance');
 						var target = null;
@@ -361,6 +361,7 @@ angular.module('ZombieLabApp')
 						controller.doTheBiting(enemy);
 					}
 				} else {
+					enemy.attackTimer = _.random(900, 1100); // fixed for now
 					if (tile.enemyDirection) {
 						enemy.walking += delta;
 						if (enemy.walking > enemy.speed) {
@@ -372,7 +373,7 @@ angular.module('ZombieLabApp')
 									mapService.moveEnemy(enemy, targetTile);
 									_.each(tile.enemies, function (otherEnemiesInTheRoom) {
 										if (otherEnemiesInTheRoom !== enemy) {
-											otherEnemiesInTheRoom.walking -= 200;
+											otherEnemiesInTheRoom.walking -= 250;
 										}
 									});
 								}
