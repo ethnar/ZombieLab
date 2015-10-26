@@ -196,7 +196,7 @@ angular.module('ZombieLabApp')
 				ammoType: 'handgun',
 				sound: 'PEW!',
 				gameDifficulty: 80,
-				isLarge: true,
+				isLarge: false,
 				dmgMin: 1,
 				dmgMax: 3,
 				clipSize: 6,
@@ -306,7 +306,7 @@ angular.module('ZombieLabApp')
 				},
 				progress: function (itemSlot, character, target, delta) {
 					var self = this;
-					var progressHeal = 60 * character.skillModifier(self.skill, self.skillRequired);
+					var progressHeal = 50 * character.skillModifier(self.skill, self.skillRequired);
 					target.health = Math.min(target.health + progressHeal * delta / 100, character.maxHealth);
 					return true;
 				}
@@ -324,7 +324,7 @@ angular.module('ZombieLabApp')
 				value: 0.3,
 				use: function (itemSlot, character, target) {
 					var self = this;
-					var finalHeal = 10 * character.skillModifier(self.skill, self.skillRequired);
+					var finalHeal = 5 * character.skillModifier(self.skill, self.skillRequired);
 					target.health = Math.min(target.health + finalHeal, character.maxHealth);
 				},
 				progress: function (itemSlot, character, target, delta) {
