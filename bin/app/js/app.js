@@ -31,16 +31,18 @@ angular.module('ZombieLabApp', ['ngRoute', 'ngTouch'])
 	$scope.togglePause = gameService.togglePause;
 
 	$scope.enablePauseScreen = function (event) {
-		gameService.togglePause();
-		var modal = modalService.open({
-			template: 'game-pause-modal.html',
-			scope: $scope
-		});
+		if (!gameService.gamePaused) {
+			gameService.togglePause();
 
-		modal.on('close', function () {
-			gameService.unpause();
-		});
-		
+			var modal = modalService.open({
+				template: 'game-pause-modal.html',
+				scope: $scope
+			});
+
+			modal.on('close', function () {
+				gameService.unpause();
+			});
+		}
 		event.preventDefault();
 	};
 

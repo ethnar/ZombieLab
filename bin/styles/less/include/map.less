@@ -71,7 +71,7 @@
 
 
 			&.area {
-				background: #EEE;
+				background: url('@{img-path}rooms/Corridor.png');
 
 				.wall.has-wall {
 					z-index: 50;
@@ -138,7 +138,6 @@
 
 						.door {
 							display: block;
-							outline: 1px solid #EEE;
 							position: absolute;
 							.game-ready & {
 								transition: all 0.5s;
@@ -198,19 +197,34 @@
 				width: 20px;
 				height: 20px;
 
-				&.crawler {
-					background-color: cyan;
-				}
 				&.walker {
-					background-color: green;
+					background: url('@{img-path}enemies/Walker.png');
 				}
 				&.runner {
-					background-color: red;
+					background: url('@{img-path}enemies/Runner.png');
 				}
-				&.hulk {
-					background-color: black;
+				&.crawler {
+					background: url('@{img-path}enemies/Crawler.png');
 				}
+				&.brute {
+					background: url('@{img-path}enemies/Brute.png');
+				}
+				// &.crawler {
+				// 	background-color: cyan;
+				// }
+				// &.walker {
+				// 	background-color: green;
+				// }
+				// &.runner {
+				// 	background-color: red;
+				// }
+				// &.hulk {
+				// 	background-color: black;
+				// }
 			}
+		}
+
+		.enemyIcon {
 		}
 	}
 }

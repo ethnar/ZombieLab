@@ -292,7 +292,7 @@ angular.module('ZombieLabApp')
 				description: 'Stuffed with all kinds of medical wonders, this package is sure to get anyone back on their feet quickly.',
 				minDifficulty: 150,
 				isLarge: true,
-				charges: 3,
+				charges: 2,
 				target: 'character',
 				actionTime: 6,
 				useChargeAtStart: true,
