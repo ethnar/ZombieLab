@@ -10,6 +10,13 @@ angular.module('ZombieLabApp')
 		'E': [1, 0],
 		'W': [-1, 0]
 	}
+	var roomSpecials = {
+		lightsOff: {
+			init: function (tile) {
+				tile.light = false;
+			}
+		}
+	}
 
 	var service = this;
 
@@ -23,17 +30,10 @@ angular.module('ZombieLabApp')
 		for (var x = 0; x < mapService.mapSizeX; x++) {
 			mapService.map[x] = [];
 			for (var y = 0; y < mapService.mapSizeY; y++) {
-				mapService.map[x][y] = {
-					area: false,
-					room: false,
-					visible: false,
-					enemies: [],
-					items: [],
-					teamHeat: 0,
-					animations: {},
+				mapService.map[x][y] = new Tile({
 					x: x,
 					y: y
-				};
+				});
 			}
 		}
 	};
@@ -195,6 +195,18 @@ angular.module('ZombieLabApp')
 		if (roomType.spawn) {
 			service.createSpawner(tile, roomType);
 		}
+
+		_.each(roomType.specials, function (chance, special) {
+			if (tile.special) {
+				// one special per room
+				return;
+			}
+			var random = _.random(1, 100);
+			if (random <= chance) {
+				tile.special = special;
+				roomSpecials[special].init(tile);
+			}
+		});
 
 		tile.enemies = enemyService.createGroup(tile, roomType.enemies, roomType.enemiesSpecial);
 

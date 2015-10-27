@@ -27,7 +27,27 @@ angular.module('ZombieLabApp')
 	service.teamLocation = null;
 	service.validTargets = [];
 	service.teamSteps = 10;
-	service.roomTypes
+
+	window.Tile = function (obj) {
+		angular.extend(this, obj, {
+			area: false,
+			room: false,
+			visible: false,
+			enemies: [],
+			items: [],
+			teamHeat: 0,
+			light: true,
+			animations: {}
+		});
+	};
+
+	Tile.prototype.isLit = function () {
+		return this.light; // TODO: add fire
+	};
+
+	Tile.prototype.hasItems = function () {
+		return _.without(this.items, null).length;
+	};
 
 	service.getTileSize = function () {
 		if (!service.tileSize) {
@@ -84,6 +104,9 @@ angular.module('ZombieLabApp')
 	};
 
 	service.registerValidTargets = function (tile, distance) {
+		if (!tile.isLit()) {
+			return;
+		}
 		_.each(tile.enemies, function (enemy) {
 			if (enemy.health > 0) {
 				service.validTargets.push({
@@ -143,10 +166,6 @@ angular.module('ZombieLabApp')
 			});
 			currentTile.enemyDirection = bestHeat !== 0 ? bestHeatDirection : '';
 		});
-	};
-
-	service.hasItems = function (tile) {
-		return _.without(tile.items, null).length;
 	};
 
 	service.getDirectionPathForTeam = function (direction) {

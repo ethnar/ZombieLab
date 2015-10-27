@@ -1,6 +1,6 @@
 <div class="map">
 	<div ng-repeat="column in map" class="column">
-		<div ng-repeat="tile in column" ng-class="{area: tile.area, room: tile.room, visible: tile.visible, revealed: tile.revealed, start: tile.start, finish: tile.finish}" class="tile">
+		<div ng-repeat="tile in column" ng-class="{area: tile.area, room: tile.room, visible: tile.visible, revealed: tile.revealed, start: tile.start, finish: tile.finish, light: tile.isLit()}" class="tile">
 			<div class="wall N" ng-class="{'has-door': tile.N.door, opened: !tile.N.closed, 'has-wall': !tile.N || tile.N.door}">
 				<div class="door security-{{tile.N.security}}"></div>
 			</div>

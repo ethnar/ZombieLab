@@ -103,7 +103,7 @@ angular.module('ZombieLabApp')
 		text: 'This room has some items here<br/>Tap "Search" to see what\'s there',
 		delay: 1,
 		condition: function () {
-			return commons.mainGame && !commons.fighting && !commons.takingAction && mapService.hasItems(mapService.teamLocation);
+			return commons.mainGame && !commons.fighting && !commons.takingAction && mapService.teamLocation.hasItems();
 		},
 		considerDone: function () {
 			return $('.loot-window:visible').length;

@@ -7,7 +7,10 @@ angular.module('ZombieLabApp')
 		laboratory: {
 			chance: 100,
 			enemies: 1,
-			enemiesSpecial: 1
+			enemiesSpecial: 1,
+			specials: {
+				lightsOff: 1
+			}
 		},
 		office: {
 			chance: 100,
@@ -15,6 +18,9 @@ angular.module('ZombieLabApp')
 			enemiesSpecial: 1,
 			items: {
 				ammo: 0.8
+			},
+			specials: {
+				lightsOff: 1
 			}
 			// bit of ammo / small misc item
 		},
@@ -25,14 +31,19 @@ angular.module('ZombieLabApp')
 			spawn: 1,
 			items: {
 				medications: 0.6
+			},
+			specials: {
+				lightsOff: 1
 			}
 		},
 		sewers: {
 			chance: 15,
 			enemies: 0.6,
 			spawn: 1.5,
-			spawnSpecial: true
-			// spawning?
+			spawnSpecial: true,
+			specials: {
+				lightsOff: 20
+			}
 		},
 
 		lockerRoom: {
@@ -42,13 +53,19 @@ angular.module('ZombieLabApp')
 				ammo: 0.6,
 				misc: 0.6,
 				medications: 0.3
+			},
+			specials: {
+				lightsOff: 1
 			}
 			//misc items
 		},
 		lounge: {
 			chance: 20,
 			enemies: 3,
-			enemiesSpecial: 1
+			enemiesSpecial: 1,
+			specials: {
+				lightsOff: 1
+			}
 			//mini-tension room?
 		},
 
@@ -61,12 +78,17 @@ angular.module('ZombieLabApp')
 				hacking: 1,
 				weapons: 0.7,
 				ammo: 1
+			},
+			specials: {
 			}
 		},
 		storage: {
 			chance: 10,
 			items: {
 				misc: 0.6
+			},
+			specials: {
+				lightsOff: 1
 			}
 			//better misc items
 		},
@@ -86,6 +108,9 @@ angular.module('ZombieLabApp')
 			enemies: 0.5,
 			items: {
 				medications: 1.5
+			},
+			specials: {
+				lightsOff: 1
 			}
 			//med supplies
 		},
@@ -113,7 +138,10 @@ angular.module('ZombieLabApp')
 		serverRoom: {
 			chance: 10,
 			security: 1,
-			enemies: 0.5
+			enemies: 0.5,
+			specials: {
+				lightsOff: 5
+			}
 			// +1 lock difficulty
 		},
 		VIPoffice: {

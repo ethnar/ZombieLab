@@ -415,7 +415,7 @@ angular.module('ZombieLabApp')
 	};
 
 	$scope.canSearchRoom = function () {
-		return mapService.hasItems(mapService.teamLocation);
+		return mapService.teamLocation.hasItems();
 	};
 
 	$scope.searchRoom = function () {

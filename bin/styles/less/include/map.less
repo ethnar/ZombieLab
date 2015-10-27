@@ -73,6 +73,17 @@
 			&.area {
 				background: url('@{img-path}rooms/Corridor.png');
 
+				&:not(.light)::after {
+					content: "";
+					position: absolute;
+				    top: 0;
+				    bottom: 0;
+				    left: 0;
+				    right: 0;
+				    box-shadow: 0 0 90px 0px black inset;
+				    background: rgba(0,0,0,0.9);
+				}
+
 				.wall.has-wall {
 					z-index: 50;
 					background: @wall-color;

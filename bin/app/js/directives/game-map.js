@@ -27,7 +27,7 @@ angular.module('ZombieLabApp')
 			};
 
 			$scope.hasItems = function (tile) {
-				return mapService.hasItems(tile);
+				return tile.hasItems();
 			};
 		}
 	};
