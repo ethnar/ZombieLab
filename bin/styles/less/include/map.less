@@ -84,6 +84,18 @@
 				    background: rgba(0,0,0,0.9);
 				}
 
+				&.flashlight-light::after {
+					content: "";
+					position: absolute;
+				    top: 0;
+				    bottom: 0;
+				    left: 0;
+				    right: 0;
+				    box-shadow: 0 0 90px 0px black inset;
+				    transition: background 0.3s cubic-bezier(0, 2.35, 0,-0.52); //cubic-bezier(0.17, 1.79, 0,-1.35)
+				    background: rgba(0,0,0,0);
+				}
+
 				.wall.has-wall {
 					z-index: 50;
 					background: @wall-color;

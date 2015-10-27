@@ -2,7 +2,7 @@
 
 angular.module('ZombieLabApp')
 
-.run(function (equipmentService, mapService, gameService, enemyService) {
+.run(function (equipmentService, mapService, gameService, enemyService, eventService) {
 	equipmentService.registerItems({
 		weapons: [
 			{
@@ -357,11 +357,11 @@ angular.module('ZombieLabApp')
 				},
 				progress: function (itemSlot, character, direction, delta) {
 					var self = this;
-					var isOpen = mapService.isOpen(direction);
-					if (!isOpen) {
+					if (!mapService.isOpen(direction)) {
 						ZombieLab.error('You must target accessible room');
+						return false;
 					}
-					return isOpen;
+					return true;
 				}
 			}, {
 				name: 'C4',
@@ -445,6 +445,53 @@ angular.module('ZombieLabApp')
 					var path = mapService.getDirectionPathForTeam(direction);
 					if (!mapService.isDoor(direction) || path.closed) {
 						ZombieLab.error('You must target opened door');
+						return false;
+					}
+					return true;
+				}
+			}, {
+				name: 'Flashlight',
+				description: 'Helps you get through a dark room.',
+				minDifficulty: 100,
+				isLarge: false,
+				target: 'area',
+				actionTime: 0.1,
+				value: 1,
+				use: function (itemSlot, character, direction) {
+					var self = this;
+					var targetTile = mapService.getNextAreaForTeam(direction);
+					var turnFlashlightOff = function () {
+						var element = mapService.getTileElement(itemSlot.item.targetedTile);
+						element.removeClass('flashlight-light');
+						itemSlot.item.targetedTile.turnLight(false);
+						itemSlot.item.targetedTile = null;
+						eventService.unbind(itemSlot.item.bind);
+					}
+					var turnFlashlightOn = function () {
+						var element = mapService.getTileElement(itemSlot.item.targetedTile);
+						element.addClass('flashlight-light');
+						itemSlot.item.targetedTile.turnLight(true);
+	
+						itemSlot.item.bind = eventService.on.teamMove(function () {
+							var deltaX = Math.abs(itemSlot.item.targetedTile.x - mapService.teamLocation.x);
+							var deltaY = Math.abs(itemSlot.item.targetedTile.y - mapService.teamLocation.y);
+							if (deltaX > 1 || deltaY > 1 || (deltaX != 0 && deltaY != 0)) {
+								turnFlashlightOff();
+							}
+						});
+					}
+
+					if (itemSlot.item.targetedTile) {
+						turnFlashlightOff();
+					}
+					itemSlot.item.targetedTile = targetTile;
+					turnFlashlightOn();
+				},
+				progress: function (itemSlot, character, direction, delta) {
+					var self = this;
+					var targetTile = mapService.getNextAreaForTeam(direction);
+					if (!mapService.isOpen(direction) || targetTile.light) {
+						ZombieLab.error('You must target accessible, dark room');
 						return false;
 					}
 					return true;

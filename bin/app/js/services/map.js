@@ -2,7 +2,7 @@
 
 angular.module('ZombieLabApp')
 
-.service('mapService', function ($timeout) {
+.service('mapService', function ($timeout, eventService) {
 	var directions = ['N', 'E', 'S', 'W'];
 	var directionOffsets = {
 		'N': [0, -1],
@@ -44,9 +44,17 @@ angular.module('ZombieLabApp')
 	Tile.prototype.isLit = function () {
 		return this.light; // TODO: add fire
 	};
+	Tile.prototype.turnLight = function (light) {
+		this.light = light;
+		service.checkVisibility();
+	};
 
 	Tile.prototype.hasItems = function () {
 		return _.without(this.items, null).length;
+	};
+
+	service.getTileElement = function (tile) {
+		return $('.map .column').eq(tile.x).find('.tile').eq(tile.y);
 	};
 
 	service.getTileSize = function () {
@@ -94,6 +102,7 @@ angular.module('ZombieLabApp')
 		service.teamLocation.teamPresent = true;
 		service.checkVisibility();
 		service.calculateEnemyPaths();
+		eventService.fire.teamMove('test', 5);
 	};
 
 	service.moveEnemy = function (enemy, tileTo) {
