@@ -42,7 +42,7 @@ angular.module('ZombieLabApp')
 			spawn: 1.5,
 			spawnSpecial: true,
 			specials: {
-				lightsOff: 20
+				lightsOff: 60
 			}
 		},
 
