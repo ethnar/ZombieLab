@@ -187,6 +187,9 @@ angular.module('ZombieLabApp')
 	};
 
 	service.getNextAreaForTeam = function (direction) {
+		if (!direction) {
+			return service.teamLocation;	
+		}
 		return service.map[service.teamLocation.x + directionOffsets[direction][0]][service.teamLocation.y + directionOffsets[direction][1]];
 	};
 

@@ -178,14 +178,14 @@ angular.module('ZombieLabApp')
 			return;
 		}
 		if (gameService.isItemSelected()) {
-			if (!direction) {
-				$scope.dropSelectedItem();
-			} else {
+//			if (!direction) {
+//				$scope.dropSelectedItem();
+//			} else {
 				var item = gameService.getSelectedItem();
 				if (item.model.target === 'area') {
 					$scope.startAction(actions.useItem, direction);
 				}
-			}
+//			}
 			gameService.deselectItem();
 			return;
 		}

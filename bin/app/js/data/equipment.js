@@ -490,7 +490,7 @@ angular.module('ZombieLabApp')
 				progress: function (itemSlot, character, direction, delta) {
 					var self = this;
 					var targetTile = mapService.getNextAreaForTeam(direction);
-					if (!mapService.isOpen(direction) || targetTile.light) {
+					if ((direction && !mapService.isOpen(direction)) || targetTile.light) {
 						ZombieLab.error('You must target accessible, dark room');
 						return false;
 					}
