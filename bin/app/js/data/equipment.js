@@ -460,31 +460,33 @@ angular.module('ZombieLabApp')
 				use: function (itemSlot, character, direction) {
 					var self = this;
 					var targetTile = mapService.getNextAreaForTeam(direction);
+					var item = itemSlot.item;
 					var turnFlashlightOff = function () {
-						var element = mapService.getTileElement(itemSlot.item.targetedTile);
+						var element = mapService.getTileElement(item.targetedTile);
 						element.removeClass('flashlight-light');
-						itemSlot.item.targetedTile.turnLight(false);
-						itemSlot.item.targetedTile = null;
-						eventService.unbind(itemSlot.item.bind);
+						item.targetedTile.turnLight(false);
+						item.targetedTile = null;
+						eventService.unbind(item.bind);
 					}
 					var turnFlashlightOn = function () {
-						var element = mapService.getTileElement(itemSlot.item.targetedTile);
+						var element = mapService.getTileElement(item.targetedTile);
 						element.addClass('flashlight-light');
-						itemSlot.item.targetedTile.turnLight(true);
+						item.targetedTile.turnLight(true);
 	
-						itemSlot.item.bind = eventService.on.teamMove(function () {
-							var deltaX = Math.abs(itemSlot.item.targetedTile.x - mapService.teamLocation.x);
-							var deltaY = Math.abs(itemSlot.item.targetedTile.y - mapService.teamLocation.y);
+						item.bind = eventService.on.teamMove(function () {
+							console.log(item);
+							var deltaX = Math.abs(item.targetedTile.x - mapService.teamLocation.x);
+							var deltaY = Math.abs(item.targetedTile.y - mapService.teamLocation.y);
 							if (deltaX > 1 || deltaY > 1 || (deltaX != 0 && deltaY != 0)) {
 								turnFlashlightOff();
 							}
 						});
 					}
 
-					if (itemSlot.item.targetedTile) {
+					if (item.targetedTile) {
 						turnFlashlightOff();
 					}
-					itemSlot.item.targetedTile = targetTile;
+					item.targetedTile = targetTile;
 					turnFlashlightOn();
 				},
 				progress: function (itemSlot, character, direction, delta) {
