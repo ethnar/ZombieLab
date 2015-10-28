@@ -318,7 +318,7 @@ angular.module('ZombieLabApp')
 	}
 
 	service.getMaxDoorSecurity = function () {
-		return Math.floor(Math.min(gameService.getDifficulty() / 100, 3));
+		return Math.floor(Math.min(gameService.getDifficulty() / 500 + 1, 3));
 	};
 
 	service.lockDoors = function () {

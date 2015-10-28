@@ -76,7 +76,7 @@ angular.module('ZombieLabApp')
 	};
 
 	service.increaseDifficulty = function () {
-		difficulty += 40;
+		difficulty += 45;
 	};
 
 	service.isItemSelected = function () {

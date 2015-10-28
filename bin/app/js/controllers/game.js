@@ -292,7 +292,6 @@ angular.module('ZombieLabApp')
 			if (character.weapon && character.weapon.model.category === 'weapons' && character.canShoot()) {
 				if ((character.weapon.ammo > 0 || !character.weapon.model.clipSize) && character.reloadingTimer <= 0) {
 					if (!character.holdFire) {
-						$scope.model.teamTired = 3000;
 						var validTargets = _.groupBy(mapService.getValidTargets(), 'distance');
 						var target = null;
 						_.each(validTargets, function (targetsGroup, distance) {
@@ -301,6 +300,7 @@ angular.module('ZombieLabApp')
 							}
 						});
 						if (target) {
+							$scope.model.teamTired = 3000;
 							if (character.rofTimer <= 0) {
 								controller.shootAt(target, character);
 								character.resetAim();
