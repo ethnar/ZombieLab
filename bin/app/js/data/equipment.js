@@ -499,7 +499,7 @@ angular.module('ZombieLabApp')
 				}
 			}, {
 				name: 'Blue Access Card',
-				description: 'Single-use access card that lets you pass through standard-security doors.',
+				description: 'Limited-use access card that lets you pass through standard-security doors.',
 				minDifficulty: 100,
 				isLarge: false,
 				charges: 3,
@@ -524,7 +524,7 @@ angular.module('ZombieLabApp')
 				}
 			}, {
 				name: 'Yellow Access Card',
-				description: 'Single-use access card that lets you pass through heightened-security doors.',
+				description: 'Limited-use access card that lets you pass through heightened-security doors.',
 				minDifficulty: 100,
 				isLarge: false,
 				charges: 2,
