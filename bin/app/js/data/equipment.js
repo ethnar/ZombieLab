@@ -497,6 +497,81 @@ angular.module('ZombieLabApp')
 					}
 					return true;
 				}
+			}, {
+				name: 'Blue Access Card',
+				description: 'Single-use access card that lets you pass through standard-security doors.',
+				minDifficulty: 100,
+				isLarge: false,
+				charges: 3,
+				target: 'area',
+				actionTime: 0.2,
+				value: 0.3,
+				use: function (itemSlot, character, direction) {
+					var self = this;
+					var targetTile = mapService.getNextAreaForTeam(direction);
+					var path = mapService.getDirectionPathForTeam(direction);
+					mapService.openDoor(path);
+				},
+				progress: function (itemSlot, character, direction, delta) {
+					var self = this;
+					var isDoor = mapService.isDoor(direction);
+					var path = mapService.getDirectionPathForTeam(direction);
+					if (!isDoor || path.security !== 1) {
+						ZombieLab.error('You must target closed, standard-security doors');
+						return false;
+					}
+					return true;
+				}
+			}, {
+				name: 'Yellow Access Card',
+				description: 'Single-use access card that lets you pass through heightened-security doors.',
+				minDifficulty: 100,
+				isLarge: false,
+				charges: 2,
+				target: 'area',
+				actionTime: 0.2,
+				value: 0.7,
+				use: function (itemSlot, character, direction) {
+					var self = this;
+					var targetTile = mapService.getNextAreaForTeam(direction);
+					var path = mapService.getDirectionPathForTeam(direction);
+					mapService.openDoor(path);
+				},
+				progress: function (itemSlot, character, direction, delta) {
+					var self = this;
+					var isDoor = mapService.isDoor(direction);
+					var path = mapService.getDirectionPathForTeam(direction);
+					if (!isDoor || path.security !== 2) {
+						ZombieLab.error('You must target closed, heightened-security doors');
+						return false;
+					}
+					return true;
+				}
+			}, {
+				name: 'Red Access Card',
+				description: 'Single-use access card that lets you pass through high-security doors.',
+				minDifficulty: 100,
+				isLarge: false,
+				charges: 1,
+				target: 'area',
+				actionTime: 0.2,
+				value: 1.2,
+				use: function (itemSlot, character, direction) {
+					var self = this;
+					var targetTile = mapService.getNextAreaForTeam(direction);
+					var path = mapService.getDirectionPathForTeam(direction);
+					mapService.openDoor(path);
+				},
+				progress: function (itemSlot, character, direction, delta) {
+					var self = this;
+					var isDoor = mapService.isDoor(direction);
+					var path = mapService.getDirectionPathForTeam(direction);
+					if (!isDoor || path.security !== 3) {
+						ZombieLab.error('You must target closed, high-security doors');
+						return false;
+					}
+					return true;
+				}
 			}
 		],
 		ammo: [
