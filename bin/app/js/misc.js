@@ -18,6 +18,15 @@
 	ZombieLab = {
 	};
 
+	autoZoom = function () {
+		var size = (document.body.clientHeight / 320);
+		if (size > 1) size = Math.floor(size);
+		$('body').css({zoom: size});
+	}
+
+	$(window).resize(autoZoom);
+	$(document).ready(autoZoom);
+
 	ZombieLab.error = function (msg) {
 		console.error(msg);
 	};
