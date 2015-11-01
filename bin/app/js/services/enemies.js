@@ -52,7 +52,9 @@ angular.module('ZombieLabApp')
 			walking: 0,
 			attackTimer: 0,
 			tile: tile,
-			speed: _.random(Math.round(type.speed *0.9), Math.round(type.speed *1.1))
+			speed: _.random(Math.round(type.speed *0.9), Math.round(type.speed *1.1)),
+			roomX: _.random(5, 66),
+			roomY: _.random(3, 66)
 		}
 	};
 
