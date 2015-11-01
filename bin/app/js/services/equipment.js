@@ -13,6 +13,7 @@ angular.module('ZombieLabApp')
 		item.price = item.price || 0;
 		item.size = item.size || 'small';
 		item.isLarge = item.isLarge || false;
+		item.image = item.image || item.name.replace(/ /g, '_').toLowerCase();
 		service.itemTypes[item.category] = service.itemTypes[item.category] || {};
 		service.itemTypesByName[item.name] = item;
 		service.itemTypes[item.category][item.name] = item;
