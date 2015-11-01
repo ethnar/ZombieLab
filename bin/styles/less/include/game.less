@@ -2,16 +2,11 @@
 
 @img-path: '../../img/';
 
+@bg-color: #16222C;
+
 @screen-height: 100vh;
 @character-panel-width: 90px;
 @map-tile-size: 90px;
-
-@wall-color: black;
-@corridor-width: 40px;
-@wall-thickness: 6px;
-@doorway-width: 20px;
-@door-width: 30px;
-@door-color: #999;
 
 @action-button-size: 60px;
 
@@ -103,7 +98,7 @@
 	}
 
 	.game-area {
-		background: #111;
+		background: @bg-color;
 		height: @screen-height;
 		position: relative;
 		overflow: hidden;

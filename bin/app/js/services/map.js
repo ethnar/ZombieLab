@@ -3,7 +3,6 @@
 angular.module('ZombieLabApp')
 
 .service('mapService', function ($timeout, eventService) {
-	var directions = ['N', 'E', 'S', 'W'];
 	var directionOffsets = {
 		'N': [0, -1],
 		'S': [0, 1],
@@ -12,6 +11,7 @@ angular.module('ZombieLabApp')
 	}
 
 	var service = this;
+	service.directions = ['N', 'E', 'S', 'W'];
 	service.tileSize; // Needed for the camera
 	service.map = [];
 	service.areas = [];
@@ -137,7 +137,7 @@ angular.module('ZombieLabApp')
 		service.map[service.teamLocation.x][service.teamLocation.y].revealed = true;
 		service.validTargets = [];
 		service.registerValidTargets(service.teamLocation, 0);
-		_.each(directions, function (direction) {
+		_.each(service.directions, function (direction) {
 			var currentTile = service.teamLocation;
 			var distance = 0;
 			var directionOffset = directionOffsets[direction];

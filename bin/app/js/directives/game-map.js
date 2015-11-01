@@ -12,9 +12,20 @@ angular.module('ZombieLabApp')
 		},
 		controller: function ($scope) {
 			$scope.getTileClass = function (tile) {
-				return _.keys(_.pick(tile, function (property) {
-					return property;
-				})).join(' ');
+				var result = {
+					area: tile.area, 
+					room: tile.room, 
+					visible: tile.visible, 
+					revealed: tile.revealed, 
+					start: tile.start, 
+					finish: tile.finish, 
+					light: tile.isLit()
+				};
+				_.each(mapService.directions, function (direction) {
+					result[direction] = tile[direction];
+					result[direction + '-corridor'] = tile[direction] && !tile[direction].door;
+				});
+				return result;
 			};
 
 			$scope.getGroupedEnemies = function (enemies) {

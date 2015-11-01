@@ -18,8 +18,8 @@
 			height: @map-tile-size;
 			opacity: 0;
 			padding: 10px;
-			transition: opacity 0.3s;
-			-webkit-transition: opacity 0.3s;
+			transition: opacity 0.3s, filter 0.3s;
+			-webkit-transition: opacity 0.3s, -webkit-filter 0.3s;
 
 			&.start::before {
 				content: 'START!';
@@ -30,11 +30,14 @@
 			}
 
 			&.revealed {
-				opacity: 0.4;
+				opacity: 1;
+				filter: brightness(0.4);
+				-webkit-filter: brightness(0.4);
 			}
 
 			&.visible {
-				opacity: 1;
+				filter: brightness(1);
+				-webkit-filter: brightness(1);
 
 				.enemy {
 					visibility: inherit;
@@ -44,6 +47,12 @@
 			.room-type {
 				position: absolute;
 				bottom: 5px;
+			    z-index: 60;
+			}
+
+			.items {
+				position: absolute;
+				z-index: 60;
 			}
 
 			.animation {
@@ -71,7 +80,66 @@
 
 
 			&.area {
-				background: url('@{img-path}rooms/Corridor.png');
+				@wall-thickness: 6px;
+				@wall-height: 9px;
+
+				.floor-tile {
+					width: @map-tile-size + @wall-thickness;
+					height: @map-tile-size + @wall-thickness + @wall-height;
+					position: absolute;
+					top: -@wall-thickness / 2;
+					left: -@wall-thickness / 2;
+					background: url('@{img-path}rooms/Corridor.png');
+				}
+
+				&.N-corridor .floor-tile {
+					background: url('@{img-path}rooms/CorridorN.png');
+				}
+				&.E-corridor .floor-tile {
+					background: url('@{img-path}rooms/CorridorE.png');
+				}
+				&.W-corridor .floor-tile {
+					background: url('@{img-path}rooms/CorridorW.png');
+				}
+				&.S-corridor .floor-tile {
+					background: url('@{img-path}rooms/CorridorS.png');
+				}
+				&.N-corridor.E-corridor .floor-tile {
+					background: url('@{img-path}rooms/CorridorNE.png');
+				}
+				&.N-corridor.W-corridor .floor-tile {
+					background: url('@{img-path}rooms/CorridorNW.png');
+				}
+				&.E-corridor.S-corridor .floor-tile {
+					background: url('@{img-path}rooms/CorridorES.png');
+				}
+				&.W-corridor.S-corridor .floor-tile {
+					background: url('@{img-path}rooms/CorridorWS.png');
+				}
+				&.N-corridor.S-corridor .floor-tile {
+					background: url('@{img-path}rooms/CorridorNS.png');
+				}
+				&.E-corridor.W-corridor .floor-tile {
+					background: url('@{img-path}rooms/CorridorEW.png');
+				}
+				&.E-corridor.W-corridor.S-corridor .floor-tile {
+					background: url('@{img-path}rooms/CorridorEWS.png');
+				}
+				&.N-corridor.W-corridor.S-corridor .floor-tile {
+					background: url('@{img-path}rooms/CorridorNWS.png');
+				}
+				&.N-corridor.E-corridor.S-corridor .floor-tile {
+					background: url('@{img-path}rooms/CorridorNES.png');
+				}
+				&.N-corridor.E-corridor.W-corridor .floor-tile {
+					background: url('@{img-path}rooms/CorridorNEW.png');
+				}
+				&.N-corridor.E-corridor.W-corridor.S-corridor .floor-tile {
+					background: url('@{img-path}rooms/CorridorNEWS.png');
+				}
+				&.room .floor-tile {
+					background: url('@{img-path}rooms/Room.png');
+				}
 
 				&:not(.light)::after {
 					content: "";
@@ -80,7 +148,8 @@
 				    bottom: 0;
 				    left: 0;
 				    right: 0;
-				    box-shadow: 0 0 90px 0px black inset;
+				    z-index: 65;
+				    // box-shadow: 0 0 90px 0px black inset;
 				    background: rgba(0,0,0,0.9);
 				}
 
@@ -91,108 +160,185 @@
 				    bottom: 0;
 				    left: 0;
 				    right: 0;
-				    box-shadow: 0 0 90px 0px black inset;
+				    z-index: 65;
+				    // box-shadow: 0 0 90px 0px black inset;
 				    transition: background 0.3s cubic-bezier(0, 2.35, 0,-0.52); //cubic-bezier(0.17, 1.79, 0,-1.35)
 				    background: rgba(0,0,0,0);
 				}
 
 				.wall.has-wall {
 					z-index: 50;
-					background: @wall-color;
-					border: (@map-tile-size - @doorway-width) / 2 solid @wall-color;
-
-					&.S, &.N {
-						border-top: none;
-						border-bottom: none;
-						width: @map-tile-size + @wall-thickness;
-						height: @wall-thickness;
-
-						.door {
-							width: @door-width + 1;
-							height: @wall-thickness + 4;
-							top: -2px;
-							border: (@door-width / 2) solid @door-color;
-							border-top: none;
-							border-bottom: none;
-							left: 50%;
-							margin-left: -@door-width / 2;
-						}
-
-						&.opened .door {
-							width: @doorway-width + @door-width;
-							margin-left: (-@doorway-width - @door-width) / 2;
-						}
-					}
-
-					&.E, &.W {
-						border-left: none;
-						border-right: none;
-						height: @map-tile-size + @wall-thickness;
-						width: @wall-thickness;
-
-						.door {
-							height: @door-width + 1;
-							width: @wall-thickness + 4;
-							left: -2px;
-							border: (@door-width / 2) solid @door-color;
-							border-left: none;
-							border-right: none;
-							top: 50%;
-							margin-top: -@door-width / 2;
-						}
-
-						&.opened .door {
-							height: @doorway-width + @door-width;
-							margin-top: (-@doorway-width - @door-width) / 2;
-						}
-					}
-					
-					position: absolute;
-					top: 50%;
-					left: -@wall-thickness / 2;
-					margin-top: -@wall-thickness / 2;
 
 					.door {
 						display: none;
 					}
 
-					&.has-door {
-						background: none;
+					&.has-door .door {
+						display: block;
+					}
+
+					&.N {
+						@door-width: 46px;
+						@door-height: 21px;
+
+						position: absolute;
+						left: (@map-tile-size - @door-width) / 2;
+						top: -@wall-thickness / 2;
+						width: @door-width;
+						height: @door-height;
+
+						&:not(.has-door) {
+							background: url('@{img-path}rooms/walls/N.png') left center;
+						}
 
 						.door {
-							display: block;
-							position: absolute;
-							.game-ready & {
-								transition: all 0.5s;
-							}
+							width: @door-width;
+							height: @door-height;
+							background: url('@{img-path}rooms/doors/door-N-0.png') left center;
 
 							&.security-1 {
-	    						border-color: orange;
+								background: url('@{img-path}rooms/doors/door-N-1.png') left center;
 							}
 							&.security-2 {
-	    						border-color: orangered;
+								background: url('@{img-path}rooms/doors/door-N-2.png') left center;
 							}
 							&.security-3 {
-	    						border-color: darkred;
+								background: url('@{img-path}rooms/doors/door-N-3.png') left center;
+							}
+						}
+
+						&.opened .door {
+							@frames: 9;
+							animation: door-N 0.4s steps(@frames);
+						    animation-fill-mode: forwards;
+
+							@keyframes door-N {
+								100% { background-position: -@door-width * @frames; }
 							}
 						}
 					}
 
-					&.N {
-						transform: translateY(-@map-tile-size / 2);
-						-webkit-transform: translateY(-@map-tile-size / 2);
-					}
 					&.S {
-						transform: translateY(@map-tile-size / 2);
-						-webkit-transform: translateY(@map-tile-size / 2);
+						@door-width: 46px;
+						@door-height: 15px;
+
+						position: absolute;
+						left: (@map-tile-size - @door-width) / 2;
+						top: @map-tile-size - @wall-thickness / 2;
+						width: @door-width;
+						height: @door-height;
+
+						&:not(.has-door) {
+							background: url('@{img-path}rooms/walls/S.png') left center;
+						}
+
+						.door {
+							width: @door-width;
+							height: @door-height;
+							background: url('@{img-path}rooms/doors/door-S-0.png') left center;
+
+							&.security-1 {
+								background: url('@{img-path}rooms/doors/door-S-1.png') left center;
+							}
+							&.security-2 {
+								background: url('@{img-path}rooms/doors/door-S-2.png') left center;
+							}
+							&.security-3 {
+								background: url('@{img-path}rooms/doors/door-S-3.png') left center;
+							}
+						}
+
+						&.opened .door {
+							@frames: 9;
+							animation: door-S 0.4s steps(@frames);
+						    animation-fill-mode: forwards;
+
+							@keyframes door-S {
+								100% { background-position: -@door-width * @frames; }
+							}
+						}
 					}
+
 					&.W {
-						transform: translateY(-@map-tile-size / 2);
-						-webkit-transform: translateY(-@map-tile-size / 2);
+						@door-width: 6px;
+						@door-height: 46px;
+
+						position: absolute;
+						left: -@wall-thickness / 2;
+						top: (@map-tile-size - @door-height) / 2;
+						width: @door-width;
+						height: @door-height;
+
+						&:not(.has-door) {
+							background: url('@{img-path}rooms/walls/W.png') left center;
+						}
+
+						.door {
+							width: @door-width;
+							height: @door-height;
+							background: url('@{img-path}rooms/doors/door-EW-0.png') left center;
+
+							&.security-1 {
+								background: url('@{img-path}rooms/doors/door-EW-1.png') left center;
+							}
+							&.security-2 {
+								background: url('@{img-path}rooms/doors/door-EW-2.png') left center;
+							}
+							&.security-3 {
+								background: url('@{img-path}rooms/doors/door-EW-3.png') left center;
+							}
+						}
+
+						&.opened .door {
+							@frames: 9;
+							animation: door-W 0.4s steps(@frames);
+						    animation-fill-mode: forwards;
+
+							@keyframes door-W {
+								100% { background-position: -@door-width * @frames; }
+							}
+						}
 					}
+
 					&.E {
-						transform: translateY(-@map-tile-size / 2) translateX(@map-tile-size);
-						-webkit-transform:  translateY(-@map-tile-size / 2) translateX(@map-tile-size);
+						@door-width: 6px;
+						@door-height: 46px;
+
+						position: absolute;
+						left: @map-tile-size - @wall-thickness / 2;
+						top: (@map-tile-size - @door-height) / 2;
+						width: @door-width;
+						height: @door-height;
+
+						&:not(.has-door) {
+							background: url('@{img-path}rooms/walls/E.png') left center;
+						}
+
+						.door {
+							width: @door-width;
+							height: @door-height;
+							background: url('@{img-path}rooms/doors/door-EW-0.png') left center;
+
+							&.security-1 {
+								background: url('@{img-path}rooms/doors/door-EW-1.png') left center;
+							}
+							&.security-2 {
+								background: url('@{img-path}rooms/doors/door-EW-2.png') left center;
+							}
+							&.security-3 {
+								background: url('@{img-path}rooms/doors/door-EW-3.png') left center;
+							}
+						}
+
+						&.opened .door {
+							@frames: 9;
+							animation: door-E 0.4s steps(@frames);
+						    animation-fill-mode: forwards;
+
+							@keyframes door-E {
+								100% { background-position: -@door-width * @frames; }
+							}
+						}
 					}
 				}
 			}
@@ -204,6 +350,7 @@
 		top: 3px;
 		right: 3px;
 	    text-align: right;
+	    z-index: 60;
 
 		.enemy {
 			visibility: hidden;
@@ -245,9 +392,6 @@
 				// 	background-color: black;
 				// }
 			}
-		}
-
-		.enemyIcon {
 		}
 	}
 }
