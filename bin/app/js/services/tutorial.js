@@ -111,7 +111,7 @@ angular.module('ZombieLabApp')
 		getHighlights: function () {
 			return _.union(
 				getElementHighlight($('.action-panel .action.search'), 80),
-				getElementHighlight($('.action-direction.center'), 80)
+				getElementHighlight($('.visible .items:visible'))
 			);
 		}
 	}, {
@@ -207,7 +207,7 @@ angular.module('ZombieLabApp')
 			return $('.game').length;
 		},
 		fighting: function () {
-			return !$('.team-running:visible').length;
+			return !$('.visible .enemy:visible').length;
 		},
 		takingAction: function () {
 			return $('.action-progress:visible').length;

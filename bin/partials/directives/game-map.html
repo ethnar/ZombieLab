@@ -1,8 +1,7 @@
 <div class="map">
 	<div ng-repeat="column in map" class="column">
 		<div ng-repeat="tile in column" ng-class="getTileClass(tile);" class="tile">
-			<div class="floor-tile">
-			</div>
+			<div class="floor-tile"></div>
 			<div class="wall N" ng-class="{'has-door': tile.N.door, opened: !tile.N.closed, 'has-wall': !tile.N || tile.N.door}">
 				<div class="door security-{{tile.N.security}}"></div>
 			</div>
@@ -16,7 +15,7 @@
 				<div class="door security-{{tile.S.security}}"></div>
 			</div>
 			<div class="room-type">{{tile.roomType}}</div>
-			<div class="items" ng-show="hasItems(tile)">ITEMS!</div>
+			<div class="items" ng-show="hasItems(tile)"></div>
 			<div class="animations-frame">
 				<div ng-repeat="animation in tile.animations" class="animation" ng-class="animation"></div>
 			</div>
