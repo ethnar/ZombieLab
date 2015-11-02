@@ -1,7 +1,7 @@
 <div class="character-panel" ng-class="{dead: !character.alive, inactive: !character.active}">
 	<div class="image" ng-hold="characterHoldAction();" ng-click="characterClickAction();">
 		<div class="high-skills">
-			<img ng-repeat="skill in character.bestSkills" ng-src="img/skills/{{::skill}}.png" />
+			<img ng-repeat="skill in character.bestSkills" ng-src="imgs/skills/{{::skill}}.png" />
 		</div>
 		<div class="name">{{::character.name}}</div>
 		<div class="health" ng-style="{height: 100 - (100 * character.health / character.maxHealth) + '%'}"></div>

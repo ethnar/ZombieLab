@@ -8,7 +8,7 @@
 			<div class="quantity" data-ng-show="item.quantity">{{item.quantity}}</div>
 			<div class="item-text reloading" ng-show="slot === 'weapon' &amp;&amp; character.isReloading();">RELOAD</div>
 			<div class="item-text hold-fire" ng-show="slot === 'weapon' &amp;&amp; character.holdFire &amp;&amp; !character.isReloading();">HOLD</div>
-			<img class="item-image" ng-if="item" ng-src="img/items/{{item.model.category + '/' + item.model.image}}.png" />
+			<img class="item-image" ng-if="item" ng-src="imgs/items/{{item.model.category + '/' + item.model.image}}.png" />
 		</div>
 	</div>
 
@@ -16,7 +16,7 @@
 		<div class="item-info-modal clearfix">
 			<h3>{{::item.model.name}}</h3>
 			<div class="additional-info">
-				<img class="item-image" ng-src="img/items/{{::item.model.category + '/' + item.model.image}}.png" />
+				<img class="item-image" ng-src="imgs/items/{{::item.model.category + '/' + item.model.image}}.png" />
 				<div class="recommended-skill" ng-show="item.model.skill">
 					<div>
 						Recommended skill:<br/>
@@ -24,7 +24,7 @@
 					</div>
 					<div data-ng-show="item.model.ammoType">
 						Ammo used:<br/>
-						<img class="ammo-image" ng-src="img/items/ammo/{{item.model.ammoType}}.png" />
+						<img class="ammo-image" ng-src="imgs/items/ammo/{{item.model.ammoType}}.png" />
 					</div>
 				</div>
 			</div>
