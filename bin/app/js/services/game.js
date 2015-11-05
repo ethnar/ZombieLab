@@ -6,6 +6,7 @@ angular.module('ZombieLabApp')
 	var service = this;
 	var difficulty;
 	service.isGameOver = false;
+	service.isMainGame = false;
 	service.selectedItemSlot = null;
 	service.names = ['Alan', 'Arthur', 'Jake', 'Jane', 'Hilda', 'Thomas', 'Natalie', 'John', 'Martha', 'Ashley'];
 	service.availableNames = null;
@@ -54,6 +55,7 @@ angular.module('ZombieLabApp')
 		service.availableNames = angular.copy(service.names);
 		equipmentService.removeAmmo();
 		service.isGameOver = false;
+		service.isMainGame = true;
 	};
 
 	service.getNewName = function () {
@@ -64,6 +66,7 @@ angular.module('ZombieLabApp')
 	};
 
 	service.gameOver = function () {
+		service.isMainGame = false;
 		service.isGameOver = true;
 	};
 

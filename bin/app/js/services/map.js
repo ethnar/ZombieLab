@@ -28,31 +28,6 @@ angular.module('ZombieLabApp')
 	service.validTargets = [];
 	service.teamSteps = 10;
 
-	window.Tile = function (obj) {
-		angular.extend(this, obj, {
-			area: false,
-			room: false,
-			visible: false,
-			enemies: [],
-			items: [],
-			teamHeat: 0,
-			light: true,
-			animations: {}
-		});
-	};
-
-	Tile.prototype.isLit = function () {
-		return this.light; // TODO: add fire
-	};
-	Tile.prototype.turnLight = function (light) {
-		this.light = light;
-		service.checkVisibility();
-	};
-
-	Tile.prototype.hasItems = function () {
-		return _.without(this.items, null).length;
-	};
-
 	service.getTileElement = function (tile) {
 		return $('.map .column').eq(tile.x).find('.tile').eq(tile.y);
 	};
@@ -217,16 +192,6 @@ angular.module('ZombieLabApp')
 
 	service.getValidTargets = function () {
 		return service.validTargets;
-	};
-
-	service.dropItem = function (slot, tile) {
-		var key = _.findIndex(tile.items, function (item) {
-			return !item;
-		});
-		if (key > -1) {
-			tile.items[key] = slot.item;
-			slot.item = null;
-		}
 	};
 
 	service.addAnimation = function (tile, animation, duration) {

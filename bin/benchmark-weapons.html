@@ -13,7 +13,6 @@
 		<script type="text/javascript" src="libs/js/angular/angular-touch.min.js"></script>
 		<script type="text/javascript" src="libs/js/angular/angular-route.min.js"></script>
 		
-		<script type="text/javascript" src="app/js/misc.js"></script>
 		<script>
 			'use strict';
 
@@ -39,7 +38,8 @@
 						for (var x = 0; x < mapService.mapSizeX; x++) {
 							for (var y = 0; y < mapService.mapSizeY; y++) {
 								enemies = _.union(enemies, mapService.map[x][y].enemies);
-								_.each(mapService.map[x][y].items, function (item) {
+								_.each(mapService.map[x][y].itemSlots, function (slot) {
+									var item = slot.item;
 									if (item && item.model.category == 'ammo') {
 										ammo[item.model.ammoType] = ammo[item.model.ammoType] || 0;
 										ammo[item.model.ammoType] += item.quantity;
@@ -96,6 +96,12 @@
 			});
 		</script>
 		
+		<script type="text/javascript" src="app/js/classes/event-handler.js"></script> 
+		<script type="text/javascript" src="app/js/classes/character.js"></script> 
+		<script type="text/javascript" src="app/js/classes/tile.js"></script> 
+		<script type="text/javascript" src="app/js/classes/item.js"></script> 
+		<script type="text/javascript" src="app/js/classes/item-slot.js"></script> 
+		
 		<script type="text/javascript" src="app/js/data/equipment.js"></script> 
 		<script type="text/javascript" src="app/js/data/character.js"></script> 
 		<script type="text/javascript" src="app/js/data/map.js"></script> 
@@ -112,7 +118,6 @@
 		<script type="text/javascript" src="app/js/services/map.js"></script> 
 		<script type="text/javascript" src="app/js/services/map-generator.js"></script> 
 		<script type="text/javascript" src="app/js/services/enemies.js"></script>
-		<script type="text/javascript" src="app/js/services/tutorial.js"></script>
 		<script type="text/javascript" src="app/js/services/misc.js"></script>
 
 		<script type="text/javascript" src="app/js/directives/character-panel.js"></script> 

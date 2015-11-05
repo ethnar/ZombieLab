@@ -44,9 +44,6 @@ angular.module('ZombieLabApp')
 			tile.area = true;
 			mapService.areaCount++;
 			mapService.areas.push(tile);
-			while (tile.items.length < 8) {
-				tile.items.push(null);
-			}
 			return true;
 		}
 		return false;
@@ -236,9 +233,9 @@ angular.module('ZombieLabApp')
 						ammo[ammoType] += add;
 					}
 					_.each(ammo, function (qty, type) {
-						var item = equipmentService.newItem(equipmentService.itemTypesByName[type]);
-						item.quantity = qty;
-						tile.items[idx++] = item;
+						tile.itemSlots[idx] = new ItemSlot(equipmentService.newItem(equipmentService.itemTypesByName[type]));
+						tile.itemSlots[idx].item.quantity = qty;
+						idx++;
 					});
 					break;
 				case 'weapons':
@@ -254,7 +251,7 @@ angular.module('ZombieLabApp')
 								difference = currentDifference;
 							}
 						});
-						tile.items[idx++] = equipmentService.newItem(selected);
+						tile.itemSlots[idx++] = new ItemSlot(equipmentService.newItem(selected));
 					}
 					break;
 				case 'medications':
@@ -270,7 +267,7 @@ angular.module('ZombieLabApp')
 						if (!item) {
 							break;
 						}
-						tile.items[idx++] = equipmentService.newItem(item);
+						tile.itemSlots[idx++] = new ItemSlot(equipmentService.newItem(item));
 						random -= item.value;
 					}
 					break;
@@ -307,8 +304,10 @@ angular.module('ZombieLabApp')
 		for (var x = 0; x < mapService.mapSizeX; x++) {
 			for (var y = 0; y < mapService.mapSizeY; y++) {
 				var tile = mapService.map[x][y];
-				if (tile.items) {
-					tile.items = [];
+				if (tile.itemSlots) {
+					_.each(tile.itemSlots, function (slot, key) {
+						tile.itemSlots[key].item = null;
+					});
 				}
 				if (tile.enemies) {
 					tile.enemies = [];

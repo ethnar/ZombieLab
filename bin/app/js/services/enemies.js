@@ -78,9 +78,9 @@ angular.module('ZombieLabApp')
 		var chanceToHaveZombies = -1 / (gameService.getDifficulty() / 4000) + 95;
 		var specialGroupsBudget = _.random(0, gameService.getDifficulty()) * specialZombieAmount;
 
-		var hasZobmies = (_.random(0, 100) < chanceToHaveZombies); // TODO: fix the typo when it's no longer funny enough
+		var hasZombies = (_.random(0, 100) < chanceToHaveZombies);
 		var enemiesGroup = [];
-		if (hasZobmies) {
+		if (hasZombies) {
 			var maxRoomDifficulty = _.random(roomDifficulty * 0.6, roomDifficulty);
 			var remainingRoomDifficulty = maxRoomDifficulty;
 			while (specialGroupsBudget > 200) {

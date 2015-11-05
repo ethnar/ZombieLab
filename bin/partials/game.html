@@ -10,7 +10,7 @@
 			<div class="pulse"></div>
 		</div>
 		<div class="loot-window" ng-show="model.lootingRoom">
-			<item-slot ng-repeat="item in getTeamLocation().items track by $index" slot="loot" item="getTeamLocation().items[$index]" allowed-large="true"></item-slot>
+			<item-slot ng-repeat="item in getTeamLocation().itemSlots track by $index" slot="loot" item-slot="getTeamLocation().itemSlots[$index]" allowed-large="true" slot-type="floor"></item-slot>
 		</div>
 		<game-map map="model.map" ng-style="{top: getMapTopOffset(), left: getMapLeftOffset()}"></game-map>
 		<div class="top-left-info-panel">
@@ -46,7 +46,7 @@
 			<div class="skills">
 				<skill-bar ng-repeat="(skill, value) in model.selectedCharacter.skills" skill="skill" value="value"></skill-bar>
 			</div>
-			<div ng-click="$close();" class="modal-close">&times;</div>
+			<div ng-click="$close();" class="modal-close">X</div>
 		</div>
 	</script>
 </div>

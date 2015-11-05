@@ -10,38 +10,6 @@ angular.module('ZombieLabApp')
 	service.team = [];
 	service.maxSkill = 5;
 
-	function Character(obj) {
-		angular.extend(this, obj);
-	};
-
-	Character.prototype.isReloading = function () {
-		return this.reloadingTimer > 0 && this.alive;
-	};
-
-	Character.prototype.canPerformAction = function () {
-		return this.conscious && this.alive;
-	};
-
-	Character.prototype.canShoot = function () {
-		return this.conscious && this.active && this.alive;
-	};
-
-	Character.prototype.resetAim = function () {
-		var characterRof = Math.floor(this.weapon.model.rof * Math.pow(this.skillModifier('weapons', this.weapon.model.skillRequired), 0.5));
-		this.rofTimer += characterRof;
-		this.rofTimer = Math.min(this.rofTimer, characterRof);
-	};
-
-	Character.prototype.skillModifier = function (skill, level) {
-		var diff = this.skills[skill] - level;
-		switch (true) {
-			case diff <= 0:
-				return 1 + 0.15 * diff;
-			case diff > 0: 
-				return 1 + 0.025 * (diff + 1);
-		}
-	};
-
 	service.createNewCharacter = function (archetype) {
 		var budget = _.random(80, 100);
 		var disposition = {
@@ -112,9 +80,9 @@ angular.module('ZombieLabApp')
 		// *** create character ***
 		return new Character({
 			name: gameService.getNewName(),
-			weapon: pickedWeapon.name ? equipmentService.newItemByName(pickedWeapon.name) : null,
-			itemSmall: itemSmall,
-			itemLarge: itemLarge,
+			weapon: pickedWeapon.name ? new ItemSlot(equipmentService.newItemByName(pickedWeapon.name)) : new ItemSlot(),
+			itemSmall: new ItemSlot(itemSmall),
+			itemLarge: new ItemSlot(itemLarge),
 			rofTimer: 0,
 			reloadingTimer: 0,
 			reloadingWeapon: null,
@@ -151,9 +119,9 @@ angular.module('ZombieLabApp')
 
 	service.addToTeam = function (character) {
 		service.team.push(character);
-		_.each(['weapon', 'smallItem', 'largeItem'], function (slotName) {
-			if (character[slotName] && character[slotName].model.startingAmmo) {
-				_.each(character[slotName].model.startingAmmo, function (qty, type) {
+		_.each(['weapon', 'itemSmall', 'itemLarge'], function (slotName) {
+			if (character[slotName].item && character[slotName].item.model.startingAmmo) {
+				_.each(character[slotName].item.model.startingAmmo, function (qty, type) {
 					equipmentService.ammo[type] = equipmentService.ammo[type] || 0;
 					equipmentService.ammo[type] += qty;
 				});
@@ -225,7 +193,6 @@ angular.module('ZombieLabApp')
 				character[slot] = null;
 			}
 		});
-		// TODO: drop stuff on the ground
 		if (service.getAliveMembers().length === 0) {
 			gameService.gameOver();
 		}
@@ -239,16 +206,16 @@ angular.module('ZombieLabApp')
 	};
 
 	service.startReloading = function (character) {
-		var ammoType = character.weapon.model.ammoType;
-		if (character.weapon.model.clipSize > character.weapon.ammo && equipmentService.ammo[ammoType] > 0) {
-			character.reloadingTimer = character.weapon.model.reload / character.skillModifier('weapons', character.weapon.model.skillRequired);
-			character.reloadingWeapon = character.weapon;
+		var ammoType = character.weapon.item.model.ammoType;
+		if (character.weapon.item.model.clipSize > character.weapon.item.ammo && equipmentService.ammo[ammoType] > 0) {
+			character.reloadingTimer = character.weapon.item.model.reload / character.skillModifier('weapons', character.weapon.item.model.skillRequired);
+			character.reloadingWeapon = character.weapon.item;
 		}
 	};
 
 	service.reloading = function (character, delta) {
-		var ammoType = character.weapon.model.ammoType;
-		if ((character.reloadingWeapon && character.reloadingWeapon !== character.weapon) || equipmentService.ammo[ammoType] == 0) {
+		var ammoType = character.weapon.item.model.ammoType;
+		if ((character.reloadingWeapon && character.reloadingWeapon !== character.weapon.item) || equipmentService.ammo[ammoType] == 0) {
 			// weapon swapped or no ammo, stop reloading
 			character.reloadingWeapon = null;
 			character.reloadingTimer = 0;
@@ -256,8 +223,8 @@ angular.module('ZombieLabApp')
 			if (character.reloadingWeapon) {
 				character.reloadingTimer -= delta;
 				if (character.reloadingTimer <= 0) {
-					var ammoAdded = Math.min(character.weapon.model.clipSize - character.weapon.ammo, equipmentService.ammo[ammoType]);
-					character.weapon.ammo += ammoAdded;
+					var ammoAdded = Math.min(character.weapon.item.model.clipSize - character.weapon.item.ammo, equipmentService.ammo[ammoType]);
+					character.weapon.item.ammo += ammoAdded;
 					equipmentService.ammo[ammoType] -= ammoAdded;
 				}
 			} else {

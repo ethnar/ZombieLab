@@ -466,20 +466,22 @@ angular.module('ZombieLabApp')
 						element.removeClass('flashlight-light');
 						item.targetedTile.turnLight(false);
 						item.targetedTile = null;
-						eventService.unbind(item.bind);
+						eventService.unbind(item.bindMove);
+						item.unbind(item.bindDrop);
 					}
 					var turnFlashlightOn = function () {
 						var element = mapService.getTileElement(item.targetedTile);
 						element.addClass('flashlight-light');
 						item.targetedTile.turnLight(true);
 	
-						item.bind = eventService.on.teamMove(function () {
+						item.bindMove = eventService.on.teamMove(function () {
 							var deltaX = Math.abs(item.targetedTile.x - mapService.teamLocation.x);
 							var deltaY = Math.abs(item.targetedTile.y - mapService.teamLocation.y);
 							if (deltaX > 1 || deltaY > 1 || (deltaX != 0 && deltaY != 0)) {
 								turnFlashlightOff();
 							}
 						});
+						item.bindDrop = item.onDrop(turnFlashlightOff);
 					}
 
 					if (item.targetedTile) {

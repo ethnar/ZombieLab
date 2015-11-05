@@ -178,14 +178,10 @@ angular.module('ZombieLabApp')
 			return;
 		}
 		if (gameService.isItemSelected()) {
-//			if (!direction) {
-//				$scope.dropSelectedItem();
-//			} else {
-				var item = gameService.getSelectedItem();
-				if (item.model.target === 'area') {
-					$scope.startAction(actions.useItem, direction);
-				}
-//			}
+			var item = gameService.getSelectedItem();
+			if (item.model.target === 'area') {
+				$scope.startAction(actions.useItem, direction);
+			}
 			gameService.deselectItem();
 			return;
 		}
@@ -289,13 +285,13 @@ angular.module('ZombieLabApp')
 
 	controller.doTheShooting = function (delta) {
 		_.each(_.shuffle(characterService.team), function (character) {
-			if (character.weapon && character.weapon.model.category === 'weapons' && character.canShoot()) {
-				if ((character.weapon.ammo > 0 || !character.weapon.model.clipSize) && character.reloadingTimer <= 0) {
+			if (character.weapon.item && character.weapon.item.model.category === 'weapons' && character.canShoot()) {
+				if ((character.weapon.item.ammo > 0 || !character.weapon.item.model.clipSize) && character.reloadingTimer <= 0) {
 					if (!character.holdFire) {
 						var validTargets = _.groupBy(mapService.getValidTargets(), 'distance');
 						var target = null;
 						_.each(validTargets, function (targetsGroup, distance) {
-							if (!target && character.weapon.model.range >= distance) {
+							if (!target && character.weapon.item.model.range >= distance) {
 								target = _.sample(targetsGroup);
 							}
 						});
@@ -320,16 +316,16 @@ angular.module('ZombieLabApp')
 	};
 
 	controller.shootAt = function (target, character) {
-		var chanceToHit = character.weapon.model.baseChanceToHit * character.skillModifier('weapons', character.weapon.model.skillRequired);
+		var chanceToHit = character.weapon.item.model.baseChanceToHit * character.skillModifier('weapons', character.weapon.item.model.skillRequired);
 
-		character.weapon.ammo -= 1;
-		if (character.weapon.ammo === 0) {
+		character.weapon.item.ammo -= 1;
+		if (character.weapon.item.ammo === 0) {
 			characterService.startReloading(character);
 		}
 
 		var weaponFrame = character.$element.find('.weapon');
 		if (_.random(1, 100) < chanceToHit) {
-			enemyService.damage(target.enemy, _.random(character.weapon.model.dmgMin, character.weapon.model.dmgMax));
+			enemyService.damage(target.enemy, _.random(character.weapon.item.model.dmgMin, character.weapon.item.model.dmgMax));
 			weaponFrame.find('.weapon-miss').css({opacity: 0});
 			// TODO: turn into CSS animation to support Zepto  in some shape or form
 			weaponFrame.find('.weapon-hit').stop(true).css({opacity: 1}).animate({opacity: 1}, 600, function () {

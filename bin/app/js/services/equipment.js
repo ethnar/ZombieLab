@@ -47,9 +47,9 @@ angular.module('ZombieLabApp')
 	};
 
 	service.newItem = function (itemModel) {
-		var newItem = {
+		var newItem = new Item({
 			model: itemModel
-		};
+		});
 		if (itemModel.category === 'weapons') {
 			newItem.ammo = itemModel.clipSize;
 		} else {

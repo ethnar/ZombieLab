@@ -1,35 +1,36 @@
-<div class="item-slot {{::slot}}" ng-class="{selected: isSelected()}" ng-hold="showItemInfo();">
+<div class="item-slot {{::slotType}}" ng-class="{selected: isSelected()}" ng-hold="showItemInfo();">
 	<div class="item-slot-inner-wrapper" ng-click="click();">
-		<div class="weapon-hit">{{item.model.sound}}</div>
+		<div class="weapon-hit">{{itemSlot.item.model.sound}}</div>
 		<div class="weapon-miss">MISS!</div>
 		<div class="item">
-			<div class="ammo" data-ng-show="item.model.clipSize">{{item.ammo}}</div>
-			<div class="charges" data-ng-show="item.model.charges">{{item.charges}}</div>
-			<div class="quantity" data-ng-show="item.quantity">{{item.quantity}}</div>
-			<div class="item-text reloading" ng-show="slot === 'weapon' &amp;&amp; character.isReloading();">RELOAD</div>
-			<div class="item-text hold-fire" ng-show="slot === 'weapon' &amp;&amp; character.holdFire &amp;&amp; !character.isReloading();">HOLD</div>
-			<img class="item-image" ng-if="item" ng-src="imgs/items/{{item.model.category + '/' + item.model.image}}.png" />
+			<div class="ammo" data-ng-show="itemSlot.item.model.clipSize">{{itemSlot.item.ammo}}</div>
+			<div class="charges" data-ng-show="itemSlot.item.model.charges">{{itemSlot.item.charges}}</div>
+			<div class="quantity" data-ng-show="itemSlot.item.quantity">{{itemSlot.item.quantity}}</div>
+			<div class="item-text reloading" ng-show="slotType === 'weapon' &amp;&amp; character.isReloading();">RELOAD</div>
+			<div class="item-text hold-fire" ng-show="slotType === 'weapon' &amp;&amp; character.holdFire &amp;&amp; !character.isReloading();">HOLD</div>
+			<img class="item-image" ng-if="itemSlot.item" ng-src="imgs/items/{{itemSlot.item.model.category + '/' + itemSlot.item.model.image}}.png" />
 		</div>
 	</div>
 
 	<script type="text/ng-template" id="item-info-modal.html">
 		<div class="item-info-modal clearfix">
-			<h3>{{::item.model.name}}</h3>
+			<h3>{{::itemSlot.item.model.name}}</h3>
 			<div class="additional-info">
-				<img class="item-image" ng-src="imgs/items/{{::item.model.category + '/' + item.model.image}}.png" />
-				<div class="recommended-skill" ng-show="item.model.skill">
+				<img class="item-image" ng-src="imgs/items/{{::itemSlot.item.model.category + '/' + itemSlot.item.model.image}}.png" />
+				<div class="recommended-skill" ng-show="itemSlot.item.model.skill">
 					<div>
 						Recommended skill:<br/>
-						<skill-bar skill="item.model.skill" value="item.model.skillRequired"></skill-bar>
+						<skill-bar skill="itemSlot.item.model.skill" value="itemSlot.item.model.skillRequired"></skill-bar>
 					</div>
-					<div data-ng-show="item.model.ammoType">
+					<div data-ng-show="itemSlot.item.model.ammoType">
 						Ammo used:<br/>
-						<img class="ammo-image" ng-src="imgs/items/ammo/{{item.model.ammoType}}.png" />
+						<img class="ammo-image" ng-src="imgs/items/ammo/{{itemSlot.item.model.ammoType}}.png" />
 					</div>
 				</div>
 			</div>
-			<div class="description">{{::item.model.description}}</div>
-			<div ng-click="$close();" class="modal-close">&times;</div>
+			<div class="description">{{::itemSlot.item.model.description}}</div>
+			<div class="drop-button button" ng-show="itemDroppable();" ng-click="dropItem();$close();">DROP</div>
+			<div ng-click="$close();" class="modal-close">X</div>
 		</div>
 	</script>
 </div>

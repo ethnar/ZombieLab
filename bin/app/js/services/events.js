@@ -12,26 +12,31 @@ angular.module('ZombieLabApp')
 
 	var boundEvents = {};
 
-	_.each(supportedEvents, function (event) {
-		service.on[event] = function (callback) {
-			boundEvents[event] = boundEvents[event] || {};
-			var idx = _.size(boundEvents[event]);
-			boundEvents[event][idx] = callback;
-			return {
-				type: event,
-				id: idx
+	service.eventBinder = function (object, events) {
+		object.boundEvents = {};
+		_.each(events, function (event) {
+			object.on[event] = function (callback) {
+				object.boundEvents[event] = object.boundEvents[event] || {};
+				var idx = _.size(object.boundEvents[event]);
+				object.boundEvents[event][idx] = callback;
+				return {
+					type: event,
+					id: idx
+				}
 			}
+			object.fire[event] = function () {
+				var fireArguments = arguments;
+				_.each(object.boundEvents[event], function (callback) {
+					callback.apply(fireArguments);
+				});
+			}
+		});
+		object.unbind = function (eventBinding) {
+			delete object.boundEvents[eventBinding.type][eventBinding.id];
 		}
-		service.fire[event] = function () {
-			var fireArguments = arguments;
-			_.each(boundEvents[event], function (callback) {
-				callback.apply(fireArguments);
-			});
-		}
-	});
-	service.unbind = function (eventBinding) {
-		delete boundEvents[eventBinding.type][eventBinding.id];
-	}
+	};
+
+	service.eventBinder(service, supportedEvents);
 
 	return service;
 });
