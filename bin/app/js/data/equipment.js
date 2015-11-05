@@ -475,9 +475,7 @@ angular.module('ZombieLabApp')
 						item.targetedTile.turnLight(true);
 	
 						item.bindMove = eventService.on.teamMove(function () {
-							var deltaX = Math.abs(item.targetedTile.x - mapService.teamLocation.x);
-							var deltaY = Math.abs(item.targetedTile.y - mapService.teamLocation.y);
-							if (deltaX > 1 || deltaY > 1 || (deltaX != 0 && deltaY != 0)) {
+							if (!item.targetedTile.visible) {
 								turnFlashlightOff();
 							}
 						});
