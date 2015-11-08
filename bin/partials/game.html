@@ -15,8 +15,8 @@
 		<game-map map="model.map" ng-style="{top: getMapTopOffset(), left: getMapLeftOffset()}"></game-map>
 		<div class="top-left-info-panel">
 			FLOOR: {{model.floor}}
-			<div class="team-running" data-ng-show="model.teamTired <= 0">
-				RUNNING!
+			<div class="team-caution" data-ng-show="model.teamTired > 0">
+				CAUTION!
 			</div>
 		</div>
 		<div class="ammo-status">

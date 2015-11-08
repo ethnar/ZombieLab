@@ -257,10 +257,10 @@ angular.module('ZombieLabApp')
 		_.each(items, function (score, itemCategory) {
 			switch (itemCategory) {
 				case 'ammo':
-					var amount = Math.floor(gameDifficulty * score) / 5;
+					var amount = Math.floor(gameDifficulty * score) / 3;
 					var ammo = {};
 					while (amount > 0) {
-						var add = Math.min(_.random(3, 9));
+						var add = Math.min(_.random(6, 9));
 						var ammoType = _.sample(equipmentService.itemTypes.ammo).name;
 						amount -= add;
 						ammo[ammoType] = ammo[ammoType] || 0;
