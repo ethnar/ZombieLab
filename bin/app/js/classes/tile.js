@@ -47,18 +47,64 @@ angular.module('ZombieLabApp')
 		this.icons = _.without(this.icons, _.findWhere(this.icons, name));
 	};
 
-	Tile.prototype.startFire = function (scale) {
-		var self = this;
-		if (self.fire) {
-			self.removeIcon('fire' + self.fire);
-		}
-		self.fire = Math.min(3, self.fire + scale);
-		self.addIcon('fire' + self.fire);
-		eventService.onUpdate(function (delta) {
-			var fireDamage = self.fire * 5 * delta / 1000;
-			self.damage(fireDamage, fireDamage);
-		});
+	/* START Fire */
+	Tile.prototype.getFireIcon = function () {
+		return 'fire' + Math.max(1, Math.round(this.fire / 100));
 	};
+
+	Tile.prototype.normalizeFire = function () {
+		this.fire = Math.max(0, Math.min(300, this.fire))
+	};
+
+	Tile.prototype.igniteFire = function (scale) {
+		var self = this;
+		var wasFire = self.fire;
+		if (wasFire) {
+			self.removeIcon(self.getFireIcon());
+		}
+		self.fire += scale * 100;
+		self.flameTick = self.flameTick || 0;
+		self.normalizeFire();
+		self.addIcon(self.getFireIcon());
+		if (!wasFire) {
+			self.bindUpdate = eventService.onUpdate(function (delta) {
+				var fireDamage = (self.fire / 20) * (delta / 1000);
+				self.damage(fireDamage * 0.9, fireDamage * 1.1);
+
+				self.flameTick += delta;
+				while (self.flameTick > 1000) {
+					self.flameTick -= 1000;
+				}
+
+				// TODO: also burn stuff
+				if (self.flammable === undefined) { // not very elegant, but keep everything in one place
+					self.flammable = self.room ? 3000 : 0;
+				}
+				if (self.flammable > 0) {
+					self.igniteFire((delta / 1000) / 3);
+					self.flammable -= self.fire * (delta / 1000);
+				} else {
+					self.extinguishFire((delta / 1000) / 5);
+				}
+			});
+		}
+	};
+
+	Tile.prototype.extinguishFire = function (scale) {
+		var self = this;
+		if (!self.fire) {
+			return;
+		}
+		self.removeIcon(self.getFireIcon());
+		self.fire -= scale * 100;
+		self.normalizeFire();
+		if (self.fire) {
+			self.addIcon(self.getFireIcon());
+		} else {
+			eventService.unbind(self.bindUpdate);
+		}
+	};
+	/* END Fire */
 
 	Tile.prototype.hasItems = function () {
 		return _.filter(this.itemSlots, function (slot) {

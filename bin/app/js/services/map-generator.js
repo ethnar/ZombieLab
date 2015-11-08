@@ -22,7 +22,7 @@ angular.module('ZombieLabApp')
 				function explodeBarrels() {
 					tile.removeIcon('explosiveBarrels');
 					tile.damage(20, 30);
-					tile.startFire(2);
+					tile.igniteFire(2);
 					/* cleanup */
 					tile.unbind(onMissBind);
 					tile.unbind(onExplosionBind);
@@ -232,7 +232,9 @@ angular.module('ZombieLabApp')
 			}
 		});
 
-		tile.enemies = enemyService.createGroup(tile, roomType.enemies, roomType.enemiesSpecial);
+		if (roomType.enemies || roomType.enemiesSpecial) {
+			tile.enemies = enemyService.createGroup(tile, roomType.enemies, roomType.enemiesSpecial);
+		}
 
 		service.putItemsInRoom(roomType.items, tile);
 	};

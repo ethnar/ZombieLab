@@ -88,9 +88,7 @@ angular.module('ZombieLabApp')
 				misc: 0.6
 			},
 			specials: {
-				lightsOff: 1
-			},
-			specials: {
+				lightsOff: 1,
 				explosiveBarrels: 5
 			}
 			//better misc items
