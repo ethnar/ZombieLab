@@ -377,7 +377,6 @@ angular.module('ZombieLabApp')
 					var self = this;
 					var targetTile = mapService.getNextAreaForTeam(direction);
 					var fireScale = Math.max(1, 3 - self.skillRequired + character.getSkill(self.skill));
-					console.log(fireScale);
 					targetTile.igniteFire(fireScale);
 				},
 				progress: function (itemSlot, character, direction, delta) {

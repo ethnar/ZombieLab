@@ -60,6 +60,18 @@ angular.module('ZombieLabApp')
 		this.fire = Math.max(0, Math.min(300, this.fire))
 	};
 
+	Tile.prototype.burnItems = function () {
+		var self = this;
+		_.each(self.itemSlots, function (slot) {
+			if (slot.item) {
+				var random = _.random(1, 100);
+				if (random < 5 * self.getFireScale()) {
+					slot.item = null;
+				}
+			}
+		});
+	};
+
 	Tile.prototype.igniteFire = function (scale) {
 		var self = this;
 		var wasFire = self.fire;
@@ -79,14 +91,14 @@ angular.module('ZombieLabApp')
 				while (self.flameTick > 1000) {
 					self.flameTick -= 1000;
 					self.fireBurning();
+					self.burnItems();
 				}
 
-				// TODO: also burn stuff
 				if (self.flammable === undefined) { // not very elegant, but keep everything in one place
 					self.flammable = self.room ? 3000 : 0;
 				}
 				if (self.flammable > 0) {
-					self.igniteFire((delta / 1000) / 3);
+					self.igniteFire((delta / 1000) / 5);
 					self.flammable -= self.fire * (delta / 1000);
 				} else {
 					self.extinguishFire((delta / 1000) / 5);
