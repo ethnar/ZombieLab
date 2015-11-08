@@ -13,6 +13,7 @@ angular.module('ZombieLabApp')
 			enemies: [],
 			itemSlots: [],
 			teamHeat: 0,
+			searchProgress: Infinity,
 			light: true,
 			animations: {}
 		});

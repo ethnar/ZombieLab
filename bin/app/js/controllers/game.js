@@ -46,6 +46,19 @@ angular.module('ZombieLabApp')
 					$scope.model.currentAction.target.teamWalkingTo = false;
 				}
 			},
+			searchRoom: {
+				start: function () {
+				},
+				progress: function (delta) {
+					$scope.model.currentAction.target.searchProgress += delta / ($scope.model.teamTired > 0 ? 2 : 1);
+					$scope.model.currentAction.progress = 1000 * $scope.model.currentAction.target.searchProgress / 2000;
+				},
+				complete: function () {
+					$scope.model.lootingRoom = true;
+				},
+				cancel: function () {
+				}
+			},
 			useItem: {
 				start: function () {
 					$scope.model.currentAction.itemOwner = gameService.getSelectedItemOwner();
@@ -412,7 +425,7 @@ angular.module('ZombieLabApp')
 	};
 
 	$scope.searchRoom = function () {
-		$scope.model.lootingRoom = true;
+		$scope.startAction(actions.searchRoom, mapService.teamLocation);
 	};
 
 	$scope.finishSearching = function () {

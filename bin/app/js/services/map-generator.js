@@ -50,13 +50,15 @@ angular.module('ZombieLabApp')
 	};
 
 	service.placeRoom = function (x, y) {
-		if (!mapService.map[x][y].room) {
-			mapService.map[x][y].room = true;
+		var tile = mapService.map[x][y];
+		if (!tile.room) {
+			tile.room = true;
+			tile.searchProgress = 0;
 			_.each(['S', 'N', 'E', 'W'], function (direction) {
-				if (mapService.map[x][y][direction]) {
-					mapService.map[x][y][direction].door = true;
-					mapService.map[x][y][direction].closed = true;
-					mapService.map[x][y][direction].security = 0;
+				if (tile[direction]) {
+					tile[direction].door = true;
+					tile[direction].closed = true;
+					tile[direction].security = 0;
 				}
 			});
 			mapService.roomCount++;
