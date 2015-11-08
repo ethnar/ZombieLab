@@ -38,9 +38,11 @@ angular.module('ZombieLabApp')
 	};
 
 	Character.prototype.damage = function (damage) {
-		this.health -= damage;
-		if (this.health <= 0) {
-			this.kill();
+		if (this.health > 0) {
+			this.health -= damage;
+			if (this.health <= 0) {
+				this.kill();
+			}
 		}
 	};
 
@@ -52,7 +54,7 @@ angular.module('ZombieLabApp')
 		_.each(['weapon', 'itemSmall', 'itemLarge'], function (slot) {
 			if (self[slot].item) {
 				self[slot].item.drop(mapService.teamLocation);
-				self[slot] = null;
+				self[slot].item = null;
 			}
 		});
 		if (characterService.getAliveMembers().length === 0) {
@@ -61,5 +63,8 @@ angular.module('ZombieLabApp')
 		characterService.recalculateBestSkills();
 	};
 
+	Character.prototype.getSkill = function (skill) {
+		return this.skills[skill];
+	};
 });
 

@@ -14,6 +14,7 @@ angular.module('ZombieLabApp')
 			itemSlots: [],
 			icons: [],
 			teamHeat: 0,
+			fire: 0,
 			searchProgress: Infinity,
 			light: true,
 			animations: {}
@@ -26,7 +27,7 @@ angular.module('ZombieLabApp')
 	attachEventHandler(Tile, supportedEvents);
 
 	Tile.prototype.isLit = function () {
-		return this.light; // TODO: add fire
+		return this.light || this.fire; // TODO: add fire
 	};
 	Tile.prototype.turnLight = function (light) {
 		this.light = light;
@@ -38,6 +39,27 @@ angular.module('ZombieLabApp')
 		mapService.checkVisibility();
 	};
 
+	Tile.prototype.addIcon = function (name) {
+		this.icons.push(name);
+	};
+
+	Tile.prototype.removeIcon = function (name) {
+		this.icons = _.without(this.icons, _.findWhere(this.icons, name));
+	};
+
+	Tile.prototype.startFire = function (scale) {
+		var self = this;
+		if (self.fire) {
+			self.removeIcon('fire' + self.fire);
+		}
+		self.fire = Math.min(3, self.fire + scale);
+		self.addIcon('fire' + self.fire);
+		eventService.onUpdate(function (delta) {
+			var fireDamage = self.fire * 5 * delta / 1000;
+			self.damage(fireDamage, fireDamage);
+		});
+	};
+
 	Tile.prototype.hasItems = function () {
 		return _.filter(this.itemSlots, function (slot) {
 			return slot.item;
@@ -46,11 +68,11 @@ angular.module('ZombieLabApp')
 
 	Tile.prototype.damage = function (dmgMin, dmgMax) {
 		_.each(this.enemies, function (enemy) {
-			enemyService.damage(enemy, _.random(dmgMin, dmgMax));
+			enemyService.damage(enemy, _.random(dmgMin, dmgMax, true));
 		});
 		if (this === mapService.teamLocation) {
 			_.each(characterService.team, function (character) {
-				character.damage(_.random(dmgMin, dmgMax));
+				character.damage(_.random(dmgMin, dmgMax, true));
 			});
 		}
 	}

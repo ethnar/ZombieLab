@@ -2,7 +2,7 @@
 
 angular.module('ZombieLabApp')
 
-.service('mapGeneratorService', function ($timeout, enemyService, mapService, equipmentService, gameService) {
+.service('mapGeneratorService', function ($timeout, eventService, enemyService, mapService, equipmentService, gameService) {
 	var directions = ['N', 'E', 'S', 'W'];
 	var directionOffsets = {
 		'N': [0, -1],
@@ -18,10 +18,11 @@ angular.module('ZombieLabApp')
 		},
 		explosiveBarrels: {
 			init: function (tile) {
-				tile.icons.push('explosiveBarrels');
+				tile.addIcon('explosiveBarrels');
 				function explodeBarrels() {
-					tile.icons = _.without(tile.icons, _.findWhere(tile.icons, 'explosiveBarrels'));
+					tile.removeIcon('explosiveBarrels');
 					tile.damage(20, 30);
+					tile.startFire(2);
 					/* cleanup */
 					tile.unbind(onMissBind);
 					tile.unbind(onExplosionBind);

@@ -52,7 +52,7 @@ angular.module('ZombieLabApp')
 			},
 			equipment: {
 				30: 'C4',
-				15: 'Grenade'
+				15: 'Incendiary Grenade'
 			}
 		},
 		hacker: {

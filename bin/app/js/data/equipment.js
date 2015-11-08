@@ -363,6 +363,31 @@ angular.module('ZombieLabApp')
 					return true;
 				}
 			}, {
+				name: 'Incendiary Grenade',
+				description: 'Firestarter.',
+				minDifficulty: 250,
+				isLarge: false,
+				charges: 2,
+				target: 'area',
+				actionTime: 0.3,
+				skill: 'explosives',
+				skillRequired: 4,
+				value: 0.6,
+				use: function (itemSlot, character, direction) {
+					var self = this;
+					var targetTile = mapService.getNextAreaForTeam(direction);
+					var fireScale = Math.min(3, Math.max(1, 3 - self.skillRequired + character.getSkill(self.skill)));
+					targetTile.startFire(fireScale);
+				},
+				progress: function (itemSlot, character, direction, delta) {
+					var self = this;
+					if (!mapService.isOpen(direction)) {
+						ZombieLab.error('You must target accessible room');
+						return false;
+					}
+					return true;
+				}
+			}, {
 				name: 'C4',
 				description: 'This small satchel charge will help you get through any door real quick, hurting anyone that\'s unfortunate enough to be on the other side.',
 				minDifficulty: 300,
@@ -472,7 +497,7 @@ angular.module('ZombieLabApp')
 						element.addClass('flashlight-light');
 						item.targetedTile.turnLight(true);
 	
-						item.bindMove = eventService.on.teamMove(function () {
+						item.bindMove = eventService.onTeamMove(function () {
 							if (!item.targetedTile.visible) {
 								turnFlashlightOff();
 							}

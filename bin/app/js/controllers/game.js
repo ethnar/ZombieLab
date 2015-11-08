@@ -2,7 +2,7 @@
 
 angular.module('ZombieLabApp')
 
-.controller('gameController', function ($scope, $location, $document, $interval, modalService, characterService, enemyService, mapService, mapGeneratorService, gameService, equipmentService) {
+.controller('gameController', function ($scope, $location, $document, $interval, modalService, characterService, enemyService, mapService, mapGeneratorService, gameService, equipmentService, eventService) {
 	var controller = this;
 
 	$scope.model = {
@@ -253,6 +253,7 @@ angular.module('ZombieLabApp')
 			controller.doTheShooting(delta);
 			controller.doTheWalking(delta);
 			controller.spawnZombies(delta);
+			eventService.fireUpdate(delta);
 		}, interval);
 	};
 

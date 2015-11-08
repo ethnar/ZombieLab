@@ -77,7 +77,7 @@ angular.module('ZombieLabApp')
 		service.teamLocation.teamPresent = true;
 		service.checkVisibility();
 		service.calculateEnemyPaths();
-		eventService.fire.teamMove('test', 5);
+		eventService.fireTeamMove('test', 5);
 	};
 
 	service.moveEnemy = function (enemy, tileTo) {

@@ -5,7 +5,7 @@ angular.module('ZombieLabApp')
 .service('eventService', function () {
 	var service = this;
 
-	var supportedEvents = ['teamMove'];
+	var supportedEvents = ['TeamMove', 'Update'];
 
 	service.on = {};
 	service.fire = {};
@@ -15,7 +15,7 @@ angular.module('ZombieLabApp')
 	service.eventBinder = function (object, events) {
 		object.boundEvents = {};
 		_.each(events, function (event) {
-			object.on[event] = function (callback) {
+			object['on' + event] = function (callback) {
 				object.boundEvents[event] = object.boundEvents[event] || {};
 				var idx = _.size(object.boundEvents[event]);
 				object.boundEvents[event][idx] = callback;
@@ -24,7 +24,7 @@ angular.module('ZombieLabApp')
 					id: idx
 				}
 			}
-			object.fire[event] = function () {
+			object['fire' + event] = function () {
 				var fireArguments = arguments;
 				_.each(object.boundEvents[event], function (callback) {
 					callback.apply(null, fireArguments);
