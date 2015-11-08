@@ -27,7 +27,7 @@ angular.module('ZombieLabApp')
 			object.fire[event] = function () {
 				var fireArguments = arguments;
 				_.each(object.boundEvents[event], function (callback) {
-					callback.apply(fireArguments);
+					callback.apply(null, fireArguments);
 				});
 			}
 		});

@@ -89,6 +89,9 @@ angular.module('ZombieLabApp')
 			},
 			specials: {
 				lightsOff: 1
+			},
+			specials: {
+				explosiveBarrels: 5
 			}
 			//better misc items
 		},
@@ -99,6 +102,9 @@ angular.module('ZombieLabApp')
 			items: {
 				explosives: 1,
 				misc: 0.5
+			},
+			specials: {
+				explosiveBarrels: 20
 			}
 			//explosives?
 			// +1 lock difficulty
@@ -122,6 +128,9 @@ angular.module('ZombieLabApp')
 			items: {
 				ammo: 2,
 				weapons: 1.6
+			},
+			specials: {
+				explosiveBarrels: 2
 			}
 			// GUNS / ammo
 		},

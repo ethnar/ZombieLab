@@ -25,5 +25,13 @@ angular.module('ZombieLabApp')
 		console.error('No space to drop the item');
 		return false;
 	};
+
+	Item.prototype.isWeapon = function () {
+		return this.model.category === 'weapons';
+	};
+
+	Item.prototype.isRangedWeapon = function () {
+		return !!(this.isWeapon() && this.model.ammoType);
+	};
 });
 

@@ -16,6 +16,9 @@
 			</div>
 			<div class="room-type">{{tile.roomType}}</div>
 			<div class="items" ng-show="hasItems(tile)"></div>
+			<div class="icons" ng-repeat="icon in tile.icons">
+				<img class="icon" ng-src="imgs/rooms/icons/{{icon}}.png" />
+			</div>
 			<div class="animations-frame">
 				<div ng-repeat="animation in tile.animations" class="animation" ng-class="animation"></div>
 			</div>

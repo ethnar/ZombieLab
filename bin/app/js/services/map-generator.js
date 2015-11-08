@@ -15,6 +15,30 @@ angular.module('ZombieLabApp')
 			init: function (tile) {
 				tile.light = false;
 			}
+		},
+		explosiveBarrels: {
+			init: function (tile) {
+				tile.icons.push('explosiveBarrels');
+				function explodeBarrels() {
+					tile.icons = _.without(tile.icons, _.findWhere(tile.icons, 'explosiveBarrels'));
+					tile.damage(20, 30);
+					/* cleanup */
+					tile.unbind(onMissBind);
+					tile.unbind(onExplosionBind);
+					mapService.addAnimation(tile, 'explosion', 1500);
+				}
+				var onMissBind = tile.onMiss(function (character) {
+					if (character.weapon.item.isRangedWeapon()) {
+						var random = _.random(1, 100);
+						if (random <= 50) {
+							explodeBarrels();
+						}
+					}
+				});
+				var onExplosionBind = tile.onExplosion(function () {
+					explodeBarrels();
+				});
+			}
 		}
 	}
 

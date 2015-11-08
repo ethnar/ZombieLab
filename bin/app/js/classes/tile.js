@@ -2,8 +2,8 @@
 
 angular.module('ZombieLabApp')
 
-.run(function (equipmentService, gameService, mapService, eventService) {
-	var supportedEvents = ['LightsOff', 'LightsOn'];
+.run(function (equipmentService, gameService, mapService, enemyService, eventService, characterService) {
+	var supportedEvents = ['LightsOff', 'LightsOn', 'Miss', 'Explosion'];
 
 	window.Tile = function (obj) {
 		angular.extend(this, obj, {
@@ -12,6 +12,7 @@ angular.module('ZombieLabApp')
 			visible: false,
 			enemies: [],
 			itemSlots: [],
+			icons: [],
 			teamHeat: 0,
 			searchProgress: Infinity,
 			light: true,
@@ -42,5 +43,16 @@ angular.module('ZombieLabApp')
 			return slot.item;
 		}).length;
 	};
+
+	Tile.prototype.damage = function (dmgMin, dmgMax) {
+		_.each(this.enemies, function (enemy) {
+			enemyService.damage(enemy, _.random(dmgMin, dmgMax));
+		});
+		if (this === mapService.teamLocation) {
+			_.each(characterService.team, function (character) {
+				character.damage(_.random(dmgMin, dmgMax));
+			});
+		}
+	}
 
 });

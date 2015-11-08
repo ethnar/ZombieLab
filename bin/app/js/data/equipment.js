@@ -350,9 +350,8 @@ angular.module('ZombieLabApp')
 				use: function (itemSlot, character, direction) {
 					var self = this;
 					var targetTile = mapService.getNextAreaForTeam(direction);
-					_.each(targetTile.enemies, function (enemy) {
-						enemyService.damage(enemy, _.random(4, 15) * character.skillModifier(self.skill, self.skillRequired));
-					});
+					targetTile.damage(4 * character.skillModifier(self.skill, self.skillRequired), 15 * character.skillModifier(self.skill, self.skillRequired));
+					targetTile.fireExplosion();
 					mapService.addAnimation(targetTile, 'explosion', 1500);
 				},
 				progress: function (itemSlot, character, direction, delta) {
@@ -379,9 +378,8 @@ angular.module('ZombieLabApp')
 					var targetTile = mapService.getNextAreaForTeam(direction);
 					var path = mapService.getDirectionPathForTeam(direction);
 					mapService.openDoor(path);
-					_.each(targetTile.enemies, function (enemy) {
-						enemyService.damage(enemy, _.random(2, 30) * character.skillModifier(self.skill, self.skillRequired));
-					});
+					targetTile.damage(2 * character.skillModifier(self.skill, self.skillRequired), 30 * character.skillModifier(self.skill, self.skillRequired));
+					targetTile.fireExplosion();
 					mapService.addAnimation(targetTile, 'explosion', 1500);
 				},
 				progress: function (itemSlot, character, direction, delta) {

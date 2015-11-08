@@ -294,7 +294,7 @@ angular.module('ZombieLabApp')
 
 	controller.doTheShooting = function (delta) {
 		_.each(_.shuffle(characterService.team), function (character) {
-			if (character.canShoot() && character.weapon.item && character.weapon.item.model.category === 'weapons') {
+			if (character.canShoot() && character.weapon.item && character.weapon.item.isWeapon()) {
 				if ((character.weapon.item.ammo > 0 || !character.weapon.item.model.clipSize) && character.reloadingTimer <= 0) {
 					if (!character.holdFire) {
 						var validTargets = _.groupBy(mapService.getValidTargets(), 'distance');
@@ -341,6 +341,7 @@ angular.module('ZombieLabApp')
 				weaponFrame.find('.weapon-hit').animate({opacity: 0}, 400);
 			});
 		} else {
+			target.enemy.tile.fireMiss(character);
 			weaponFrame.find('.weapon-hit').css({opacity: 0});
 			// TODO: turn into CSS animation to support Zepto  in some shape or form
 			weaponFrame.find('.weapon-miss').stop(true).css({opacity: 1}).animate({opacity: 1}, 600, function () {
@@ -354,7 +355,7 @@ angular.module('ZombieLabApp')
 		var attackedTeamMember = _.sample(characterService.getAliveMembers());
 		if (attackedTeamMember) {
 			$scope.model.teamTired = 3000;
-			characterService.doDamage(attackedTeamMember, _.random(Math.floor(enemy.type.damage * 0.8), enemy.type.damage));
+			attackedTeamMember.damage(_.random(Math.floor(enemy.type.damage * 0.8), enemy.type.damage));
 		};
 	};
 
@@ -421,7 +422,7 @@ angular.module('ZombieLabApp')
 	};
 
 	$scope.canSearchRoom = function () {
-		return mapService.teamLocation.hasItems() && mapService.teamLocation.isLit();
+		return mapService.teamLocation.hasItems() && mapService.teamLocation.isLit() && !$scope.model.currentAction.actionObject;
 	};
 
 	$scope.searchRoom = function () {
