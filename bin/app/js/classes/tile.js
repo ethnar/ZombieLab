@@ -3,7 +3,7 @@
 angular.module('ZombieLabApp')
 
 .run(function (equipmentService, gameService, mapService, enemyService, eventService, characterService) {
-	var supportedEvents = ['LightsOff', 'LightsOn', 'Miss', 'Explosion'];
+	var supportedEvents = ['LightsOff', 'LightsOn', 'Miss', 'Explosion', 'Burning'];
 
 	window.Tile = function (obj) {
 		angular.extend(this, obj, {
@@ -48,8 +48,12 @@ angular.module('ZombieLabApp')
 	};
 
 	/* START Fire */
+	Tile.prototype.getFireScale = function () {
+		return Math.max(1, Math.round(this.fire / 100));
+	};
+
 	Tile.prototype.getFireIcon = function () {
-		return 'fire' + Math.max(1, Math.round(this.fire / 100));
+		return 'fire' + this.getFireScale();
 	};
 
 	Tile.prototype.normalizeFire = function () {
@@ -74,6 +78,7 @@ angular.module('ZombieLabApp')
 				self.flameTick += delta;
 				while (self.flameTick > 1000) {
 					self.flameTick -= 1000;
+					self.fireBurning();
 				}
 
 				// TODO: also burn stuff

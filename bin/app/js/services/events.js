@@ -32,7 +32,12 @@ angular.module('ZombieLabApp')
 			}
 		});
 		object.unbind = function (eventBinding) {
-			delete object.boundEvents[eventBinding.type][eventBinding.id];
+			if (!Array.isArray(eventBinding)) {
+				eventBinding = [eventBinding];
+			}
+			_.each(eventBinding, function (binding) {
+				delete object.boundEvents[binding.type][binding.id];
+			});
 		}
 	};
 

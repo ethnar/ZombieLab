@@ -19,26 +19,31 @@ angular.module('ZombieLabApp')
 		explosiveBarrels: {
 			init: function (tile) {
 				tile.addIcon('explosiveBarrels');
+				var binds = [];
 				function explodeBarrels() {
 					tile.removeIcon('explosiveBarrels');
 					tile.damage(20, 30);
 					tile.igniteFire(2);
 					/* cleanup */
-					tile.unbind(onMissBind);
-					tile.unbind(onExplosionBind);
+					tile.unbind(binds);
 					mapService.addAnimation(tile, 'explosion', 1500);
 				}
-				var onMissBind = tile.onMiss(function (character) {
+				binds.push(tile.onMiss(function (character) {
 					if (character.weapon.item.isRangedWeapon()) {
 						var random = _.random(1, 100);
 						if (random <= 50) {
 							explodeBarrels();
 						}
 					}
-				});
-				var onExplosionBind = tile.onExplosion(function () {
+				}));
+				binds.push(tile.onBurning(function () {
+					if (_.random(1, 100) <= 10 * tile.getFireScale()) {
+						explodeBarrels();
+					}
+				}));
+				binds.push(tile.onExplosion(function () {
 					explodeBarrels();
-				});
+				}));
 			}
 		}
 	}
