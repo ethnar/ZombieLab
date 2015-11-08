@@ -55,12 +55,11 @@ angular.module('ZombieLabApp')
 		return result;
 	};
 
-	service.getAccessibleAreas = function (x, y, onlyOpen) {
+	service.getAccessibleAreas = function (tile, onlyOpen) {
 		var result = {};
-		var tile = service.map[x][y];
 		_.each(directionOffsets, function (offset, direction) {
 			if (tile[direction] && (!onlyOpen || service.isOpen(direction, tile))) {
-				result[direction] = service.map[x + offset[0]][y + offset[1]];
+				result[direction] = service.map[tile.x + offset[0]][tile.y + offset[1]];
 			}
 		});
 		return result;
@@ -139,7 +138,7 @@ angular.module('ZombieLabApp')
 
 	service.calculateEnemyPaths = function () {
 		_.each(service.areas, function (currentTile) {
-			var neighbouring = service.getAccessibleAreas(currentTile.x, currentTile.y, true);
+			var neighbouring = service.getAccessibleAreas(currentTile, true);
 			var bestHeat = currentTile.teamHeat;
 			var bestHeatDirection = '';
 			_.each(neighbouring, function (tile, direction) {

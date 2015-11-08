@@ -43,9 +43,13 @@
 				filter: brightness(1);
 				-webkit-filter: brightness(1);
 
-				.enemy {
+				.lineOfSight {
 					visibility: inherit;
-				}
+				}			
+			}
+
+			.lineOfSight {
+				visibility: hidden;
 			}
 
 			.room-type {
@@ -366,7 +370,6 @@
 	.enemies-panel {
 
 		.enemy {
-			visibility: hidden;
 			z-index: @zIndex-room-enemies;
 			position: absolute;
 

@@ -72,6 +72,37 @@ angular.module('ZombieLabApp')
 		});
 	};
 
+	Tile.prototype.getFlammable = function () {
+		var self = this;
+		if (self.flammable === undefined) { // not very elegant, but keep everything in one place
+			self.flammable = self.room ? 3000 : 0;
+		}
+		return self.flammable;
+	};
+
+	Tile.prototype.burnRoom = function (delta) {
+		var self = this;
+		if (self.getFlammable() > 0) {
+			self.igniteFire((delta / 1000) / 5);
+			self.flammable -= self.fire * (delta / 1000);
+		} else {
+			self.extinguishFire((delta / 1000) / 5);
+		}
+	};
+
+	Tile.prototype.spreadFire = function () {
+		var self = this;
+		var otherAreas = mapService.getAccessibleAreas(self, true);
+		_.each(otherAreas, function (otherTile) {
+			if (!otherTile.fire && otherTile.getFlammable() > 0) {
+				var random = _.random(1, 100);
+				if (random < 3 * Math.pow(self.getFireScale(), 2)) {
+					otherTile.igniteFire(1);
+				}
+			};
+		});
+	};
+
 	Tile.prototype.igniteFire = function (scale) {
 		var self = this;
 		var wasFire = self.fire;
@@ -92,17 +123,10 @@ angular.module('ZombieLabApp')
 					self.flameTick -= 1000;
 					self.fireBurning();
 					self.burnItems();
+					self.spreadFire();
 				}
 
-				if (self.flammable === undefined) { // not very elegant, but keep everything in one place
-					self.flammable = self.room ? 3000 : 0;
-				}
-				if (self.flammable > 0) {
-					self.igniteFire((delta / 1000) / 5);
-					self.flammable -= self.fire * (delta / 1000);
-				} else {
-					self.extinguishFire((delta / 1000) / 5);
-				}
+				self.burnRoom(delta);
 			});
 		}
 	};
