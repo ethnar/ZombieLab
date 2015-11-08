@@ -21,7 +21,7 @@
 			</div>
 			<div class="teamWalkingDirection" data-ng-show="tile.teamWalkingTo">MOVING HERE!</div>
 			<div class="enemies-panel">
-				<div ng-repeat="enemy in tile.enemies" class="enemy" ng-style="{left: enemy.roomX, top: enemy.roomY}">
+				<div ng-repeat="enemy in tile.enemies" class="enemy" ng-style="{left: enemy.roomX, top: enemy.roomY, 'z-index': 75 + enemy.roomY}">
 					<span class="enemyIcon {{enemy.type.name}}"></span>
 				</div>
 			</div>

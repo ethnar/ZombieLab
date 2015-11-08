@@ -197,10 +197,6 @@ angular.module('ZombieLabApp')
 		}
 	};
 
-	$scope.dropSelectedItem = function () { 
-		mapService.dropItem(gameService.selectedItemSlot, mapService.teamLocation);
-	};
-
 	$scope.isTeamMoving = function () {
 		return $scope.model.currentAction.actionObject === actions.walk;
 	};
@@ -285,7 +281,7 @@ angular.module('ZombieLabApp')
 
 	controller.doTheShooting = function (delta) {
 		_.each(_.shuffle(characterService.team), function (character) {
-			if (character.weapon.item && character.weapon.item.model.category === 'weapons' && character.canShoot()) {
+			if (character.canShoot() && character.weapon.item && character.weapon.item.model.category === 'weapons') {
 				if ((character.weapon.item.ammo > 0 || !character.weapon.item.model.clipSize) && character.reloadingTimer <= 0) {
 					if (!character.holdFire) {
 						var validTargets = _.groupBy(mapService.getValidTargets(), 'distance');

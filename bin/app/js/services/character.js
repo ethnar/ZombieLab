@@ -188,8 +188,8 @@ angular.module('ZombieLabApp')
 		character.active = true;
 		character.health = 0;
 		_.each(['weapon', 'itemSmall', 'itemLarge'], function (slot) {
-			if (character[slot]) {
-				mapService.dropItem({item: character[slot]}, mapService.teamLocation);
+			if (character[slot].item) {
+				character[slot].item.drop(mapService.teamLocation);
 				character[slot] = null;
 			}
 		});

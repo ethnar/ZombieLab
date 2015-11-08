@@ -18,10 +18,12 @@ angular.module('ZombieLabApp')
 			var controller = this;
 			
 			$scope.$watch('itemSlot', function () {
-				$scope.itemSlot.allowedLarge = $scope.allowedLarge || false;
-				$scope.itemSlot.character = $scope.character;
-				$scope.itemSlot.disabled = $scope.disabled;
-				$scope.itemSlot.slotType = $scope.slotType;
+				if ($scope.itemSlot) {
+					$scope.itemSlot.allowedLarge = $scope.allowedLarge || false;
+					$scope.itemSlot.character = $scope.character;
+					$scope.itemSlot.disabled = $scope.disabled;
+					$scope.itemSlot.slotType = $scope.slotType;
+				}
 			});
 			$scope.model = {
 				dragStart: {
@@ -97,7 +99,7 @@ angular.module('ZombieLabApp')
 			};
 
 			$scope.isSelected = function () {
-				return gameService.selectedItemSlot === $scope.itemSlot;
+				return $scope.itemSlot && gameService.selectedItemSlot === $scope.itemSlot;
 			};
 		}
 	};

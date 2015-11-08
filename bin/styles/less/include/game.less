@@ -44,7 +44,7 @@
 		top: 20px;
 		left: 10px;
 		background: url('@{img-path}loot-window.png') top left repeat-y white;
-		z-index: 400;
+		z-index: @zIndex-loot-window;
 	}
 
 	.ammo-status {
@@ -66,7 +66,7 @@
 		position: absolute;
 		right: 10px;
 		top: 26px;
-		z-index: 500;
+		z-index: @zIndex-action-panel;
 
 		.action {
 			line-height: @action-button-size;
@@ -133,7 +133,7 @@
 		    background-color: red;
 		    border-radius: 10px;
 
-		    z-index: 200;
+		    z-index: @zIndex-team-position;
 
 			.pulse {
 				position: absolute;
@@ -159,7 +159,7 @@
 		    left: 50%;
 		    width: @map-tile-size * 2;
 		    height: @map-tile-size * 2;
-		    z-index: 300;
+		    z-index: @zIndex-direction-controls;
 
 		    &.W {
 		    	margin-left: @map-tile-size * -2.5 + @padding;
@@ -193,7 +193,7 @@
 	bottom: 0;
 	right: 0;
 	left: 0;
-	z-index: 9000;
+	z-index: @zIndex-game-over;
 	background: rgba(0, 0, 0, 0.4);
 
 }
@@ -208,7 +208,7 @@
 	opacity: 0;
 	transition: opacity 0.4s;
 	pointer-events: none;
-	z-index: 9100;
+	z-index: @zIndex-loading-overlay;
 
 	.loading-animation {
 		position: absolute;
