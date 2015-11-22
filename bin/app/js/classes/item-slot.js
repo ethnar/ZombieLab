@@ -13,6 +13,11 @@ angular.module('ZombieLabApp')
 	};
 
 	ItemSlot.prototype.swapWith = function (slot) {
+		if (this.inUse || slot.inUse) {
+			ZombieLab.error('Item in use, cannot swap now.');
+			return;
+		}
+
 		var tempItem = this.item;
 		this.item = slot.item;
 		slot.item = tempItem;

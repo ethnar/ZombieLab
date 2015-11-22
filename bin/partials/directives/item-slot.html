@@ -29,7 +29,7 @@
 				</div>
 			</div>
 			<div class="description">{{::itemSlot.item.model.description}}</div>
-			<div class="drop-button button" ng-show="itemDroppable();" ng-click="dropItem();$close();">DROP</div>
+			<button class="drop-button button" ng-show="itemDroppable();" ng-disabled="itemSlot.inUse" ng-click="dropItem();$close();">DROP</button>
 			<div ng-click="$close();" class="modal-close">X</div>
 		</div>
 	</script>

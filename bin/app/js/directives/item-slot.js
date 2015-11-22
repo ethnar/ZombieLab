@@ -33,7 +33,7 @@ angular.module('ZombieLabApp')
 			};
 
 			$scope.itemDroppable = function () {
-				return gameService.isMainGame;
+				return gameService.isMainGame && $scope.itemSlot.character;
 			};
 
 			$scope.dropItem = function () {
@@ -63,7 +63,7 @@ angular.module('ZombieLabApp')
 				if ($scope.itemSlot.item && $scope.itemSlot !== $scope.itemSlot.item.slot) {
 					console.error('THIS IS REALLY BAD!');
 				}
-				if ($scope.disabled || $scope.tempDisabled) {
+				if ($scope.disabled || $scope.inUse) {
 					return;
 				}
 				if (gameService.selectedItemSlot) {
@@ -88,6 +88,7 @@ angular.module('ZombieLabApp')
 					return;
 				}
 				gameService.pause();
+				gameService.deselectItem();
 				var modal = modalService.open({
 					template: 'item-info-modal.html',
 					scope: $scope

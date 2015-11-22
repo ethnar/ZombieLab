@@ -66,7 +66,7 @@ angular.module('ZombieLabApp')
 					if ($scope.model.currentAction.itemOwner) {
 						$scope.model.currentAction.itemSlot = gameService.getSelectedItemSlot();
 						$scope.model.currentAction.item = gameService.getSelectedItem();
-						$scope.model.currentAction.itemSlot.tempDisabled = true;
+						$scope.model.currentAction.itemSlot.inUse = true;
 						$scope.model.currentAction.itemOwner.active = false;
 						if ($scope.model.currentAction.item.model.useChargeAtStart) {
 							if ($scope.model.currentAction.item.charges && !(--$scope.model.currentAction.item.charges)) {
@@ -98,7 +98,7 @@ angular.module('ZombieLabApp')
 				},
 				complete: function () {
 					$scope.model.currentAction.item.model.use($scope.model.currentAction.itemSlot, $scope.model.currentAction.itemOwner, $scope.model.currentAction.target);
-					$scope.model.currentAction.itemSlot.tempDisabled = false;
+					$scope.model.currentAction.itemSlot.inUse = false;
 					$scope.model.currentAction.itemOwner.active = true;
 					if (!$scope.model.currentAction.item.model.useChargeAtStart) {
 						if ($scope.model.currentAction.item.charges && !(--$scope.model.currentAction.item.charges)) {
@@ -111,7 +111,7 @@ angular.module('ZombieLabApp')
 				cancel: function () {
 					if ($scope.model.currentAction.itemOwner) {
 						$scope.model.currentAction.itemOwner.active = true;
-						$scope.model.currentAction.itemSlot.tempDisabled = false;
+						$scope.model.currentAction.itemSlot.inUse = false;
 					}
 					$scope.model.currentAction.item = null;
 					$scope.model.currentAction.itemOwner = null;
