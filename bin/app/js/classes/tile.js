@@ -115,21 +115,26 @@ angular.module('ZombieLabApp')
 		self.addIcon(self.getFireIcon());
 		if (!wasFire) {
 			self.bindUpdate = eventService.onUpdate(function (delta) {
-				var fireDamage = (self.fire / 20) * (delta / 1000);
-				self.damage(fireDamage * 0.9, fireDamage * 1.1);
-
-				self.flameTick += delta;
-				while (self.flameTick > 1000) {
-					self.flameTick -= 1000;
-					self.fireBurning();
-					self.burnItems();
-					self.spreadFire();
-				}
-
-				self.burnRoom(delta);
+				self.fireDamage(delta);
 			});
 		}
 	};
+
+	Tile.prototype.fireDamage = function (delta) {
+		var self = this;
+		var fireDamage = (self.fire / 20) * (delta / 1000);
+		self.damage(fireDamage * 0.1, fireDamage * 2);
+
+		self.flameTick += delta;
+		while (self.flameTick > 1000) {
+			self.flameTick -= 1000;
+			self.fireBurning();
+			self.burnItems();
+			self.spreadFire();
+		}
+
+		self.burnRoom(delta);
+	}
 
 	Tile.prototype.extinguishFire = function (scale) {
 		var self = this;
