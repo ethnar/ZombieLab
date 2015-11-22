@@ -21,7 +21,8 @@ angular.module('ZombieLabApp')
 			progress: 0
 		}
 	};
-	var interval = 40,
+	var intervalTime = 40,
+		interval,
 		actions = {
 			openDoor: {
 				progress: function (delta) {
@@ -238,7 +239,7 @@ angular.module('ZombieLabApp')
 
 	$scope.mainLoop = function () {
 		var lastTime = new Date();
-		$interval(function () {
+		interval = $interval(function () {
 			if (gameService.isGameOver) {
 				return;
 			}
@@ -254,7 +255,7 @@ angular.module('ZombieLabApp')
 			controller.doTheWalking(delta);
 			controller.spawnZombies(delta);
 			eventService.fireUpdate(delta);
-		}, interval);
+		}, intervalTime);
 	};
 
 	controller.spawnZombies = function (delta) {
@@ -411,6 +412,7 @@ angular.module('ZombieLabApp')
 	};
 
 	$scope.backToMenu = function () {
+		$interval.cancel(interval);
 		$location.path('main-menu');
 	};
 
